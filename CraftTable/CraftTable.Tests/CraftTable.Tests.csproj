@@ -57,6 +57,7 @@
     <Compile Include="FactoryRegistrations.cs" />
     <Compile Include="IFactoryRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ConditionServiceTest.cs" />
     <Compile Include="StaticRandomService.cs" />
     <Compile Include="TestData.cs" />
   </ItemGroup>

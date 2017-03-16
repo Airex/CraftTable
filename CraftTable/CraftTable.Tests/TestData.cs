@@ -6,22 +6,6 @@ namespace CraftTable.Tests
 {
     internal static class TestData
     {
-        internal static CraftTable CreateCraftTable(Recipe recipe = null)
-        {
-            var r = recipe ?? new Recipe(2000, 1000, 20000);
-            var craftMan = new CraftMan(788, 851, 10000);
-
-            IRandomService randomService = new StaticRandomService(0);
-
-            IEfficiencyCalculator efficiencyCalculator = new EfficiencyCalculator();
-
-            IBuffCollector buffCollector = new BuffCollector();
-            IConditionService conditionService = new ConditionService(randomService);
-            ICalculator calculator = new Calculator(efficiencyCalculator);
-
-            return new CraftTable(r, craftMan, buffCollector, conditionService, randomService, calculator);
-        }
-
         internal static CraftTable.Factory CreateFactory(Action<IFactoryRegistry> action = null)
         {
             var builder = new ContainerBuilder();

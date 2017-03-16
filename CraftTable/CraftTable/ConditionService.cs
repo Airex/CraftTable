@@ -19,7 +19,7 @@ namespace CraftTable
                 result = Condition.Poor;
             else
             {
-                result = (Condition) _randomService.SelectItem(new[] {-1, 8, 1, 0});
+                result = (Condition) _randomService.SelectItem(new[] {double.PositiveInfinity, 23, 1,0});
             }
             _prevCondition = result;
             return result;

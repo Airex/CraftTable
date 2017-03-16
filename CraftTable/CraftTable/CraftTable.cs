@@ -48,8 +48,8 @@ namespace CraftTable
             if (!ability.CanAct(craftServiceState)) throw new AbilityNotAvailableException();
             _calculator.Reset();
             _calculator.UseConditionMultiplier(GetMultiplier(condition));
-            _buffCollector.BuildCalculator(new ActionInfo() { AbilityType = ability.GetType() }, _calculator.GetBuilder());
-            if (_randomService.SelectItem(new[] { _calculator.CalculateChance(ability.Chance), -1 }) > 0) return;
+            _buffCollector.BuildCalculator(new ActionInfo { AbilityType = ability.GetType() }, _calculator.GetBuilder());
+            if (_randomService.SelectItem(new[] { _calculator.CalculateChance(ability.Chance), double.PositiveInfinity }) > 0) return;
             ability.Execute(this);
             Validate();
         }

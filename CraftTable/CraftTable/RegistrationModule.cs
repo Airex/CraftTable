@@ -10,7 +10,7 @@ namespace CraftTable
             builder.RegisterType<EfficiencyCalculator>().As<IEfficiencyCalculator>();
             builder.RegisterType<BuffCollector>().As<IBuffCollector>();
             builder.RegisterType<ConditionService>().As<IConditionService>();
-            builder.Register(context => (IRandomService) null).As<IRandomService>();
+            builder.Register(context => new RandomService()).As<IRandomService>();
             builder.RegisterType<Calculator>().As<ICalculator>();
             builder.RegisterType<CraftTable>().AsSelf();
         }
