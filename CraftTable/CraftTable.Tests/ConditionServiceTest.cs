@@ -19,11 +19,16 @@ namespace CraftTable.Tests
             var conditionService = container.Resolve<IConditionService>();
             var calculator = container.Resolve<ICalculator>();
 
+            calculator.GetBuilder().ForConditionChance((condition, chance) =>
+            {
+                if (condition == Condition.Extreme)
+                    chance.Add(5);
+            });
+
             IList<Condition> conditions = new List<Condition>();
             for (var i = 0; i < 100000; i++)
             {
-                var condition = conditionService.GetCondition(calculator);
-                conditions.Add(condition);
+                conditions.Add(conditionService.GetCondition(calculator));
             }
 
             var a = from c in conditions
