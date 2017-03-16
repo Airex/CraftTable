@@ -1,4 +1,6 @@
-namespace CrafterExperiment
+using CraftTable.Contracts;
+
+namespace CraftTable
 {
     public abstract class Ability
     {

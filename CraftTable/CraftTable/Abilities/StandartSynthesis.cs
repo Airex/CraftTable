@@ -1,21 +1,21 @@
-﻿using CraftTable.Contracts;
+using CraftTable.Contracts;
 
 namespace CraftTable.Abilities
 {
-    public class StandartTouch : Ability
+    public class StandartSynthesis : Ability
     {
+        public override int Chance { get; } = 90;
+
         public override void Execute(ICraftActions craftActions)
         {
-            craftActions.UseCraftPoints(32);
             craftActions.UseDurability(10);
-            craftActions.Touch(125);
+            craftActions.UseCraftPoints(15);
+            craftActions.Synth(150);
         }
-
-        public override int Chance { get; } = 80;
 
         public override bool CanAct(ICraftServiceState serviceState)
         {
-            return serviceState.CraftPointsLeft >= 32;
+            return serviceState.CraftPointsLeft >= 15;
         }
     }
 }

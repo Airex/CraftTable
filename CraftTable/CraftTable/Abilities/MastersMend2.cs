@@ -1,19 +1,18 @@
-using CraftTable.Buffs;
 using CraftTable.Contracts;
 
 namespace CraftTable.Abilities
 {
-    public class SteadyHandAbility : Ability
+    public class MastersMend2 : Ability
     {
         public override void Execute(ICraftActions craftActions)
         {
-            craftActions.UseCraftPoints(22);
-            craftActions.ApplyBuff(new SteadyHandBuff(20));
+            craftActions.UseCraftPoints(160);
+            craftActions.RestoreDurability(60);
         }
 
         public override bool CanAct(ICraftServiceState serviceState)
         {
-            return serviceState.CraftPointsLeft>=22;
+            return serviceState.CraftPointsLeft >= 160;
         }
     }
 }

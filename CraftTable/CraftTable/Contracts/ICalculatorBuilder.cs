@@ -1,6 +1,6 @@
-using System;
+using CraftTable.CraftActors;
 
-namespace CrafterExperiment
+namespace CraftTable.Contracts
 {
     public interface ICalculatorBuilder
     {

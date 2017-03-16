@@ -1,4 +1,6 @@
-﻿namespace CrafterExperiment
+﻿using CraftTable.Contracts;
+
+namespace CraftTable.CraftActors
 {
     public class CalculatorActor : ICalculatorActor
     {

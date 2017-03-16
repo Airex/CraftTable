@@ -1,4 +1,4 @@
-﻿namespace CrafterExperiment
+﻿namespace CraftTable
 {
     public sealed class Recipe
     {

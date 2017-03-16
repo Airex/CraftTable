@@ -1,4 +1,6 @@
-﻿namespace CrafterExperiment.Abilities
+﻿using CraftTable.Contracts;
+
+namespace CraftTable.Abilities
 {
     public class HustyTouch:Ability
     {

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CraftTable.Contracts;
 
-namespace CrafterExperiment
+namespace CraftTable
 {
     public class BuffCollector : IBuffCollector,IBuffAccessor
     {

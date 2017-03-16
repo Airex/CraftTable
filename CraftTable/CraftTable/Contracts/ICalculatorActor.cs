@@ -1,4 +1,4 @@
-namespace CrafterExperiment
+namespace CraftTable.Contracts
 {
     public interface ICalculatorActor
     {

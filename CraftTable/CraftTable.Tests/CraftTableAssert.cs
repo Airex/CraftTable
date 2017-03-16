@@ -1,8 +1,6 @@
-﻿
-using CrafterExperiment;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
-namespace CrafterExperimentTests
+namespace CraftTable.Tests
 {
     public static class CraftTableAssert
     {

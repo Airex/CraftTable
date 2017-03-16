@@ -1,9 +1,8 @@
-﻿using CrafterExperiment;
-using CrafterExperiment.Abilities;
-using CrafterExperiment.Buffs;
+﻿using CraftTable.Abilities;
+using CraftTable.Contracts;
 using NUnit.Framework;
 
-namespace CrafterExperimentTests
+namespace CraftTable.Tests
 {
     [TestFixture]
     public class CraftTableTests
@@ -189,22 +188,6 @@ namespace CrafterExperimentTests
 
             CraftTable craftTable = new CraftTable(r, craftMan, buffCollector, conditionService, randomService, calculator);
             return craftTable;
-        }
-    }
-
-
-    public class StaticRandomService:IRandomService
-    {
-        private readonly int _value;
-
-        public StaticRandomService(int value)
-        {
-            _value = value;
-        }
-
-        public int SelectItem(int[] chances)
-        {
-            return _value;
         }
     }
 }

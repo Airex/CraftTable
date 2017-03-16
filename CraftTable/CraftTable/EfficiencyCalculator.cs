@@ -1,6 +1,7 @@
 using System;
+using CraftTable.Contracts;
 
-namespace CrafterExperiment
+namespace CraftTable
 {
     public class EfficiencyCalculator : IEfficiencyCalculator
     {

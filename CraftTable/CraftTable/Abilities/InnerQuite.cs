@@ -1,6 +1,7 @@
-﻿using CrafterExperiment.Buffs;
+﻿using CraftTable.Buffs;
+using CraftTable.Contracts;
 
-namespace CrafterExperiment.Abilities
+namespace CraftTable.Abilities
 {
     public class InnerQuite : Ability
     {

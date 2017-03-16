@@ -1,4 +1,6 @@
-﻿namespace CrafterExperiment.Buffs
+﻿using CraftTable.Contracts;
+
+namespace CraftTable.Buffs
 {
     public class WasteNotBuff:StepsBasedBuff
     {

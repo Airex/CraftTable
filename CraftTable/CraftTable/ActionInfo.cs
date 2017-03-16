@@ -1,6 +1,6 @@
 using System;
 
-namespace CrafterExperiment
+namespace CraftTable
 {
     public class ActionInfo
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CrafterExperiment
+namespace CraftTable
 {
     public class SameBuffEqualityComparer : IEqualityComparer<IBuff>
     {

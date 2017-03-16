@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CrafterExperiment
+namespace CraftTable.Exceptions
 {
     public class CraftFailedException : Exception
     {

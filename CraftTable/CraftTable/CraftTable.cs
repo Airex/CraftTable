@@ -1,6 +1,8 @@
 ﻿using System;
+using CraftTable.Contracts;
+using CraftTable.Exceptions;
 
-namespace CrafterExperiment
+namespace CraftTable
 {
     public class CraftTable : ICraftActions
     {
