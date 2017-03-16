@@ -1,19 +1,21 @@
+﻿using CraftTable.Buffs;
 using CraftTable.Contracts;
 
 namespace CraftTable.Abilities
 {
-    public class MuscleMemory : Ability
+    public class ByregotsBrow:Ability
     {
         public override void Execute(ICraftActions craftActions)
         {
-            craftActions.UseCraftPoints(6);
+            craftActions.UseCraftPoints(18);
             craftActions.UseDurability(10);
-            craftActions.Synth(Synth.FrompPercent(33));
+            craftActions.Touch(150);
         }
 
         public override bool CanAct(ICraftServiceState serviceState)
         {
-            return serviceState.CraftPointsLeft >= 6 && serviceState.StepNumber == 2;
+            return serviceState.CraftPointsLeft >= 18 &&
+                   serviceState.BuffAccessor.GetBuff<InnerQuiteBuff>()?.Stacks >= 2;
         }
     }
 }

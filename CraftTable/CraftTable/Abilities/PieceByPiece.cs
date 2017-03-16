@@ -8,7 +8,7 @@ namespace CraftTable.Abilities
         {
             craftActions.UseDurability(10);
             craftActions.UseCraftPoints(15);
-            craftActions.SynthPercent(33);
+            craftActions.Synth(Synth.FrompPercent(33));
         }
 
         public override bool CanAct(ICraftServiceState serviceState)

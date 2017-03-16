@@ -10,7 +10,7 @@ namespace CraftTable.Abilities
         {
             craftActions.UseDurability(10);
             craftActions.UseCraftPoints(15);
-            craftActions.Synth(150);
+            craftActions.Synth(Synth.FromEfficiency(150));
         }
 
         public override bool CanAct(ICraftServiceState serviceState)

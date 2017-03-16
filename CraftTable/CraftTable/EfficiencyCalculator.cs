@@ -6,7 +6,7 @@ namespace CraftTable
     public class EfficiencyCalculator : IEfficiencyCalculator
     {
         private double _conditionMultiplier = 1.0;
-        public double CraftmanshipToProgress(double craftsmanship, double efficiency)
+        public double CraftmanshipToProgress(double craftsmanship, double efficiency, int levelDiff)
         {
             double baseProgress = 0;
             double levelCorrectionFactor = 0;
@@ -101,9 +101,9 @@ namespace CraftTable
             return Math.Round(levelCorrectedProgress  * efficiency / 100);
         }
 
-        public double ControlToProgress(double control, double efficiency)
+        public double ControlToProgress(double control, double efficiency, int levelDiff)
         {
-            Console.WriteLine("Calculated control: "+control);
+            //Console.WriteLine("Calculated control: "+control);
             int recipeLevel = 150;
             double baseQuality = 0;
             double recipeLevelFactor = 0;
@@ -162,11 +162,11 @@ namespace CraftTable
                 levelCorrectedQuality = baseQuality * (1 + levelCorrectionFactor);
             }
 
-            Console.WriteLine("Calculated Quality " + levelCorrectedQuality);
+            //Console.WriteLine("Calculated Quality " + levelCorrectedQuality);
 
             var controlToProgress = Math.Round(levelCorrectedQuality * efficiency/100 * _conditionMultiplier);
 
-            Console.WriteLine("Calculated Quality "+controlToProgress);
+         //   Console.WriteLine("Calculated Quality "+controlToProgress);
             return controlToProgress;
         }
 

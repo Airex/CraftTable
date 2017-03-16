@@ -1,18 +1,19 @@
+﻿using CraftTable.Buffs;
 using CraftTable.Contracts;
 
 namespace CraftTable.Abilities
 {
-    public class CarefulSynthesis2 : Ability
+    public class Reclaim : Ability
     {
         public override void Execute(ICraftActions craftActions)
         {
-            craftActions.UseDurability(10);
-            craftActions.Synth(Synth.FromEfficiency(120));
+            craftActions.UseCraftPoints(55);
+            craftActions.ApplyBuff(new ReclaimBuff());
         }
 
         public override bool CanAct(ICraftServiceState serviceState)
         {
-            return true;
+            return serviceState.CraftPointsLeft >= 55;
         }
     }
 }

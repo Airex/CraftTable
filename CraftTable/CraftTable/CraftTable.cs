@@ -19,6 +19,7 @@ namespace CraftTable
         private readonly CraftMan _craftMan;
         private readonly IBuffCollector _buffCollector;
         private readonly ICalculator _calculator;
+        Condition _preCondition = Condition.Normal;
 
         public CraftTable(Recipe recipe, CraftMan craftMan, IBuffCollector buffCollector, IConditionService conditionService, IRandomService randomService, ICalculator calculator)
         {
@@ -44,13 +45,20 @@ namespace CraftTable
             _step++;
             _buffCollector.Step(this);
             _calculator.Reset();
-            _buffCollector.BuildCalculator(new ActionInfo { AbilityType = ability.GetType() }, _calculator.GetBuilder());
+            _buffCollector.BuildCalculator(new ActionInfo(ability.GetType(), _preCondition), _calculator.GetBuilder());
             var condition = _conditionService.GetCondition(_calculator);
             _calculator.UseConditionMultiplier(GetMultiplier(condition));
             var craftServiceState = new CraftServiceState(condition, _craftPointsLeft, _step, _buffCollector.GetBuffAccessor());
             if (!ability.CanAct(craftServiceState)) throw new AbilityNotAvailableException();
-            if (_randomService.SelectItem(new[] { _calculator.CalculateChance(ability.Chance), double.PositiveInfinity }) > 0) return;
+            
+            var isSuccess = _randomService.Select(new[] { _calculator.CalculateChance(ability.Chance), double.PositiveInfinity }) == 0;
+            if (!isSuccess)
+            {
+                _calculator.Fail();
+            }
+            Console.WriteLine($"You use {ability.GetType().Name} : {(isSuccess ? "Success" : "Failed")}");
             ability.Execute(this);
+            _preCondition = condition;
             Validate();
         }
 
@@ -82,41 +90,46 @@ namespace CraftTable
             _buffCollector.Add(buff);
         }
 
-        void ICraftActions.Synth(int efficiency)
+        void ICraftActions.Synth(SynthDelegate synthDelegate)
         {
-            _progress += _calculator.CalculateProgress(efficiency, _craftMan.Craftmanship);
-        }
-
-        void ICraftActions.SynthPercent(int percent)
-        {
-            _progress += (int)((_recipe.Difficulty - _progress) * (double) percent / 100);
+            var calculateProgress = synthDelegate(_recipe, _craftMan, _progress, _calculator);
+            Console.WriteLine($" -> Progress increased by {calculateProgress}");
+            _progress += calculateProgress;
         }
 
         void ICraftActions.Touch(int efficiency)
         {
-            var calculateQuality = _calculator.CalculateQuality(efficiency, _craftMan.Control);
-            Console.WriteLine($"Quality increased by {calculateQuality}");
+            var calculateQuality = _calculator.CalculateQuality(efficiency, _craftMan.Control, _recipe.Level - _craftMan.Level);
+            Console.WriteLine($" -> Quality increased by {calculateQuality}");
             _quality += calculateQuality;
         }
 
         void ICraftActions.UseCraftPoints(int craftPoints)
         {
-            _craftPointsLeft -= _calculator.CalculateCraftPoints(craftPoints);
+            var calculateCraftPoints = _calculator.CalculateCraftPoints(craftPoints);
+            Console.WriteLine($" -> Used {calculateCraftPoints} CP");
+            _craftPointsLeft -= calculateCraftPoints;
         }
 
         void ICraftActions.UseDurability(int durability)
         {
-            _durability = Math.Max(0, _durability - _calculator.CalculateDurability(durability));
+            var calulated = Math.Min(_durability, _calculator.CalculateDurability(durability));
+            Console.WriteLine($" -> Used {calulated} durability");
+            _durability -= calulated;
         }
 
         void IBuffActions.RestoreCraftPoints(int craftPoints)
         {
-            _craftPointsLeft = Math.Min(_craftMan.MaxCraftPoints, craftPoints + _craftPointsLeft);
+            var craftPointsLeft = Math.Min(_craftMan.MaxCraftPoints - _craftPointsLeft, craftPoints);
+            Console.WriteLine($" -> Restored {craftPointsLeft} CP");
+            _craftPointsLeft += craftPointsLeft;
         }
 
         void IBuffActions.RestoreDurability(int durability)
         {
-            _durability = Math.Min(_recipe.Durability, _durability + durability);
+            var calculated = Math.Min(_recipe.Durability - durability, _durability + durability);
+            Console.WriteLine($" -> Restored {calculated} durability");
+            _durability += calculated;
         }
     }
 }

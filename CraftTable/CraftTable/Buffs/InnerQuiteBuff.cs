@@ -1,5 +1,6 @@
 ﻿using System;
 using CraftTable.Abilities;
+using CraftTable.Abilities.Specialist;
 using CraftTable.Contracts;
 
 namespace CraftTable.Buffs
@@ -34,12 +35,24 @@ namespace CraftTable.Buffs
             calculatorBuilder.ForQuality((efficiency, control) =>
             {
                 int stacks = Stacks;
-                if (info.AbilityType == typeof(ByregotBlessing))
+                if (info.AbilityType == typeof(ByregotsBlessing))
                 {
                     Kill();
                     efficiency.AddPercent(20 * stacks);
                 }
-                
+
+                if (info.AbilityType == typeof(ByregotsMiracle))
+                {
+                    _stacks = (int)Math.Round((double)_stacks / 2);
+                    efficiency.AddPercent(10 * stacks);
+                }
+
+                if (info.AbilityType == typeof(ByregotsBrow))
+                {
+                    Kill();
+                    efficiency.AddPercent(10 * stacks);
+                }
+
                 control.AddPercent(20 * stacks);
 
                 if (info.AbilityType == typeof(PreciseTouch)) Stacks++;

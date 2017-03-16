@@ -1,18 +1,19 @@
+﻿using CraftTable.Buffs;
 using CraftTable.Contracts;
 
 namespace CraftTable.Abilities
 {
-    public class CarefulSynthesis2 : Ability
+    public class Rumination:Ability
     {
         public override void Execute(ICraftActions craftActions)
         {
-            craftActions.UseDurability(10);
-            craftActions.Synth(Synth.FromEfficiency(120));
+            craftActions.RestoreDurability(0);
+            //todo: kill buff
         }
 
         public override bool CanAct(ICraftServiceState serviceState)
         {
-            return true;
+            return serviceState.BuffAccessor.GetBuff<InnerQuiteBuff>()?.Stacks >= 2;
         }
     }
 }

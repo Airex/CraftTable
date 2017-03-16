@@ -29,7 +29,7 @@ namespace CraftTable
                     calculator.CalculateConditionChance(Condition.Good, 23),
                     calculator.CalculateConditionChance(Condition.Extreme, 1)
                 };
-                result = (Condition) _randomService.SelectItem(chances);
+                result = (Condition) _randomService.Select(chances);
             }
             _prevCondition = result;
             return result;

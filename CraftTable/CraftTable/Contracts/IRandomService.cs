@@ -2,6 +2,6 @@
 {
     public interface IRandomService
     {
-        int SelectItem(double[] chances);
+        int Select(double[] chances);
     }
 }

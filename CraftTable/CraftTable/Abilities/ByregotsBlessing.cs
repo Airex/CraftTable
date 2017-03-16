@@ -3,7 +3,7 @@ using CraftTable.Contracts;
 
 namespace CraftTable.Abilities
 {
-    public class ByregotBlessing : Ability
+    public class ByregotsBlessing : Ability
     {
         public override void Execute(ICraftActions craftActions)
         {

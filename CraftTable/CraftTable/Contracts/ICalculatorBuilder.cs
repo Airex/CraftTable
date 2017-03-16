@@ -10,5 +10,6 @@ namespace CraftTable.Contracts
         void ForCraftPoints(CraftPointsActor action);
         void ForChance(ChanceActor action);
         void ForConditionChance(ConditionChanceActor action);
+        void ForRecipeLevel(RecipeLevelActor action);
     }
 }

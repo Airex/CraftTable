@@ -1,19 +1,20 @@
-using CraftTable.Contracts;
+﻿using CraftTable.Contracts;
 
 namespace CraftTable.Abilities
 {
-    public class MuscleMemory : Ability
+    public class HastyTouch:Ability
     {
         public override void Execute(ICraftActions craftActions)
         {
-            craftActions.UseCraftPoints(6);
             craftActions.UseDurability(10);
-            craftActions.Synth(Synth.FrompPercent(33));
+            craftActions.Touch(100);
         }
 
         public override bool CanAct(ICraftServiceState serviceState)
         {
-            return serviceState.CraftPointsLeft >= 6 && serviceState.StepNumber == 2;
+            return true;
         }
+
+        public override int Chance { get; } = 50;
     }
 }

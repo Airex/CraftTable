@@ -2,19 +2,19 @@
 
 namespace CraftTable.Abilities
 {
-    public class HustyTouch:Ability
+    public class RapidSynthesis:Ability
     {
+        public override int Chance { get; } = 50;
+
         public override void Execute(ICraftActions craftActions)
         {
             craftActions.UseDurability(10);
-            craftActions.Touch(100);
+            craftActions.Synth(Synth.FromEfficiency(250));
         }
 
         public override bool CanAct(ICraftServiceState serviceState)
         {
             return true;
         }
-
-        public override int Chance { get; } = 50;
     }
 }

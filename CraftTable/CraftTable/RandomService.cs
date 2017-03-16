@@ -6,9 +6,9 @@ namespace CraftTable
 {
     public class RandomService : IRandomService
     {
-        readonly Random _random = new Random();
+        private readonly Random _random = new Random();
 
-        public int SelectItem(double[] chances)
+        public int Select(double[] chances)
         {
             var count = chances.Count(double.IsPositiveInfinity);
             if (count == 0)

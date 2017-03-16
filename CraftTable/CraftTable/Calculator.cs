@@ -13,6 +13,7 @@ namespace CraftTable
         private CraftPointsActor _craftPoints = a => { };
         private ChanceActor _chance = a => { };
         private ConditionChanceActor _conditionChance = (a, b) => { };
+        private RecipeLevelActor _levelActor = a => { };
 
         public Calculator(IEfficiencyCalculator efficiencyCalculator)
         {
@@ -46,20 +47,20 @@ namespace CraftTable
             return (int) Math.Round(actor.Value,0);
         }
 
-        public int CalculateProgress(int efficiency, int value)
+        public int CalculateProgress(int efficiency, int value, int levelDifference)
         {
             var efficiencyActor = new CalculatorActor(efficiency);
             var craftmanshipActor = new CalculatorActor(value);
             _progress(efficiencyActor, craftmanshipActor);
-            return (int)_efficiencyCalculator.CraftmanshipToProgress(craftmanshipActor.Value, efficiencyActor.Value);
+            return (int)_efficiencyCalculator.CraftmanshipToProgress(craftmanshipActor.Value, efficiencyActor.Value, CalculateLevelDifference(levelDifference));
         }
 
-        public int CalculateQuality(int efficiency, int value)
+        public int CalculateQuality(int efficiency, int value, int levelDifference)
         {
             var efficiencyActor = new CalculatorActor(efficiency);
             var controlActor = new CalculatorActor(value);
             _quality(efficiencyActor, controlActor);
-            return (int) _efficiencyCalculator.ControlToProgress(controlActor.Value, efficiencyActor.Value);
+            return (int) _efficiencyCalculator.ControlToProgress(controlActor.Value, efficiencyActor.Value, CalculateLevelDifference(levelDifference));
         }
 
         public int CalculateCraftPoints(int value)
@@ -95,6 +96,13 @@ namespace CraftTable
             return chanceActor.Value;
         }
 
+        private int CalculateLevelDifference(int difference)
+        {
+            CalculatorActor actor = new CalculatorActor(difference);
+            _levelActor(actor);
+            return (int) actor.Value;
+        }
+
         public ICalculatorBuilder GetBuilder()
         {
             return this;
@@ -108,6 +116,11 @@ namespace CraftTable
         public void ForConditionChance(ConditionChanceActor action)
         {
             _conditionChance += action;
+        }
+
+        public void ForRecipeLevel(RecipeLevelActor action)
+        {
+            _levelActor += action;
         }
     }
 }

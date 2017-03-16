@@ -14,7 +14,7 @@ namespace CraftTable.Tests
             _values = value;
         }
 
-        public int SelectItem(double[] chances)
+        public int Select(double[] chances)
         {
             return _values[Math.Min(_values.Length-1,_step++)];
         }
