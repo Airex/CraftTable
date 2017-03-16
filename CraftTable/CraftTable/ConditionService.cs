@@ -1,3 +1,4 @@
+using Autofac;
 using CraftTable.Contracts;
 
 namespace CraftTable
@@ -12,14 +13,23 @@ namespace CraftTable
             _randomService = randomService;
         }
 
-        public Condition GetCondition()
+        public Condition GetCondition(ICalculator calculator)
         {
             Condition result;
-            if (_prevCondition.HasValue && _prevCondition.Value == Condition.Extreme)
+
+            if (!_prevCondition.HasValue)
+                result = Condition.Normal;
+            else if (_prevCondition.GetValueOrDefault() == Condition.Extreme)
                 result = Condition.Poor;
             else
             {
-                result = (Condition) _randomService.SelectItem(new[] {double.PositiveInfinity, 8, 1,0});
+                var chances = new[]
+                {
+                    double.PositiveInfinity,
+                    calculator.CalculateConditionChance(Condition.Good, 23),
+                    calculator.CalculateConditionChance(Condition.Extreme, 1)
+                };
+                result = (Condition) _randomService.SelectItem(chances);
             }
             _prevCondition = result;
             return result;

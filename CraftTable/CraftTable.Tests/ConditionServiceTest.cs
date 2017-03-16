@@ -17,11 +17,12 @@ namespace CraftTable.Tests
             var container = builder.Build();
 
             var conditionService = container.Resolve<IConditionService>();
+            var calculator = container.Resolve<ICalculator>();
 
             IList<Condition> conditions = new List<Condition>();
             for (var i = 0; i < 100000; i++)
             {
-                var condition = conditionService.GetCondition();
+                var condition = conditionService.GetCondition(calculator);
                 conditions.Add(condition);
             }
 

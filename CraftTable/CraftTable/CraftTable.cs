@@ -43,12 +43,12 @@ namespace CraftTable
         {
             _step++;
             _buffCollector.Step(this);
-            var condition = _conditionService.GetCondition();
+            _calculator.Reset();
+            _buffCollector.BuildCalculator(new ActionInfo { AbilityType = ability.GetType() }, _calculator.GetBuilder());
+            var condition = _conditionService.GetCondition(_calculator);
+            _calculator.UseConditionMultiplier(GetMultiplier(condition));
             var craftServiceState = new CraftServiceState(condition, _craftPointsLeft, _step, _buffCollector.GetBuffAccessor());
             if (!ability.CanAct(craftServiceState)) throw new AbilityNotAvailableException();
-            _calculator.Reset();
-            _calculator.UseConditionMultiplier(GetMultiplier(condition));
-            _buffCollector.BuildCalculator(new ActionInfo { AbilityType = ability.GetType() }, _calculator.GetBuilder());
             if (_randomService.SelectItem(new[] { _calculator.CalculateChance(ability.Chance), double.PositiveInfinity }) > 0) return;
             ability.Execute(this);
             Validate();

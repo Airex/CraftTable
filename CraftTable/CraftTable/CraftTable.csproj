@@ -73,6 +73,7 @@
     <Compile Include="Abilities\WasteNot.cs" />
     <Compile Include="Abilities\WasteNot2.cs" />
     <Compile Include="Ability.cs" />
+    <Compile Include="CraftActors\ConditionChanceActor.cs" />
     <Compile Include="Exceptions\AbilityNotAvailableException.cs" />
     <Compile Include="ActionInfo.cs" />
     <Compile Include="BuffCollector.cs" />

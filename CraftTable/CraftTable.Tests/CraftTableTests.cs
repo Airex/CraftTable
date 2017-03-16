@@ -191,7 +191,7 @@ namespace CraftTable.Tests
         {
             var craftTable = TestData.CreateFactory(registry =>
             {
-                registry.WithConditions(Condition.Normal,Condition.Good,Condition.Normal);
+                registry.WithConditions(Condition.Good,Condition.Normal);
             }).WithDefaults();
 
             Assert.That(craftTable, Is.Not.Null);

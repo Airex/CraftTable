@@ -12,6 +12,7 @@ namespace CraftTable
         private QualityActor _quality = (a, b) => { };
         private CraftPointsActor _craftPoints = a => { };
         private ChanceActor _chance = a => { };
+        private ConditionChanceActor _conditionChance = (a, b) => { };
 
         public Calculator(IEfficiencyCalculator efficiencyCalculator)
         {
@@ -87,6 +88,13 @@ namespace CraftTable
             _efficiencyCalculator.UseConditionMultylier(getMultiplier);
         }
 
+        public double CalculateConditionChance(Condition condition, int value)
+        {
+            CalculatorActor chanceActor = new CalculatorActor(value);
+            _conditionChance(condition, chanceActor);
+            return chanceActor.Value;
+        }
+
         public ICalculatorBuilder GetBuilder()
         {
             return this;
@@ -95,6 +103,11 @@ namespace CraftTable
         public void ForChance(ChanceActor action)
         {
             _chance += action;
+        }
+
+        public void ForConditionChance(ConditionChanceActor action)
+        {
+            _conditionChance += action;
         }
     }
 }

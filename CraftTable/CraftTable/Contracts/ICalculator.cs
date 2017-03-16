@@ -13,5 +13,6 @@
 
         int CalculateChance(int abilityChance);
         void UseConditionMultiplier(double getMultiplier);
+        double CalculateConditionChance(Condition condition, int value);
     }
 }

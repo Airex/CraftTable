@@ -9,5 +9,6 @@ namespace CraftTable.Contracts
         void ForQuality(QualityActor action);
         void ForCraftPoints(CraftPointsActor action);
         void ForChance(ChanceActor action);
+        void ForConditionChance(ConditionChanceActor action);
     }
 }

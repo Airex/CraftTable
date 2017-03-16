@@ -2,6 +2,6 @@
 {
     public interface IConditionService
     {
-        Condition GetCondition();
+        Condition GetCondition(ICalculator calculator);
     }
 }
