@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BBAF71E1-4786-431B-A3FE-1F95BD4716BD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CraftTable</RootNamespace>
+    <AssemblyName>CraftTable</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abilities\AdvancedTouch.cs" />
+    <Compile Include="Abilities\BasicTouch.cs" />
+    <Compile Include="Abilities\ByregotBlessing.cs" />
+    <Compile Include="Abilities\CarefulSynthesis.cs" />
+    <Compile Include="Abilities\ComfortZone.cs" />
+    <Compile Include="Abilities\GreatStrides.cs" />
+    <Compile Include="Abilities\HustyTouch.cs" />
+    <Compile Include="Abilities\InnerQuite.cs" />
+    <Compile Include="Abilities\Innovation.cs" />
+    <Compile Include="Abilities\MastersMend.cs" />
+    <Compile Include="Abilities\StandartTouch.cs" />
+    <Compile Include="Abilities\SteadyHand2Ability.cs" />
+    <Compile Include="Abilities\SteadyHandAbility.cs" />
+    <Compile Include="Abilities\TricksOTheTrade.cs" />
+    <Compile Include="Abilities\WasteNot.cs" />
+    <Compile Include="Ability.cs" />
+    <Compile Include="AbilityNotAvailableException.cs" />
+    <Compile Include="ActionInfo.cs" />
+    <Compile Include="BuffCollector.cs" />
+    <Compile Include="Buffs\ComfortZoneBuff.cs" />
+    <Compile Include="Buffs\GreatStridesBuff.cs" />
+    <Compile Include="Buffs\InnerQuiteBuff.cs" />
+    <Compile Include="Buffs\InnovationBuff.cs" />
+    <Compile Include="Buffs\SteadyHandBuff.cs" />
+    <Compile Include="Buffs\StepsBasedBuff.cs" />
+    <Compile Include="Buffs\WasteNotBuff.cs" />
+    <Compile Include="CalculatorActor.cs" />
+    <Compile Include="CalculatorBuilder.cs" />
+    <Compile Include="ChanceActor.cs" />
+    <Compile Include="Condition.cs" />
+    <Compile Include="ConditionService.cs" />
+    <Compile Include="CraftFailedException.cs" />
+    <Compile Include="CraftMan.cs" />
+    <Compile Include="CraftPointsActor.cs" />
+    <Compile Include="CraftServiceState.cs" />
+    <Compile Include="CraftTable.cs" />
+    <Compile Include="DurabilityActor.cs" />
+    <Compile Include="EfficiencyCalculator.cs" />
+    <Compile Include="IBuff.cs" />
+    <Compile Include="IBuffAccessor.cs" />
+    <Compile Include="IBuffActions.cs" />
+    <Compile Include="IBuffCollector.cs" />
+    <Compile Include="ICalculator.cs" />
+    <Compile Include="ICalculatorActor.cs" />
+    <Compile Include="ICalculatorBuilder.cs" />
+    <Compile Include="IConditionService.cs" />
+    <Compile Include="ICraftActions.cs" />
+    <Compile Include="ICraftServiceState.cs" />
+    <Compile Include="IEfficiencyCalculator.cs" />
+    <Compile Include="IRandomService.cs" />
+    <Compile Include="ProgressActor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QualityActor.cs" />
+    <Compile Include="Recipe.cs" />
+    <Compile Include="SameBuffEqualityComparer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
