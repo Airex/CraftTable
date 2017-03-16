@@ -4,7 +4,7 @@ using CraftTable.CraftActors;
 
 namespace CraftTable
 {
-    public class CalculatorBuilder : ICalculatorBuilder, ICalculator
+    public class Calculator : ICalculatorBuilder, ICalculator
     {
         private readonly IEfficiencyCalculator _efficiencyCalculator;
         private DurabilityActor _durability = a => { };
@@ -13,7 +13,7 @@ namespace CraftTable
         private CraftPointsActor _craftPoints = a => { };
         private ChanceActor _chance = a => { };
 
-        public CalculatorBuilder(IEfficiencyCalculator efficiencyCalculator)
+        public Calculator(IEfficiencyCalculator efficiencyCalculator)
         {
             _efficiencyCalculator = efficiencyCalculator;
         }

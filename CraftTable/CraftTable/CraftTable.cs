@@ -87,9 +87,9 @@ namespace CraftTable
             _progress += _calculator.CalculateProgress(efficiency, _craftMan.Craftmanship);
         }
 
-        public void SynthPercent(int efficiency)
+        void ICraftActions.SynthPercent(int percent)
         {
-            _progress += (int)((_recipe.Difficulty - _progress) * (double) efficiency / 100);
+            _progress += (int)((_recipe.Difficulty - _progress) * (double) percent / 100);
         }
 
         void ICraftActions.Touch(int efficiency)
@@ -106,7 +106,7 @@ namespace CraftTable
 
         void ICraftActions.UseDurability(int durability)
         {
-            _durability -= _calculator.CalculateDurability(durability);
+            _durability = Math.Max(0, _durability - _calculator.CalculateDurability(durability));
         }
 
         void IBuffActions.RestoreCraftPoints(int craftPoints)

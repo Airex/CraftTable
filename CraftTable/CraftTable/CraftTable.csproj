@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.4.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.4.0\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -58,6 +62,9 @@
     <Compile Include="Abilities\MastersMend.cs" />
     <Compile Include="Abilities\MastersMend2.cs" />
     <Compile Include="Abilities\MuscleMemory.cs" />
+    <Compile Include="Abilities\Observe.cs" />
+    <Compile Include="Abilities\PieceByPiece.cs" />
+    <Compile Include="Abilities\PreciseTouch.cs" />
     <Compile Include="Abilities\StandartSynthesis.cs" />
     <Compile Include="Abilities\StandartTouch.cs" />
     <Compile Include="Abilities\SteadyHand2Ability.cs" />
@@ -77,7 +84,7 @@
     <Compile Include="Buffs\StepsBasedBuff.cs" />
     <Compile Include="Buffs\WasteNotBuff.cs" />
     <Compile Include="CraftActors\CalculatorActor.cs" />
-    <Compile Include="CalculatorBuilder.cs" />
+    <Compile Include="Calculator.cs" />
     <Compile Include="CraftActors\ChanceActor.cs" />
     <Compile Include="Condition.cs" />
     <Compile Include="ConditionService.cs" />
@@ -88,6 +95,7 @@
     <Compile Include="CraftTable.cs" />
     <Compile Include="CraftActors\DurabilityActor.cs" />
     <Compile Include="EfficiencyCalculator.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="IBuff.cs" />
     <Compile Include="Contracts\IBuffAccessor.cs" />
     <Compile Include="Contracts\IBuffActions.cs" />
@@ -104,6 +112,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QualityActor.cs" />
     <Compile Include="Recipe.cs" />
+    <Compile Include="RegistrationModule.cs" />
     <Compile Include="SameBuffEqualityComparer.cs" />
   </ItemGroup>
   <ItemGroup>

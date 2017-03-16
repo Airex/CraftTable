@@ -1,19 +1,23 @@
+using System;
 using CraftTable.Contracts;
 
 namespace CraftTable.Tests
 {
     public class StaticRandomService:IRandomService
     {
-        private readonly int _value;
+        private int _step;
+        private readonly int[] _values;
 
-        public StaticRandomService(int value)
+        public StaticRandomService(params int[] value)
         {
-            _value = value;
+            if (value == null) throw new ArgumentNullException(nameof(value));
+            _values = value;
         }
 
         public int SelectItem(int[] chances)
         {
-            return _value;
+            return _values[Math.Min(_values.Length-1,_step++)];
         }
     }
+   
 }

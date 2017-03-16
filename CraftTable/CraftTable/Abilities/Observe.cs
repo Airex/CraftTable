@@ -2,16 +2,16 @@
 
 namespace CraftTable.Abilities
 {
-    public class TricksOTheTrade:Ability
+    public class Observe : Ability
     {
         public override void Execute(ICraftActions craftActions)
         {
-            craftActions.RestoreCraftPoints(20);
+            craftActions.UseCraftPoints(14);
         }
 
         public override bool CanAct(ICraftServiceState serviceState)
         {
-            return serviceState.Condition.IsGoodOrExtreme();
+            return serviceState.CraftPointsLeft >= 14;
         }
     }
 }

@@ -1,11 +1,21 @@
-﻿using CraftTable.Abilities;
+﻿using System;
+using CraftTable.Abilities;
 using CraftTable.Contracts;
 
 namespace CraftTable.Buffs
 {
     public class InnerQuiteBuff : IBuff
     {
-        public int Stacks { get; private set; }
+        private int _stacks;
+        public int Stacks
+        {
+            get { return _stacks; }
+            private set
+            {
+                _stacks = Math.Min(11, value);
+            }
+        }
+
         public bool IsActive { get; private set; } = true;
 
 
@@ -31,10 +41,11 @@ namespace CraftTable.Buffs
                 }
                 
                 control.AddPercent(20 * stacks);
-                
-                if (Stacks<11)
-                    Stacks++;
-                
+
+                if (info.AbilityType == typeof(PreciseTouch)) Stacks++;
+
+                Stacks++;
+
             });
         }
     }

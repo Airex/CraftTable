@@ -2,19 +2,20 @@
 
 namespace CraftTable.Abilities
 {
-    public class HustyTouch:Ability
+    public class PieceByPiece:Ability
     {
         public override void Execute(ICraftActions craftActions)
         {
             craftActions.UseDurability(10);
-            craftActions.Touch(100);
+            craftActions.UseCraftPoints(15);
+            craftActions.SynthPercent(33);
         }
 
         public override bool CanAct(ICraftServiceState serviceState)
         {
-            return true;
+            return serviceState.CraftPointsLeft >= 15;
         }
 
-        public override int Chance { get; } = 50;
+        public override int Chance { get; } = 90;
     }
 }
