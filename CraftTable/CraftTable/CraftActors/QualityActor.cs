@@ -1,6 +1,6 @@
 using CraftTable.Contracts;
 
-namespace CraftTable
+namespace CraftTable.CraftActors
 {
     public delegate void QualityActor(ICalculatorActor efficincy, ICalculatorActor control);
 }

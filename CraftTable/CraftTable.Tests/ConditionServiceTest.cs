@@ -30,7 +30,7 @@ namespace CraftTable.Tests
                 into g
                 select new {Condition = g.Key, Count = g.Count(), Percent = (double) g.Count() / conditions.Count};
             Console.WriteLine($"Condition: \t Count \t\t\t %");
-            foreach (var c in a)
+            foreach (var c in a.OrderBy(arg => arg.Condition))
             {
                 Console.WriteLine($"{c.Condition}\t\t {c.Count} \t\t\t {c.Percent*100}");
             }

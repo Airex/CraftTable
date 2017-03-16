@@ -110,7 +110,7 @@
     <Compile Include="Contracts\IRandomService.cs" />
     <Compile Include="CraftActors\ProgressActor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QualityActor.cs" />
+    <Compile Include="CraftActors\QualityActor.cs" />
     <Compile Include="RandomService.cs" />
     <Compile Include="Recipe.cs" />
     <Compile Include="RegistrationModule.cs" />
