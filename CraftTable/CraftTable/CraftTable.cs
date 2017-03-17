@@ -20,16 +20,27 @@ namespace CraftTable
         private readonly IBuffCollector _buffCollector;
         private readonly ICalculator _calculator;
         private readonly ILookupService _lookupService;
+        readonly ICraftQualityCalculator _craftQualityCalculator;
         Condition _condition;
 
-        public CraftTable(Recipe recipe, CraftMan craftMan, IBuffCollector buffCollector, IConditionService conditionService, IRandomService randomService, ICalculator calculator, ILookupService lookupService)
+        public CraftTable(Recipe recipe, CraftMan craftMan, IBuffCollector buffCollector, IConditionService conditionService, IRandomService randomService, ICalculator calculator, ILookupService lookupService, ICraftQualityCalculator craftQualityCalculator)
         {
+            if (recipe == null) throw new ArgumentNullException(nameof(recipe));
+            if (craftMan == null) throw new ArgumentNullException(nameof(craftMan));
+            if (buffCollector == null) throw new ArgumentNullException(nameof(buffCollector));
+            if (conditionService == null) throw new ArgumentNullException(nameof(conditionService));
+            if (randomService == null) throw new ArgumentNullException(nameof(randomService));
+            if (calculator == null) throw new ArgumentNullException(nameof(calculator));
+            if (lookupService == null) throw new ArgumentNullException(nameof(lookupService));
+            if (craftQualityCalculator == null) throw new ArgumentNullException(nameof(craftQualityCalculator));
+
             _buffCollector = buffCollector;
             _conditionService = conditionService;
             _craftMan = craftMan;
             _randomService = randomService;
             _calculator = calculator;
             _lookupService = lookupService;
+            _craftQualityCalculator = craftQualityCalculator;
             _recipe = recipe;
             _craftPointsLeft = craftMan.MaxCraftPoints;
             _durability = recipe.Durability;
@@ -49,28 +60,43 @@ namespace CraftTable
             _calculator.Reset();
             
             _buffCollector.BuildCalculator(new ActionInfo(ability.GetType(), _condition), _calculator.GetBuilder());
-            
             _calculator.UseCondition(_condition);
 
             var craftServiceState = new CraftServiceState(_condition, _craftPointsLeft, _step, _buffCollector.GetBuffAccessor());
-            if (!ability.CanAct(craftServiceState)) throw new AbilityNotAvailableException();
-            
-            var isSuccess = _randomService.Select(new[] { _calculator.CalculateChance(ability.Chance), double.PositiveInfinity }) == 0;
+            if (!ability.CanAct(craftServiceState))
+            {
+                Console.WriteLine($"Use of {ability} is not allowed");
+                throw new AbilityNotAvailableException();
+            }
+
+            var chance = _calculator.CalculateChance(ability.Chance);
+            var isSuccess = _randomService.Select(new[] { chance, double.PositiveInfinity }) == 0;
             if (!isSuccess)
             {
                 _calculator.Fail();
             }
-            Console.WriteLine($"You use {ability.GetType().Name} : {(isSuccess ? "Success" : "Failed")}");
+            Console.WriteLine($"You use {ability} : {(isSuccess ? "Success" : "Failed")} with chance {chance}");
             Console.WriteLine($" -> Condition is {_condition}");
             ability.Execute(this);
             _condition = _conditionService.GetCondition(_calculator);
+            _buffCollector.KillNotActive();
             Validate();
         }
 
         private void Validate()
         {
             if (_durability == 0 && _progress < _recipe.Difficulty)
+            {
+                Console.WriteLine("Craft failed!");
                 throw new CraftFailedException();
+            }
+            if (_progress >= _recipe.Difficulty)
+            {
+                var chance = _craftQualityCalculator.CalculateHighQualityChance(_quality,_recipe.MaxQuality);
+                var isHighQuality = _randomService.Select(new[] {chance, double.PositiveInfinity}) == 0;
+                Console.WriteLine($"Craft successful. {(isHighQuality?"HQ":"NQ")} with chance {chance}");
+                throw new CraftSuccessException(isHighQuality, chance);
+            }
         }
 
         void ICraftActions.ApplyBuff(IBuff buff)

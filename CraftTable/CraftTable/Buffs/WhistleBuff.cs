@@ -47,7 +47,7 @@ namespace CraftTable.Buffs
                 afterSatisfaction = () => _stacks--;
             }
 
-            if (info.Condition.IsGoodOrExtreme())
+            if (info.Condition.IsGoodOrExcellent())
             {
                 _stacks--;
             }

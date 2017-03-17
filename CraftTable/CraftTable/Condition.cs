@@ -4,7 +4,7 @@
     {
         Normal,
         Good,
-        Extreme,
+        Excellent,
         Poor
     }
 }

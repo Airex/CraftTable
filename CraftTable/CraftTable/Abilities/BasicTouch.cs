@@ -2,6 +2,7 @@
 
 namespace CraftTable.Abilities
 {
+    [Descriptor(CrafterAfinity = Crafter.All)]
     public class BasicTouch : Ability
     {
         public override void Execute(ICraftActions craftActions)

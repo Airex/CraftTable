@@ -15,7 +15,7 @@ namespace CraftTable.Abilities
 
         public override bool CanAct(ICraftServiceState serviceState)
         {
-            return serviceState.CraftPointsLeft >= 18 && serviceState.Condition.IsGoodOrExtreme();
+            return serviceState.CraftPointsLeft >= 18 && serviceState.Condition.IsGoodOrExcellent();
         }
     }
 }

@@ -54,7 +54,8 @@ namespace CraftTable
             var efficiencyActor = new CalculatorActor(efficiency);
             var craftmanshipActor = new CalculatorActor(value);
             _progress(efficiencyActor, craftmanshipActor);
-            return (int)_efficiencyCalculator.CraftmanshipToProgress(craftmanshipActor.Value, efficiencyActor.Value, CalculateLevelDifference(recipeLevel, craftmanLevel));
+            var level = _lookupService.MapLevel(craftmanLevel) ?? craftmanLevel;
+            return (int)_efficiencyCalculator.CraftmanshipToProgress(craftmanshipActor.Value, efficiencyActor.Value, (int)level, CalculateLevelDifference(recipeLevel, craftmanLevel));
         }
 
         public int CalculateQuality(int efficiency, int value, int recipeLevel, int craftmanLevel)
@@ -62,7 +63,7 @@ namespace CraftTable
             var efficiencyActor = new CalculatorActor(efficiency);
             var controlActor = new CalculatorActor(value);
             _quality(efficiencyActor, controlActor);
-            return (int)_efficiencyCalculator.ControlToProgress(controlActor.Value, efficiencyActor.Value, CalculateLevelDifference(recipeLevel, craftmanLevel));
+            return (int)_efficiencyCalculator.ControlToProgress(controlActor.Value, efficiencyActor.Value, recipeLevel, CalculateLevelDifference(recipeLevel, craftmanLevel));
         }
 
         public int CalculateCraftPoints(int value)
@@ -78,13 +79,16 @@ namespace CraftTable
             _progress = (a, b) => { };
             _quality = (a, b) => { };
             _craftPoints = a => { };
+            _chance = a => { };
+            _conditionChance = (a, b) => { };
+            _levelActor = (a, b, c, d) => { };
         }
 
         public int CalculateChance(int abilityChance)
         {
             var chanceActor = new CalculatorActor(abilityChance);
             _chance(chanceActor);
-            return (int)chanceActor.Value;
+            return Math.Min((int)chanceActor.Value, 100);
         }
         public void UseCondition(Condition condition)
         {

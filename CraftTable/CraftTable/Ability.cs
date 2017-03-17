@@ -7,5 +7,10 @@ namespace CraftTable
         public abstract void Execute(ICraftActions craftActions);
         public virtual int Chance { get; } = 100;
         public abstract bool CanAct(ICraftServiceState serviceState);
+
+        public override string ToString()
+        {
+            return this.Name();
+        }
     }
 }

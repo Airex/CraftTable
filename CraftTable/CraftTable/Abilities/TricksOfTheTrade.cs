@@ -2,7 +2,7 @@
 
 namespace CraftTable.Abilities
 {
-    public class TricksOTheTrade:Ability
+    public class TricksOfTheTrade:Ability
     {
         public override void Execute(ICraftActions craftActions)
         {
@@ -11,7 +11,7 @@ namespace CraftTable.Abilities
 
         public override bool CanAct(ICraftServiceState serviceState)
         {
-            return serviceState.Condition.IsGoodOrExtreme();
+            return serviceState.Condition.IsGoodOrExcellent();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace CraftTable
 
             if (!_prevCondition.HasValue)
                 result = Condition.Normal;
-            else if (_prevCondition.GetValueOrDefault() == Condition.Extreme)
+            else if (_prevCondition.GetValueOrDefault() == Condition.Excellent)
                 result = Condition.Poor;
             else if (_prevCondition.GetValueOrDefault() == Condition.Good)
                 result = Condition.Normal;
@@ -32,7 +32,7 @@ namespace CraftTable
                 {
                     double.PositiveInfinity,
                     calculator.CalculateConditionChance(Condition.Good, 23),
-                    calculator.CalculateConditionChance(Condition.Extreme, 1)
+                    calculator.CalculateConditionChance(Condition.Excellent, 1)
                 };
                 result = (Condition) _randomService.Select(chances);
             }

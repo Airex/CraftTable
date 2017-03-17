@@ -1,4 +1,7 @@
-﻿using Autofac;
+﻿using System;
+using System.Collections.Generic;
+using Autofac;
+using Autofac.Core;
 using CraftTable.Contracts;
 
 namespace CraftTable
@@ -7,6 +10,11 @@ namespace CraftTable
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterAssemblyTypes(GetType().Assembly)
+                .Where(type => type.BaseType == typeof(Ability))
+                .Named<Ability>(type => type.Name)
+                .As<Ability>();
+
             builder.RegisterType<EfficiencyCalculator>().As<IEfficiencyCalculator>();
             builder.RegisterType<BuffCollector>().As<IBuffCollector>();
             builder.RegisterType<ConditionService>().As<IConditionService>();
@@ -14,6 +22,7 @@ namespace CraftTable
             builder.RegisterType<Calculator>().As<ICalculator>();
             builder.RegisterType<LookupService>().As<ILookupService>();
             builder.RegisterType<CraftTable>().AsSelf();
+            builder.RegisterType<CraftQualityCalculator>().As<ICraftQualityCalculator>();
         }
     }
 }

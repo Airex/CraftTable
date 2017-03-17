@@ -17,6 +17,7 @@ namespace CraftTable.Buffs
         {
             _steps--;
             OnStep(buffActions);
+            
         }
 
         public void Kill()

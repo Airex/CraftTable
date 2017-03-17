@@ -16,7 +16,7 @@ namespace CraftTable.Abilities.Specialist
 
         public override bool CanAct(ICraftServiceState serviceState)
         {
-            return serviceState.CraftPointsLeft >= 16 && serviceState.BuffAccessor.GetBuff<InnerQuiteBuff>()?.Stacks > 1;
+            return serviceState.CraftPointsLeft >= 16 && serviceState.BuffAccessor.GetBuff<InnerQuietBuff>()?.Stacks > 1;
         }
     }
 }

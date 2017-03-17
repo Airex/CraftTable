@@ -20,11 +20,9 @@ namespace CraftTable
 
         public void Step(IBuffActions buffActions)
         {
-            for (var index = 0; index < _list.Count; index++)
+            foreach (var buff in _list)
             {
-                var buff = _list[index];
                 buff.Step(buffActions);
-                if (!buff.IsActive) _list.RemoveAt(index--);
             }
         }
 
@@ -33,6 +31,15 @@ namespace CraftTable
             foreach (var buff in _list)
             {
                 buff.OnCalculate(info, calculatorBuilder);
+            }
+        }
+
+        public void KillNotActive()
+        {
+            for (var index = 0; index < _list.Count; index++)
+            {
+                var buff = _list[index];
+                if (!buff.IsActive) _list.RemoveAt(index--);
             }
         }
 

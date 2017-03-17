@@ -134,7 +134,7 @@ namespace CraftTable
                     return 1.0;
                 case Condition.Good:
                     return 1.5;
-                case Condition.Extreme:
+                case Condition.Excellent:
                     return 4.0;
                 case Condition.Poor:
                     return 0.5;

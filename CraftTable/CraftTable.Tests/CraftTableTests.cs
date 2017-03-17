@@ -1,287 +1,91 @@
-﻿using Autofac;
-using CraftTable.Abilities;
-using CraftTable.Abilities.Specialist;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Autofac;
 using CraftTable.Contracts;
+using CraftTable.Exceptions;
+using Moq;
 using NUnit.Framework;
 
 namespace CraftTable.Tests
 {
-    [TestFixture]
     public class CraftTableTests
     {
         [Test]
-        public void BasicTouchTest()
-        {
-            var craftTable = TestData.CreateFactory().WithDefaults();
-            craftTable.Act(new BasicTouch());
-            craftTable.AssertStats(1000 - 10, 0, 317, 2, 10000 - 18);
-        }
-
-
-
-        [Test]
-        public void GreatStrydesTest()
+        public void AbilityNotAvailableTest()
         {
             var craftTable = TestData.CreateFactory().WithDefaults();
 
-            craftTable.Act(new GreatStrides());
-            craftTable.Act(new BasicTouch());
-            craftTable.Act(new BasicTouch());
-            craftTable.Act(new BasicTouch());
-            craftTable.Act(new BasicTouch());
+            Mock<Ability> abilityMock = new Mock<Ability>();
+            abilityMock.Setup(ability => ability.CanAct(It.IsAny<ICraftServiceState>())).Returns(false);
 
-            craftTable.AssertStats(1000 - 40, 0, 635 + 317 * 3, 6, 10000 - 32 - 4 * 18);
-        }
+            Assert.Throws<AbilityNotAvailableException>(() => craftTable.Act(abilityMock.Object));
 
-
-
-        [Test]
-        public void InnerQuiteTest()
-        {
-            var craftTable = TestData.CreateFactory().WithDefaults();
-
-            craftTable.Act(new InnerQuite());
-            craftTable.Act(new BasicTouch());
-            craftTable.Act(new BasicTouch());
-            craftTable.Act(new BasicTouch());
-            craftTable.Act(new BasicTouch());
-            craftTable.Act(new BasicTouch());
-
-
-            craftTable.AssertStats(1000 - 50, 0, 2222, 7, 10000 - 18 - 5 * 18);
         }
 
         [Test]
-        public void TouchesTest()
+        public void CraftFailedTest()
         {
-            var craftTable = TestData.CreateFactory().WithDefaults();
+            var craftTable = TestData.CreateFactory()(new Recipe(1000, 30, 1000), TestData.DefaultCraftman);
 
-            craftTable.Act(new BasicTouch());
-            craftTable.Act(new StandartTouch());
-            craftTable.Act(new AdvancedTouch());
-
-
-            craftTable.AssertStats(1000 - 30, 0, 1190, 4, 10000 - 18 - 32 - 48);
-        }
-
-        [Test]
-        public void InnovationTest()
-        {
-            var craftTable = TestData.CreateFactory().WithDefaults();
-
-            craftTable.Act(new Innovation());
-            craftTable.Act(new BasicTouch());
-
-            craftTable.AssertStats(1000 - 10, 0, 475, 3, 10000 - 18 - 18);
-        }
-
-        [Test]
-        public void InnovationWinGreatStridesTest()
-        {
-            var craftTable = TestData.CreateFactory().WithDefaults();
-
-            craftTable.Act(new Innovation());
-            craftTable.Act(new GreatStrides());
-            craftTable.Act(new BasicTouch());
-
-
-
-            craftTable.AssertStats(1000 - 10, 0, 950, 4, 10000 - 18 - 18 - 32);
-        }
-
-        [Test]
-        public void ComfortZoneTest()
-        {
-            var craftTable = TestData.CreateFactory().WithDefaults();
-
-            craftTable.Act(new ComfortZone());
-            for (int i = 0; i < 10; i++)
+            Assert.Throws<CraftFailedException>(() =>
             {
-                craftTable.Act(new BasicTouch());
+                for (int i = 0; i < 3; i++)
+                {
+                    craftTable.Act(new StubAbility());
+                }
+            });
+
+        }
+
+
+        [Test]
+        public void CraftSuccessTest()
+        {
+            var craftTable = TestData.CreateFactory()(new Recipe(40, 100, 100), TestData.DefaultCraftman);
+            try
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    craftTable.Act(new StubAbility());
+                }
+                Assert.Fail();
             }
-            craftTable.AssertStats(1000 - 100, 0, 317 * 10, 12, 10000 - 66 + 80 - 10 * 18);
-        }
-
-
-        [Test]
-        public void ByregotsBlessingTest()
-        {
-            var craftTable = TestData.CreateFactory().WithDefaults();
-
-            craftTable.Act(new InnerQuite());
-            craftTable.Act(new BasicTouch());
-            craftTable.Act(new BasicTouch());
-            craftTable.Act(new ByregotsBlessing());
-            craftTable.AssertStats(1000 - 30, 0, 1316, 5, 10000 - 18 * 3 - 24);
-        }
-
-        [Test]
-        public void ByregotsMiracleTest()
-        {
-            var craftTable = TestData.CreateFactory().WithDefaults();
-
-            craftTable.Act(new InnerQuite());
-            craftTable.Act(new BasicTouch());
-            craftTable.Act(new BasicTouch());
-            craftTable.Act(new BasicTouch());
-            craftTable.Act(new BasicTouch());
-            craftTable.Act(new ByregotsMiracle());
-            craftTable.AssertStats(1000 - 50, 0, 2451, 7, 10000 - 18 * 5 - 16);
-        }
-
-
-        [Test]
-        public void MuscleMemoryTest()
-        {
-            var craftTable = TestData.CreateFactory()(new Recipe(478, 60, 3000), TestData.DefaultCraftman);
-
-            craftTable.Act(new MuscleMemory());
-
-            craftTable.AssertStats(50, 157, 0, 2, 10000 - 6);
-        }
-
-        [Test]
-        public void WasteNotTest()
-        {
-            var craftTable = TestData.CreateFactory().WithDefaults();
-
-            craftTable.Act(new WasteNot());
-            craftTable.Act(new BasicTouch());
-            craftTable.Act(new BasicTouch());
-            craftTable.Act(new BasicTouch());
-            craftTable.AssertStats(1000 - 15, 0, 317 * 3, 5, 10000 - 18 * 3 - 56);
-        }
-
-        [Test]
-        public void CarefulSunthesisTest()
-        {
-            var craftTable = TestData.CreateFactory().WithDefaults();
-
-            craftTable.Act(new CarefulSynthesis2());
-
-            craftTable.AssertStats(1000 - 10, 222, 0, 2, 10000);
-        }
-
-        [Test]
-        public void CarefulSunthesis2Test()
-        {
-            var craftTable = TestData.CreateFactory().WithDefaults();
-
-            craftTable.Act(new CarefulSynthesis2());
-
-            craftTable.AssertStats(1000 - 10, 222, 0, 2, 10000);
-        }
-
-        [Test]
-        public void PreciseTouchTest()
-        {
-            var craftTable = TestData.CreateFactory(registry =>
+            catch (CraftSuccessException)
             {
-                registry.WithConditions(Condition.Good, Condition.Normal);
-            }).WithDefaults();
-
-            Assert.That(craftTable, Is.Not.Null);
-
-            craftTable.Act(new InnerQuite());
-            craftTable.Act(new PreciseTouch());
-            craftTable.Act(new BasicTouch());
-
-            craftTable.AssertStats(1000 - 20, 0, 919, 4, 10000 - 18 * 3);
+                
+            }
         }
 
         [Test]
-        public void FailedAbilityTest()
+        public void AllbilitiesTest()
         {
-            var craftTable = TestData.CreateFactory(registry =>
+            var builder = new ContainerBuilder();
+            builder.RegisterModule(new RegistrationModule());
+            var container = builder.Build();
+
+            var enumerable = container.Resolve<IEnumerable<Ability>>();
+            Assert.That(enumerable, Is.Not.Null);
+            Assert.That(enumerable.Count()>=10);
+            foreach (var ability in enumerable)
             {
-                registry.Builder.Register(context => new StaticRandomService(1)).As<IRandomService>();
-            }).WithDefaults();
-
-            Assert.That(craftTable, Is.Not.Null);
-
-            craftTable.Act(new BasicTouch());
-
-            craftTable.AssertStats(1000 - 10, 0, 0, 2, 10000 - 18);
+                Console.WriteLine(ability);
+            }
         }
 
-        [Test]
-        public void NymeriasWheelTest()
+        private class StubAbility : Ability
         {
-            var craftTable = TestData.CreateFactory().WithDefaults();
-
-            craftTable.Act(new WhistleWhileYouWork());
-            craftTable.Act(new BasicSynthesis());
-            craftTable.Act(new BasicSynthesis());
-            craftTable.Act(new NymeriasWheel());
-            craftTable.AssertStats(1000 - 10, 370, 0, 5, 10000 - 18 -36);
-        }
-
-        [Test]
-        public void Inguenity1Test()
-        {
-            var craftTable = TestData.CreateFactory().WithDefaults();
-
-            craftTable.Act(new Inguenity());
-            craftTable.Act(new BasicSynthesis());
-            craftTable.Act(new BasicTouch());
-            craftTable.AssertStats(1000 - 20, 251, 317, 4, 10000 - 24 - 18);
-        }
-
-        [Test]
-        public void Inguenity2Test()
-        {
-            var craftTable = TestData.CreateFactory().WithDefaults();
-
-            craftTable.Act(new Inguenity2());
-            craftTable.Act(new BasicSynthesis());
-            craftTable.Act(new BasicTouch());
-            craftTable.AssertStats(1000 - 20, 254, 317, 4, 10000 - 32 - 18);
-        }
-
-        [Test]
-        public void WhistleStackMod3IncreasesProgressTest()
-        {
-            var craftTable = TestData.CreateFactory(registry =>
+            public override void Execute(ICraftActions craftActions)
             {
-                registry.WithConditions(Condition.Good,Condition.Good, Condition.Good);
-            }).WithDefaults();
+                craftActions.UseDurability(10);
+                craftActions.Synth(Synth.FromRawValue(20));
+                craftActions.Touch(100);
+            }
 
-            craftTable.Act(new WhistleWhileYouWork());
-            craftTable.Act(new Observe());
-            craftTable.Act(new Observe());
-            craftTable.Act(new Observe());
-            craftTable.Act(new BasicSynthesis());
-            craftTable.AssertStats(1000 - 10, 277, 0, 6, 10000 - 14*3 - 36);
-        }
-
-        [Test]
-        public void InnovativeTouchTest()
-        {
-            var craftTable = TestData.CreateFactory().WithDefaults();
-
-            craftTable.Act(new InnovativeTouch());
-            craftTable.Act(new BasicTouch());
-            craftTable.AssertStats(1000 - 20, 0, 792, 3, 10000 - 8-18);
-        }
-       
-
-        [Test]
-        public void SatisfactionTest()
-        {
-            var craftTable = TestData.CreateFactory(registry =>
+            public override bool CanAct(ICraftServiceState serviceState)
             {
-                registry.WithConditions(Condition.Good, Condition.Good);
-            }).WithDefaults();
-
-            craftTable.Act(new WhistleWhileYouWork());
-            craftTable.Act(new Observe());
-            craftTable.Act(new Observe());
-            craftTable.Act(new Satisfaction());
-            craftTable.Act(new BasicSynthesis());
-
-            craftTable.AssertStats(1000 - 10, 185, 0, 6, 10000 - 36 - 14 * 2 + 15);
+                return true;
+            }
         }
-
-
     }
 }

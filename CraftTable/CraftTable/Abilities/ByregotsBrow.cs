@@ -15,7 +15,7 @@ namespace CraftTable.Abilities
         public override bool CanAct(ICraftServiceState serviceState)
         {
             return serviceState.CraftPointsLeft >= 18 &&
-                   serviceState.BuffAccessor.GetBuff<InnerQuiteBuff>()?.Stacks >= 2;
+                   serviceState.BuffAccessor.GetBuff<InnerQuietBuff>()?.Stacks >= 2 && serviceState.Condition.IsGoodOrExcellent();
         }
     }
 }

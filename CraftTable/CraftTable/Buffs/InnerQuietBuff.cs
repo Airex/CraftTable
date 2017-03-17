@@ -5,7 +5,7 @@ using CraftTable.Contracts;
 
 namespace CraftTable.Buffs
 {
-    public class InnerQuiteBuff : IBuff
+    public class InnerQuietBuff : IBuff
     {
         private int _stacks;
         public int Stacks
@@ -32,25 +32,26 @@ namespace CraftTable.Buffs
 
         public void OnCalculate(ActionInfo info, ICalculatorBuilder calculatorBuilder)
         {
+            int stacks = Stacks;
             calculatorBuilder.ForQuality((efficiency, control) =>
             {
-                int stacks = Stacks;
+                
                 if (info.AbilityType == typeof(ByregotsBlessing))
                 {
                     Kill();
-                    efficiency.AddPercent(20 * stacks);
+                    efficiency.Add(20 * stacks);
                 }
 
                 if (info.AbilityType == typeof(ByregotsMiracle))
                 {
                     _stacks = (int)Math.Round((double)_stacks / 2);
-                    efficiency.AddPercent(10 * stacks);
+                    efficiency.Add(10 * stacks);
                 }
 
                 if (info.AbilityType == typeof(ByregotsBrow))
                 {
                     Kill();
-                    efficiency.AddPercent(10 * stacks);
+                    efficiency.Add(10 * stacks);
                 }
 
                 control.AddPercent(20 * stacks);

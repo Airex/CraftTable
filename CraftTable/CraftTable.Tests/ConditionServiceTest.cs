@@ -21,7 +21,7 @@ namespace CraftTable.Tests
 
             calculator.GetBuilder().ForConditionChance((condition, chance) =>
             {
-                if (condition == Condition.Extreme)
+                if (condition == Condition.Excellent)
                     chance.Add(0);
                 if (condition == Condition.Good)
                     chance.Add(0);

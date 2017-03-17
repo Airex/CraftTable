@@ -3,7 +3,7 @@ using CraftTable.Contracts;
 
 namespace CraftTable.Abilities.Specialist
 {
-    public class HearOfCrafter : Ability
+    public class HeartOfCrafter : Ability
     {
         public override void Execute(ICraftActions craftActions)
         {
