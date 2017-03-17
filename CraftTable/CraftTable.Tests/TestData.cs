@@ -18,10 +18,10 @@ namespace CraftTable.Tests
 
         internal static CraftTable WithDefaults(this CraftTable.Factory f)
         {
-            return f(DefaultRecipe, DefatltCraftMAn);
+            return f(DefaultRecipe, DefaultCraftman);
         }
 
-        internal static Recipe DefaultRecipe { get; } = new Recipe(2000, 1000, 20000);
-        internal static CraftMan DefatltCraftMAn { get; } = new CraftMan(788, 851, 10000);
+        internal static Recipe DefaultRecipe { get; } = new Recipe(2000, 1000, 20000, 150);
+        internal static CraftMan DefaultCraftman { get; } = new CraftMan(788, 851, 10000, 60);
     }
 }

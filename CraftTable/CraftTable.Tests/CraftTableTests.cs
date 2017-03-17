@@ -13,14 +13,11 @@ namespace CraftTable.Tests
         public void BasicTouchTest()
         {
             var craftTable = TestData.CreateFactory().WithDefaults();
-
-
             craftTable.Act(new BasicTouch());
-
             craftTable.AssertStats(1000 - 10, 0, 317, 2, 10000 - 18);
         }
 
-        
+
 
         [Test]
         public void GreatStrydesTest()
@@ -36,7 +33,7 @@ namespace CraftTable.Tests
             craftTable.AssertStats(1000 - 40, 0, 635 + 317 * 3, 6, 10000 - 32 - 4 * 18);
         }
 
-      
+
 
         [Test]
         public void InnerQuiteTest()
@@ -136,7 +133,7 @@ namespace CraftTable.Tests
         [Test]
         public void MuscleMemoryTest()
         {
-            var craftTable = TestData.CreateFactory()(new Recipe(478,60,3000), TestData.DefatltCraftMAn);
+            var craftTable = TestData.CreateFactory()(new Recipe(478, 60, 3000), TestData.DefaultCraftman);
 
             craftTable.Act(new MuscleMemory());
 
@@ -180,7 +177,7 @@ namespace CraftTable.Tests
         {
             var craftTable = TestData.CreateFactory(registry =>
             {
-                registry.WithConditions(Condition.Good,Condition.Normal);
+                registry.WithConditions(Condition.Good, Condition.Normal);
             }).WithDefaults();
 
             Assert.That(craftTable, Is.Not.Null);
@@ -201,12 +198,90 @@ namespace CraftTable.Tests
             }).WithDefaults();
 
             Assert.That(craftTable, Is.Not.Null);
-            
+
             craftTable.Act(new BasicTouch());
 
-            craftTable.AssertStats(1000 - 10, 0, 0, 2, 10000 - 18 );
+            craftTable.AssertStats(1000 - 10, 0, 0, 2, 10000 - 18);
         }
 
+        [Test]
+        public void NymeriasWheelTest()
+        {
+            var craftTable = TestData.CreateFactory().WithDefaults();
+
+            craftTable.Act(new WhistleWhileYouWork());
+            craftTable.Act(new BasicSynthesis());
+            craftTable.Act(new BasicSynthesis());
+            craftTable.Act(new NymeriasWheel());
+            craftTable.AssertStats(1000 - 10, 370, 0, 5, 10000 - 18 -36);
+        }
+
+        [Test]
+        public void Inguenity1Test()
+        {
+            var craftTable = TestData.CreateFactory().WithDefaults();
+
+            craftTable.Act(new Inguenity());
+            craftTable.Act(new BasicSynthesis());
+            craftTable.Act(new BasicTouch());
+            craftTable.AssertStats(1000 - 20, 251, 317, 4, 10000 - 24 - 18);
+        }
+
+        [Test]
+        public void Inguenity2Test()
+        {
+            var craftTable = TestData.CreateFactory().WithDefaults();
+
+            craftTable.Act(new Inguenity2());
+            craftTable.Act(new BasicSynthesis());
+            craftTable.Act(new BasicTouch());
+            craftTable.AssertStats(1000 - 20, 254, 317, 4, 10000 - 32 - 18);
+        }
+
+        [Test]
+        public void WhistleStackMod3IncreasesProgressTest()
+        {
+            var craftTable = TestData.CreateFactory(registry =>
+            {
+                registry.WithConditions(Condition.Good,Condition.Good, Condition.Good);
+            }).WithDefaults();
+
+            craftTable.Act(new WhistleWhileYouWork());
+            craftTable.Act(new Observe());
+            craftTable.Act(new Observe());
+            craftTable.Act(new Observe());
+            craftTable.Act(new BasicSynthesis());
+            craftTable.AssertStats(1000 - 10, 277, 0, 6, 10000 - 14*3 - 36);
+        }
+
+        [Test]
+        public void InnovativeTouchTest()
+        {
+            var craftTable = TestData.CreateFactory().WithDefaults();
+
+            craftTable.Act(new InnovativeTouch());
+            craftTable.Act(new BasicTouch());
+            craftTable.AssertStats(1000 - 20, 0, 792, 3, 10000 - 8-18);
+        }
        
+
+        [Test]
+        public void SatisfactionTest()
+        {
+            var craftTable = TestData.CreateFactory(registry =>
+            {
+                registry.WithConditions(Condition.Good, Condition.Good);
+            }).WithDefaults();
+
+            craftTable.Act(new WhistleWhileYouWork());
+            craftTable.Act(new Observe());
+            craftTable.Act(new Observe());
+            craftTable.Act(new Satisfaction());
+            craftTable.Act(new BasicSynthesis());
+
+            craftTable.AssertStats(1000 - 10, 185, 0, 6, 10000 - 36 - 14 * 2 + 15);
+        }
+
+
     }
 }

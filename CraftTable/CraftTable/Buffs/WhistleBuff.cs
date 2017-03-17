@@ -1,16 +1,25 @@
 ﻿using System;
+using CraftTable.Abilities.Specialist;
 using CraftTable.Contracts;
 
 namespace CraftTable.Buffs
 {
-    public class WhistleBuff:IBuff
+    public class WhistleBuff : IBuff
     {
+        private Action afterSatisfaction;
+
         private int _stacks = 11;
 
-        public bool IsActive => _stacks < 0;
+        public bool IsActive => _stacks > 0;
 
         public void Step(IBuffActions buffActions)
         {
+            if (afterSatisfaction != null)
+            {
+                afterSatisfaction();
+                afterSatisfaction = null;
+            }
+            
             if (_stacks == 0)
             {
                 var craftActions = buffActions as ICraftActions;
@@ -27,9 +36,15 @@ namespace CraftTable.Buffs
 
         public void OnCalculate(ActionInfo info, ICalculatorBuilder calculatorBuilder)
         {
-            if (_stacks % 3 == 0 && ApplicableToAbility(info.AbilityType))
+            int stacks = _stacks;
+            calculatorBuilder.ForProgress((efficincy, craftmanship) =>
             {
-                //todo: increate effectivnes
+                efficincy.AddPercent(stacks % 3 == 0 ? 50 : 0);
+            });
+
+            if (info.AbilityType == typeof(Satisfaction))
+            {
+                afterSatisfaction = () => _stacks--;
             }
 
             if (info.Condition.IsGoodOrExtreme())
@@ -37,12 +52,7 @@ namespace CraftTable.Buffs
                 _stacks--;
             }
         }
-
-        private bool ApplicableToAbility(Type infoAbilityType)
-        {
-            return false;
-        }
     }
 
-   
+
 }

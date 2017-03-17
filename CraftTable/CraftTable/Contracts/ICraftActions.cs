@@ -10,5 +10,6 @@ namespace CraftTable.Contracts
         void Touch(int efficiency);
         void UseCraftPoints(int craftPoints);
         void UseDurability(int durability);
+        T CalculateDependency<T>(CalculateDependency<T> input) where T:struct ;
     }
 }

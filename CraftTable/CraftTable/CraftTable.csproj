@@ -95,8 +95,11 @@
     <Compile Include="Buffs\ManipulationBuff.cs" />
     <Compile Include="Buffs\ReclaimBuff.cs" />
     <Compile Include="Buffs\WhistleBuff.cs" />
-    <Compile Include="Contracts\Synth.cs" />
-    <Compile Include="Contracts\SynthDelegate.cs" />
+    <Compile Include="CalculateDependency.cs" />
+    <Compile Include="Contracts\ILookupService.cs" />
+    <Compile Include="LookupService.cs" />
+    <Compile Include="Synth.cs" />
+    <Compile Include="SynthDelegate.cs" />
     <Compile Include="CraftActors\ConditionChanceActor.cs" />
     <Compile Include="CraftActors\RecipeLevelActor.cs" />
     <Compile Include="Exceptions\AbilityNotAvailableException.cs" />

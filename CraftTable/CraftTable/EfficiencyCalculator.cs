@@ -12,7 +12,7 @@ namespace CraftTable
             double levelCorrectionFactor = 0;
             double levelCorrectedProgress = 0;
             var crafterLevel = 150;
-            var levelDifference = 0;
+            var levelDifference = levelDiff;
 
             if (crafterLevel >= 120)
             {
@@ -109,7 +109,7 @@ namespace CraftTable
             double recipeLevelFactor = 0;
             double levelCorrectionFactor = 0;
             double levelCorrectedQuality = 0;
-            int levelDifference = 0;
+            int levelDifference = levelDiff;
 
             if (recipeLevel >= 115)
             {

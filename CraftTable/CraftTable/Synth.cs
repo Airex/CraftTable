@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CraftTable.Contracts
+namespace CraftTable
 {
     public static class Synth
     {
@@ -16,7 +16,7 @@ namespace CraftTable.Contracts
 
         public static SynthDelegate FromEfficiency(int value)
         {
-            return (a, b, c, d) => Math.Min(a.Difficulty - c, d.CalculateProgress(value, b.Craftmanship, a.Level - a.Level));
+            return (a, b, c, d) => Math.Min(a.Difficulty - c, d.CalculateProgress(value, b.Craftmanship, a.Level , b.Level));
         }
     }
 }

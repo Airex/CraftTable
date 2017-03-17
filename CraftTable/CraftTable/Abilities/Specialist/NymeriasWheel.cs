@@ -8,7 +8,8 @@ namespace CraftTable.Abilities.Specialist
         public override void Execute(ICraftActions craftActions)
         {
             craftActions.UseCraftPoints(18);
-            craftActions.RestoreDurability(0); //todo: calculate durability
+            var durability = craftActions.CalculateDependency((a, b) => (int)b.MapNymeriasWheelStacks(a.GetBuff<WhistleBuff>().Stacks));
+            craftActions.RestoreDurability(durability);
         }
 
         public override bool CanAct(ICraftServiceState serviceState)

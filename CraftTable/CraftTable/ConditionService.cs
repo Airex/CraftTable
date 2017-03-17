@@ -1,3 +1,4 @@
+using System.Data.Odbc;
 using Autofac;
 using CraftTable.Contracts;
 
@@ -21,6 +22,10 @@ namespace CraftTable
                 result = Condition.Normal;
             else if (_prevCondition.GetValueOrDefault() == Condition.Extreme)
                 result = Condition.Poor;
+            else if (_prevCondition.GetValueOrDefault() == Condition.Good)
+                result = Condition.Normal;
+            else if (_prevCondition.GetValueOrDefault() == Condition.Poor)
+                result = Condition.Normal;
             else
             {
                 var chances = new[]

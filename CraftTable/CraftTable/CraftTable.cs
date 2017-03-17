@@ -19,15 +19,16 @@ namespace CraftTable
         private readonly CraftMan _craftMan;
         private readonly IBuffCollector _buffCollector;
         private readonly ICalculator _calculator;
-        Condition _preCondition = Condition.Normal;
+        private readonly ILookupService _lookupService;
 
-        public CraftTable(Recipe recipe, CraftMan craftMan, IBuffCollector buffCollector, IConditionService conditionService, IRandomService randomService, ICalculator calculator)
+        public CraftTable(Recipe recipe, CraftMan craftMan, IBuffCollector buffCollector, IConditionService conditionService, IRandomService randomService, ICalculator calculator, ILookupService lookupService)
         {
             _buffCollector = buffCollector;
             _conditionService = conditionService;
             _craftMan = craftMan;
             _randomService = randomService;
             _calculator = calculator;
+            _lookupService = lookupService;
             _recipe = recipe;
             _craftPointsLeft = craftMan.MaxCraftPoints;
             _durability = recipe.Durability;
@@ -45,8 +46,9 @@ namespace CraftTable
             _step++;
             _buffCollector.Step(this);
             _calculator.Reset();
-            _buffCollector.BuildCalculator(new ActionInfo(ability.GetType(), _preCondition), _calculator.GetBuilder());
             var condition = _conditionService.GetCondition(_calculator);
+            _buffCollector.BuildCalculator(new ActionInfo(ability.GetType(), condition), _calculator.GetBuilder());
+            
             _calculator.UseConditionMultiplier(GetMultiplier(condition));
             var craftServiceState = new CraftServiceState(condition, _craftPointsLeft, _step, _buffCollector.GetBuffAccessor());
             if (!ability.CanAct(craftServiceState)) throw new AbilityNotAvailableException();
@@ -58,7 +60,6 @@ namespace CraftTable
             }
             Console.WriteLine($"You use {ability.GetType().Name} : {(isSuccess ? "Success" : "Failed")}");
             ability.Execute(this);
-            _preCondition = condition;
             Validate();
         }
 
@@ -99,7 +100,7 @@ namespace CraftTable
 
         void ICraftActions.Touch(int efficiency)
         {
-            var calculateQuality = _calculator.CalculateQuality(efficiency, _craftMan.Control, _recipe.Level - _craftMan.Level);
+            var calculateQuality = _calculator.CalculateQuality(efficiency, _craftMan.Control, _recipe.Level, _craftMan.Level);
             Console.WriteLine($" -> Quality increased by {calculateQuality}");
             _quality += calculateQuality;
         }
@@ -118,6 +119,11 @@ namespace CraftTable
             _durability -= calulated;
         }
 
+        public T CalculateDependency<T>(CalculateDependency<T> input) where T : struct
+        {
+            return input(_buffCollector.GetBuffAccessor(), _lookupService);
+        }
+
         void IBuffActions.RestoreCraftPoints(int craftPoints)
         {
             var craftPointsLeft = Math.Min(_craftMan.MaxCraftPoints - _craftPointsLeft, craftPoints);
@@ -127,7 +133,7 @@ namespace CraftTable
 
         void IBuffActions.RestoreDurability(int durability)
         {
-            var calculated = Math.Min(_recipe.Durability - durability, _durability + durability);
+            var calculated = Math.Min(_recipe.Durability - durability, durability);
             Console.WriteLine($" -> Restored {calculated} durability");
             _durability += calculated;
         }
