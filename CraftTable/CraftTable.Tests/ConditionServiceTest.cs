@@ -22,9 +22,9 @@ namespace CraftTable.Tests
             calculator.GetBuilder().ForConditionChance((condition, chance) =>
             {
                 if (condition == Condition.Extreme)
-                    chance.Add(0.3);
+                    chance.Add(0);
                 if (condition == Condition.Good)
-                    chance.Add(7);
+                    chance.Add(0);
             });
 
             IList<Condition> conditions = new List<Condition>();

@@ -8,5 +8,6 @@ namespace CraftTable.Contracts
         double? MapInguenity1Level(int level);
         double? MapInguenity2Level(int level);
         double MapNymeriasWheelStacks(int stacks);
+        double GetConditionMultiplier(Condition condition);
     }
 }

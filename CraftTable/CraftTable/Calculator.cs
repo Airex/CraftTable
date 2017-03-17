@@ -86,9 +86,9 @@ namespace CraftTable
             _chance(chanceActor);
             return (int)chanceActor.Value;
         }
-        public void UseConditionMultiplier(double getMultiplier)
+        public void UseCondition(Condition condition)
         {
-            _efficiencyCalculator.UseConditionMultylier(getMultiplier);
+            _efficiencyCalculator.UseConditionMultylier(_lookupService.GetConditionMultiplier(condition));
         }
 
         public double CalculateConditionChance(Condition condition, int value)

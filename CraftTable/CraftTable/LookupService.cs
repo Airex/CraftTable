@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CraftTable.Contracts;
 
 namespace CraftTable
@@ -123,6 +124,23 @@ namespace CraftTable
         public double MapNymeriasWheelStacks(int stacks)
         {
             return _nymeaisWheelTable[stacks];
+        }
+
+        public double GetConditionMultiplier(Condition condition)
+        {
+            switch (condition)
+            {
+                case Condition.Normal:
+                    return 1.0;
+                case Condition.Good:
+                    return 1.5;
+                case Condition.Extreme:
+                    return 4.0;
+                case Condition.Poor:
+                    return 0.5;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(condition), condition, null);
+            }
         }
     }
 }

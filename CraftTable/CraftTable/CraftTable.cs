@@ -20,6 +20,7 @@ namespace CraftTable
         private readonly IBuffCollector _buffCollector;
         private readonly ICalculator _calculator;
         private readonly ILookupService _lookupService;
+        Condition _condition;
 
         public CraftTable(Recipe recipe, CraftMan craftMan, IBuffCollector buffCollector, IConditionService conditionService, IRandomService randomService, ICalculator calculator, ILookupService lookupService)
         {
@@ -32,7 +33,7 @@ namespace CraftTable
             _recipe = recipe;
             _craftPointsLeft = craftMan.MaxCraftPoints;
             _durability = recipe.Durability;
-
+            _condition = _conditionService.GetCondition(_calculator);
         }
 
         public int Step => _step;
@@ -46,11 +47,12 @@ namespace CraftTable
             _step++;
             _buffCollector.Step(this);
             _calculator.Reset();
-            var condition = _conditionService.GetCondition(_calculator);
-            _buffCollector.BuildCalculator(new ActionInfo(ability.GetType(), condition), _calculator.GetBuilder());
             
-            _calculator.UseConditionMultiplier(GetMultiplier(condition));
-            var craftServiceState = new CraftServiceState(condition, _craftPointsLeft, _step, _buffCollector.GetBuffAccessor());
+            _buffCollector.BuildCalculator(new ActionInfo(ability.GetType(), _condition), _calculator.GetBuilder());
+            
+            _calculator.UseCondition(_condition);
+
+            var craftServiceState = new CraftServiceState(_condition, _craftPointsLeft, _step, _buffCollector.GetBuffAccessor());
             if (!ability.CanAct(craftServiceState)) throw new AbilityNotAvailableException();
             
             var isSuccess = _randomService.Select(new[] { _calculator.CalculateChance(ability.Chance), double.PositiveInfinity }) == 0;
@@ -59,25 +61,10 @@ namespace CraftTable
                 _calculator.Fail();
             }
             Console.WriteLine($"You use {ability.GetType().Name} : {(isSuccess ? "Success" : "Failed")}");
+            Console.WriteLine($" -> Condition is {_condition}");
             ability.Execute(this);
+            _condition = _conditionService.GetCondition(_calculator);
             Validate();
-        }
-
-        private double GetMultiplier(Condition condition)
-        {
-            switch (condition)
-            {
-                case Condition.Normal:
-                    return 1.0;
-                case Condition.Good:
-                    return 1.5;
-                case Condition.Extreme:
-                    return 4.0;
-                case Condition.Poor:
-                    return 0.5;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(condition), condition, null);
-            }
         }
 
         private void Validate()
