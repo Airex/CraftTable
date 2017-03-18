@@ -2,9 +2,10 @@
 
 namespace CraftTable.Abilities
 {
+    [AbilityXivDb(Crafter.All, 100063)]
     public class CarefulSynthesis : Ability
     {
-        public override void Execute(ICraftActions craftActions)
+        public override void Execute(ICraftActions craftActions, bool isSuccess)
         {
             craftActions.UseDurability(10);
             craftActions.Synth(Synth.FromEfficiency(90));

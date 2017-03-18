@@ -1,0 +1,191 @@
+﻿@using WebCraftStation.Models
+@model HomeViewModel
+
+
+<script id="buffsTemplate" type="text/x-jquery-tmpl">
+    <div style="float: left; height: 75px; width: 30px;">
+        <div style="height: 20px; padding-left: 5px; width: 30px;">{%if Stacks > 0%} ${Stacks} {%/if%}</div>
+        <div data-tooltip-id="status/${XivDbId}" style="background-color: white; border: 0; height: 30px; padding: 0; width: 30px;" name="${Name}">
+            <img src ="Content/Images/status_${XivDbId}.png"/>
+        </div>
+        <div style="height: 30px; padding-left: 5px; width: 30px;">{%if Steps > 0%} ${Steps} {%/if%}</div>
+    </div>
+</script>
+
+<script id="logTemplate" type="text/x-jquery-tmpl">
+    <div style="width: 480px;font-size: small;color: {%if Text.toLowerCase().indexOf('fail')>=0%} red {%else%} black{%/if%};">
+        ${Text}
+    </div>
+</script>
+
+<div class="container" style="margin-top: 15px;">
+    <button class="btn btn-default" id="resetButton" type="button" value="Reset">Reset</button>
+</div>
+<hr/>
+<div class="container">
+    <div class="col-md-7">
+        @Html.Partial("Stats")
+    </div>
+
+    <div class="col-md-5">
+        <div id="log" style="overflow-y: auto; width: 500px; height: 200px;">
+
+        </div>
+    </div>
+
+</div>
+
+<div class="container" id="message-container" style="display: none;">
+    <span id="message" style="color: red;">
+    </span>
+</div>
+
+<div id="tempBuffContainer" style="display: none; visibility: hidden;">
+</div>
+
+
+
+<div class="container">
+    <div class="col-md-12">
+        <div id="buffs" style="height: 75px;">
+        </div>
+    </div>
+</div>
+<hr />
+<div class="container">
+    <div class="col-md-12">
+        @foreach (var a in Model.Abilities)
+            {
+            <div style="float: left; height: 50px; width: 50px;">
+                <div class="abilityContainer">
+                    <button class="action" data-xivdb-key="xivdb_action_@a.XivDbId" data-xivdb-isset="1" style="border: 0; height: 40px; padding: 0; width: 40px;" name="@a.Name">
+                        <img src="Content/Images/action_@(a.XivDbId).png"/>
+                    </button>
+                </div>
+                <div class="ability-overlay"></div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var xivdb_tooltips =
+        {
+            // Where to get tooltips from.
+            source: 'https://secure.xivdb.com',
+
+            // Language the tooltips should be in
+            language: 'en',
+
+            // Should tooltips attempt to replace the link?
+            // if set to false: seturlname, seturlcolor and seturlicon will be skipped
+            replace: false,
+
+            // Should tooltips replace the name of the link?
+            seturlname: false,
+
+            // Should tooltips apply a rarity color? (eg: Relics set to Purple)
+            seturlcolor: false,
+
+            // If your site is white/bright, set this true
+            seturlcolorDarken: true,
+
+            // Should tooltips include an icon?
+            seturlicon: false,
+
+            // Should tooltips replace hidden links?
+            includeHiddenLinks: true,
+
+            // How long to wait until attempting to include jquery
+            // if jquery still doesn't exist after this time, it will
+            // be auto included
+            jqueryCheckDelay: 500,
+
+            // Minimum site width (pixels) to assume we're on a mobile,
+            // tooltips should not be used on mobile sites.
+            mobileMinimumWidth: 500,
+
+            // Prevent this script from setting your sites html height to 100%
+            // this helps with knowing mouse position.
+            preventHtmlHeight: false,
+
+            // How far the tooltip should be from the mouse
+            tooltipDistanceX: 30,
+            tooltipDistanceY: 30,
+
+            //
+            // EVENTS
+            //
+
+            // this is called once tooltips load, provides tooltip data,
+            // eg: event_tooltipsLoaded: function(tooltips) { ... }
+            event_tooltipsLoaded: function () {
+                $('#buffs').html($('#tempBuffContainer').html());
+                window.locko = false;
+                $('.ability-overlay').hide();
+            }
+        };
+        $(function () {
+            var handler = function (e, data, a, b, s, d) {
+                if (window.locko === true) {
+                    return false;
+                }
+                window.locko = true;
+                $('.ability-overlay').show();
+                if (e) e.preventDefault();
+                $.post('@Url.Action("Act", "Home")',
+                    { Abilityname: d === true ? null : $(this)[0].name },
+                    function (data) {
+                        if (data) {
+                            if (data.Stats) {
+                                data.Stats.ProgressPercent = 1.0 * data.Stats.Progress / data.Stats.MaxProgress * 100;
+                                data.Stats.QualityPercent = 1.0 * data.Stats.Quality / data.Stats.MaxQuality * 100;
+                                $("#statsTemplate").tmpl(data.Stats).appendTo($("#statsContainer").empty());
+                            }
+                            if (data.Buffs) {
+                                $('#buffsTemplate').tmpl(data.Buffs).appendTo($('#tempBuffContainer').empty());
+                                XIVDBTooltips.get();
+                                if (data.Buffs.length === 0)
+                                    $('#buffs').empty();
+                            }
+                            if (data.Message) {
+                                $("#message").html(data.Message).parent().show();
+                            } else {
+                                $("#message").html(data.Message).parent().hide();
+                            }
+                            if (data.Logs && data.Logs.length > 0) {
+                                for (var i = 0; i < data.Logs.length; i++) {
+                                    console.log(data.Logs[i]);
+                                }
+                                $('#logTemplate').tmpl(data.Logs).appendTo($('#log'));
+                                $("#log")[0].scrollTop = $("#log")[0].scrollHeight;
+                            }
+                        }
+
+                        if (data.Buffs.length === 0) {
+                            window.locko = false;
+                            $('.ability-overlay').hide();
+                        }
+
+
+                    });
+                return false;
+            };
+
+            $(".action").on("click", handler);
+            $("#resetButton").on("click",
+                function() {
+                    $("#log").empty();
+                    $.get(@Url.Action("Index","Home"),'',function()
+                    {
+                        handler(null, null, null, null, null, true);
+                    });
+                });
+
+            handler(null, null, null, null, null, true);
+        });
+
+    </script>
+    <script src="https://secure.xivdb.com/tooltips.js"></script>
+}

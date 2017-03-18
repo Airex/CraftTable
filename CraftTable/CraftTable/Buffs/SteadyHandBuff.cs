@@ -1,27 +1,10 @@
-using CraftTable.Contracts;
-
 namespace CraftTable.Buffs
 {
-    public class SteadyHandBuff : StepsBasedBuff
+    [BuffXivDb(253)]
+    public class SteadyHandBuff : SteadyHandBuffBase
     {
-        private readonly int _increase;
-
-        public SteadyHandBuff(int increase) : base(5)
+        public SteadyHandBuff(int increase) : base(increase)
         {
-            _increase = increase;
-        }
-
-        public override void OnCalculate(ActionInfo info, ICalculatorBuilder calculatorBuilder)
-        {
-            calculatorBuilder.ForChance(chance =>
-            {
-                chance.Add(_increase);
-            });
-        }
-
-        protected override void OnStep(IBuffActions buffActions)
-        {
-            
         }
     }
 }

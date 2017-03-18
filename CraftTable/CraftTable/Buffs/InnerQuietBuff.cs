@@ -5,9 +5,10 @@ using CraftTable.Contracts;
 
 namespace CraftTable.Buffs
 {
-    public class InnerQuietBuff : IBuff
+    [BuffXivDb(251)]
+    public class InnerQuietBuff : IBuff,IStacks
     {
-        private int _stacks;
+        private int _stacks = 1;
         public int Stacks
         {
             get { return _stacks; }
@@ -32,8 +33,8 @@ namespace CraftTable.Buffs
 
         public void OnCalculate(ActionInfo info, ICalculatorBuilder calculatorBuilder)
         {
-            int stacks = Stacks;
-            calculatorBuilder.ForQuality((efficiency, control) =>
+            int stacks = Stacks -1;
+            calculatorBuilder.ForQuality((efficiency, control,s) =>
             {
                 
                 if (info.AbilityType == typeof(ByregotsBlessing))
@@ -56,9 +57,11 @@ namespace CraftTable.Buffs
 
                 control.AddPercent(20 * stacks);
 
-                if (info.AbilityType == typeof(PreciseTouch)) Stacks++;
-
-                Stacks++;
+                if (s)
+                {
+                    if (info.AbilityType == typeof(PreciseTouch)) Stacks++;
+                    Stacks++;
+                }
 
             });
         }

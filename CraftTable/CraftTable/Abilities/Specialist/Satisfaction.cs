@@ -3,9 +3,10 @@ using CraftTable.Contracts;
 
 namespace CraftTable.Abilities.Specialist
 {
+    [AbilityXivDb(Crafter.All, 100176)]
     public class Satisfaction : Ability
     {
-        public override void Execute(ICraftActions craftActions)
+        public override void Execute(ICraftActions craftActions, bool isSuccess)
         {
             craftActions.RestoreCraftPoints(15);
         }

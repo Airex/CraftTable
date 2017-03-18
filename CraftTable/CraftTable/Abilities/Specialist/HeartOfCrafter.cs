@@ -3,9 +3,10 @@ using CraftTable.Contracts;
 
 namespace CraftTable.Abilities.Specialist
 {
+    [AbilityXivDb(Crafter.All, 100186)]
     public class HeartOfCrafter : Ability
     {
-        public override void Execute(ICraftActions craftActions)
+        public override void Execute(ICraftActions craftActions, bool isSuccess)
         {
             craftActions.UseCraftPoints(45);
             craftActions.ApplyBuff(new HeartOfCrafterBuff());

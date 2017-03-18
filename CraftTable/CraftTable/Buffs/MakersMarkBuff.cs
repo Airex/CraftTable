@@ -3,6 +3,7 @@ using CraftTable.Contracts;
 
 namespace CraftTable.Buffs
 {
+    [BuffXivDb(878)]
     public class MakersMarkBuff:StepsBasedBuff
     {
         public MakersMarkBuff(int steps) : base(steps)

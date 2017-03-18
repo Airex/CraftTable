@@ -2,9 +2,10 @@
 
 namespace CraftTable.Abilities
 {
+    [AbilityXivDb(Crafter.All, 100039)]
     public class PieceByPiece:Ability
     {
-        public override void Execute(ICraftActions craftActions)
+        public override void Execute(ICraftActions craftActions, bool isSuccess)
         {
             craftActions.UseDurability(10);
             craftActions.UseCraftPoints(15);

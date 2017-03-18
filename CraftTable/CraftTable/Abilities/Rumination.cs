@@ -4,13 +4,14 @@ using CraftTable.Contracts;
 
 namespace CraftTable.Abilities
 {
+    [AbilityXivDb(Crafter.All, 276 )]
     public class Rumination:Ability
     {
-        public override void Execute(ICraftActions craftActions)
+        public override void Execute(ICraftActions craftActions, bool isSuccess)
         {
-            var craftPoints = craftActions.CalculateDependency((a, b) =>
+            var craftPoints = craftActions.CalculateDependency((a, b,c) =>
             {
-                var stacks = a.GetBuff<InnerQuietBuff>().Stacks;
+                var stacks = a.GetBuff<InnerQuietBuff>().Stacks - 1;
                 a.GetBuff<InnerQuietBuff>().Kill();
                 return (21 * stacks - Math.Pow(stacks, 2) + 10) / 2;
             });

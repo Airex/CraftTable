@@ -3,9 +3,10 @@ using CraftTable.Contracts;
 
 namespace CraftTable.Abilities
 {
+    [AbilityXivDb(Crafter.All, 278)]
     public class Manipulation:Ability
     {
-        public override void Execute(ICraftActions craftActions)
+        public override void Execute(ICraftActions craftActions, bool isSuccess)
         {
             craftActions.UseCraftPoints(88);
             craftActions.ApplyBuff(new ManipulationBuff());

@@ -3,9 +3,10 @@ using CraftTable.Contracts;
 
 namespace CraftTable.Abilities
 {
+    [AbilityXivDb(Crafter.All, 100009)]
     public class ByregotsBlessing : Ability
     {
-        public override void Execute(ICraftActions craftActions)
+        public override void Execute(ICraftActions craftActions, bool isSuccess)
         {
             craftActions.UseCraftPoints(24);
             craftActions.Touch(100);

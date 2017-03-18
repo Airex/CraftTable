@@ -14,6 +14,7 @@ namespace CraftTable.Tests
         {
             var builder = new ContainerBuilder();
             builder.RegisterModule(new RegistrationModule());
+            builder.Register(context => new RandomService()).As<IRandomService>();
             var container = builder.Build();
 
             var conditionService = container.Resolve<IConditionService>();

@@ -2,6 +2,7 @@
 using CraftTable.Abilities;
 using CraftTable.Abilities.Specialist;
 using CraftTable.Contracts;
+using CraftTable.Exceptions;
 using NUnit.Framework;
 
 namespace CraftTable.Tests
@@ -247,8 +248,10 @@ namespace CraftTable.Tests
             }).WithDefaults();
 
             Assert.That(craftTable, Is.Not.Null);
-
-            craftTable.Act(new BasicTouch());
+            Assert.Throws<AbilityFailedException>(() =>
+            {
+                craftTable.Act(new BasicTouch());
+            });
 
             craftTable.AssertStats(1000 - 10, 0, 0, 2, 10000 - 18);
         }
@@ -261,7 +264,7 @@ namespace CraftTable.Tests
             craftTable.Act(new WhistleWhileYouWork());
             craftTable.Act(new BasicSynthesis());
             craftTable.Act(new BasicSynthesis());
-            craftTable.Act(new NymeriasWheel());
+            craftTable.Act(new NymeiasWheel());
             craftTable.AssertStats(1000 - 10, 370, 0, 5, 10000 - 18 -36);
         }
 
@@ -270,7 +273,7 @@ namespace CraftTable.Tests
         {
             var craftTable = TestData.CreateFactory().WithDefaults();
 
-            craftTable.Act(new Inguenity());
+            craftTable.Act(new Ingenuity());
             craftTable.Act(new BasicSynthesis());
             craftTable.Act(new BasicTouch());
             craftTable.AssertStats(1000 - 20, 251, 317, 4, 10000 - 24 - 18);
@@ -281,7 +284,7 @@ namespace CraftTable.Tests
         {
             var craftTable = TestData.CreateFactory().WithDefaults();
 
-            craftTable.Act(new Inguenity2());
+            craftTable.Act(new Ingenuity2());
             craftTable.Act(new BasicSynthesis());
             craftTable.Act(new BasicTouch());
             craftTable.AssertStats(1000 - 20, 254, 317, 4, 10000 - 32 - 18);
@@ -325,10 +328,11 @@ namespace CraftTable.Tests
             craftTable.Act(new WhistleWhileYouWork());
             craftTable.Act(new Observe());
             craftTable.Act(new Observe());
+            craftTable.Act(new Observe());
             craftTable.Act(new Satisfaction());
             craftTable.Act(new BasicSynthesis());
 
-            craftTable.AssertStats(1000 - 10, 185, 0, 6, 10000 - 36 - 14 * 2 + 15);
+            craftTable.AssertStats(1000 - 10, 185, 0, 7, 10000 - 36 - 14 * 3 + 15);
         }
 
         [Test]
@@ -410,15 +414,15 @@ namespace CraftTable.Tests
         [Test]
         public void MakersMarkTest()
         {
-            var craftTable = TestData.CreateFactory().WithDefaults();
+            var craftTable = TestData.CreateFactory()(new Recipe(478, 60, 3000), TestData.DefaultCraftman);
 
             craftTable.Act(new MakersMark());
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 6; i++)
             {
                 craftTable.Act(new FlawlessSynthesis());
             }
 
-            craftTable.AssertStats(1000 - 10, 80+40, 0, 5, 10000 - 15 - 20);
+            craftTable.AssertStats(60 - 10, 6*40, 0, 8, 10000 - 15 - 20);
         }
 
         [Test]
@@ -426,7 +430,7 @@ namespace CraftTable.Tests
         {
             var craftTable = TestData.CreateFactory().WithDefaults();
 
-            craftTable.Act(new SteadyHand2Ability());
+            craftTable.Act(new SteadyHand2());
             for (int i = 0; i < 4; i++)
             {
                 craftTable.Act(new BasicTouch());
@@ -443,7 +447,7 @@ namespace CraftTable.Tests
         {
             var craftTable = TestData.CreateFactory().WithDefaults();
 
-            craftTable.Act(new SteadyHandAbility());
+            craftTable.Act(new SteadyHand());
             for (int i = 0; i < 8; i++)
             {
                 craftTable.Act(new BasicTouch());

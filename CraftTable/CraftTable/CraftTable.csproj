@@ -64,8 +64,8 @@
     <Compile Include="Abilities\FlawlessSynthesis.cs" />
     <Compile Include="Abilities\GreatStrides.cs" />
     <Compile Include="Abilities\HastyTouch.cs" />
-    <Compile Include="Abilities\Inguenity.cs" />
-    <Compile Include="Abilities\Inguenity2.cs" />
+    <Compile Include="Abilities\Ingenuity.cs" />
+    <Compile Include="Abilities\Ingenuity2.cs" />
     <Compile Include="Abilities\InnerQuiet.cs" />
     <Compile Include="Abilities\Innovation.cs" />
     <Compile Include="Abilities\MakersMark.cs" />
@@ -82,35 +82,51 @@
     <Compile Include="Abilities\Specialist\ByregotsMiracle.cs" />
     <Compile Include="Abilities\Specialist\HeartOfCrafter.cs" />
     <Compile Include="Abilities\Specialist\InnovativeTouch.cs" />
-    <Compile Include="Abilities\Specialist\NymeriasWheel.cs" />
+    <Compile Include="Abilities\Specialist\NymeiasWheel.cs" />
     <Compile Include="Abilities\Specialist\Satisfaction.cs" />
     <Compile Include="Abilities\Specialist\TrainedHand.cs" />
     <Compile Include="Abilities\Specialist\WhistleWhileYouWork.cs" />
     <Compile Include="Abilities\StandartSynthesis.cs" />
     <Compile Include="Abilities\StandartTouch.cs" />
-    <Compile Include="Abilities\SteadyHand2Ability.cs" />
-    <Compile Include="Abilities\SteadyHandAbility.cs" />
+    <Compile Include="Abilities\SteadyHand2.cs" />
+    <Compile Include="Abilities\SteadyHand.cs" />
     <Compile Include="Abilities\TricksOfTheTrade.cs" />
     <Compile Include="Abilities\WasteNot.cs" />
     <Compile Include="Abilities\WasteNot2.cs" />
     <Compile Include="Ability.cs" />
+    <Compile Include="AbilityDescriptorAttribute.cs" />
     <Compile Include="AbilityIcon.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AbilityIcon.resx</DependentUpon>
     </Compile>
     <Compile Include="Buffs\HeartOfCrafterBuff.cs" />
-    <Compile Include="Buffs\InguenityBuff.cs" />
+    <Compile Include="Buffs\Ingenuity2Buff.cs" />
+    <Compile Include="Buffs\IngenuityBuff.cs" />
+    <Compile Include="Buffs\IngenuityBuffBase.cs" />
+    <Compile Include="Buffs\ISteps.cs" />
     <Compile Include="Buffs\MakersMarkBuff.cs" />
     <Compile Include="Buffs\ManipulationBuff.cs" />
     <Compile Include="Buffs\ReclaimBuff.cs" />
+    <Compile Include="Buffs\SteadyHand2Buff.cs" />
+    <Compile Include="Buffs\SteadyHandBuffBase.cs" />
+    <Compile Include="Buffs\WasteNot2Buff.cs" />
+    <Compile Include="Buffs\WasteNotBuffBase.cs" />
     <Compile Include="Buffs\WhistleBuff.cs" />
+    <Compile Include="BuffXivDbAttribute.cs" />
     <Compile Include="CalculateDependency.cs" />
     <Compile Include="Contracts\ICraftQualityCalculator.cs" />
     <Compile Include="Contracts\ILookupService.cs" />
+    <Compile Include="Contracts\IProgressWatcher.cs" />
+    <Compile Include="CraftActors\OnSuccessActor.cs" />
+    <Compile Include="Crafter.cs" />
     <Compile Include="CraftQualityCalculator.cs" />
-    <Compile Include="DescriptorAttribute.cs" />
+    <Compile Include="AbilityXivDbAttribute.cs" />
+    <Compile Include="DefaultProgressWatcher.cs" />
+    <Compile Include="Exceptions\AbilityFailedException.cs" />
+    <Compile Include="Exceptions\CraftAlreadyFinishedException.cs" />
     <Compile Include="Exceptions\CraftSuccessException.cs" />
+    <Compile Include="IStacks.cs" />
     <Compile Include="LookupService.cs" />
     <Compile Include="Synth.cs" />
     <Compile Include="SynthDelegate.cs" />

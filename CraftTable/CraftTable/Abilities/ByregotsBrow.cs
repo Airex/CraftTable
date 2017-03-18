@@ -3,9 +3,10 @@ using CraftTable.Contracts;
 
 namespace CraftTable.Abilities
 {
+    [AbilityXivDb(Crafter.All, 100127)]
     public class ByregotsBrow:Ability
     {
-        public override void Execute(ICraftActions craftActions)
+        public override void Execute(ICraftActions craftActions, bool isSuccess)
         {
             craftActions.UseCraftPoints(18);
             craftActions.UseDurability(10);

@@ -3,11 +3,12 @@ using CraftTable.Contracts;
 
 namespace CraftTable.Abilities.Specialist
 {
+    [AbilityXivDb(Crafter.All,100152 )]
     public class ByregotsMiracle : Ability
     {
         public override int Chance { get; } = 70;
 
-        public override void Execute(ICraftActions craftActions)
+        public override void Execute(ICraftActions craftActions, bool isSuccess)
         {
             craftActions.UseCraftPoints(16);
             craftActions.UseDurability(10);

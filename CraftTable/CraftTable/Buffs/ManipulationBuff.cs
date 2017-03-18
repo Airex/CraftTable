@@ -2,6 +2,7 @@
 
 namespace CraftTable.Buffs
 {
+    [BuffXivDb(258)]
     public class ManipulationBuff:StepsBasedBuff
     {
         public ManipulationBuff() : base(3)

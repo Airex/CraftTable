@@ -75,7 +75,7 @@ namespace CraftTable.Tests
 
         private class StubAbility : Ability
         {
-            public override void Execute(ICraftActions craftActions)
+            public override void Execute(ICraftActions craftActions, bool isSuccess)
             {
                 craftActions.UseDurability(10);
                 craftActions.Synth(Synth.FromRawValue(20));

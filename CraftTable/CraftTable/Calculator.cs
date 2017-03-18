@@ -9,12 +9,14 @@ namespace CraftTable
         private readonly IEfficiencyCalculator _efficiencyCalculator;
         private readonly ILookupService _lookupService;
         private DurabilityActor _durability = a => { };
-        private ProgressActor _progress = (a, b) => { };
-        private QualityActor _quality = (a, b) => { };
+        private ProgressActor _progress = (a, b,c) => { };
+        private QualityActor _quality = (a, b,c) => { };
         private CraftPointsActor _craftPoints = a => { };
         private ChanceActor _chance = a => { };
         private ConditionChanceActor _conditionChance = (a, b) => { };
         private RecipeLevelActor _levelActor = (a, b, c, d) => { };
+
+        private bool _failed = false;
 
         public Calculator(IEfficiencyCalculator efficiencyCalculator, ILookupService lookupService)
         {
@@ -53,7 +55,7 @@ namespace CraftTable
         {
             var efficiencyActor = new CalculatorActor(efficiency);
             var craftmanshipActor = new CalculatorActor(value);
-            _progress(efficiencyActor, craftmanshipActor);
+            _progress(efficiencyActor, craftmanshipActor,!_failed);
             var level = _lookupService.MapLevel(craftmanLevel) ?? craftmanLevel;
             return (int)_efficiencyCalculator.CraftmanshipToProgress(craftmanshipActor.Value, efficiencyActor.Value, (int)level, CalculateLevelDifference(recipeLevel, craftmanLevel));
         }
@@ -62,7 +64,7 @@ namespace CraftTable
         {
             var efficiencyActor = new CalculatorActor(efficiency);
             var controlActor = new CalculatorActor(value);
-            _quality(efficiencyActor, controlActor);
+            _quality(efficiencyActor, controlActor,!_failed);
             return (int)_efficiencyCalculator.ControlToProgress(controlActor.Value, efficiencyActor.Value, recipeLevel, CalculateLevelDifference(recipeLevel, craftmanLevel));
         }
 
@@ -73,15 +75,24 @@ namespace CraftTable
             return (int)Math.Round(actor.Value, 0);
         }
 
-        public void Reset()
+        public void Reset(Condition condition)
         {
+            _failed = false;
+            _efficiencyCalculator.UseConditionMultylier(_lookupService.GetConditionMultiplier(condition));
             _durability = a => { };
-            _progress = (a, b) => { };
-            _quality = (a, b) => { };
+            _progress = (a, b,c) => { };
+            _quality = (a, b,c) => { };
             _craftPoints = a => { };
             _chance = a => { };
             _conditionChance = (a, b) => { };
             _levelActor = (a, b, c, d) => { };
+        }
+
+        public void Fail()
+        {
+            _failed = true;
+            GetBuilder().ForQuality((efficincy, control, c) => { efficincy.Multiply(0); });
+            GetBuilder().ForProgress((efficincy, crafmanship, c) => { efficincy.Multiply(0); });
         }
 
         public int CalculateChance(int abilityChance)
@@ -90,10 +101,6 @@ namespace CraftTable
             _chance(chanceActor);
             return Math.Min((int)chanceActor.Value, 100);
         }
-        public void UseCondition(Condition condition)
-        {
-            _efficiencyCalculator.UseConditionMultylier(_lookupService.GetConditionMultiplier(condition));
-        }
 
         public double CalculateConditionChance(Condition condition, int value)
         {
@@ -101,6 +108,8 @@ namespace CraftTable
             _conditionChance(condition, chanceActor);
             return chanceActor.Value;
         }
+
+        
 
         private int CalculateLevelDifference(int recipeLevel, int craftmaneLevel)
         {

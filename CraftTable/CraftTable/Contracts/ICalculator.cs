@@ -9,10 +9,10 @@
 
         ICalculatorBuilder GetBuilder();
 
-        void Reset();
+        void Reset(Condition condition);
 
         int CalculateChance(int abilityChance);
-        void UseCondition(Condition condition);
         double CalculateConditionChance(Condition condition, int value);
+        void Fail();
     }
 }

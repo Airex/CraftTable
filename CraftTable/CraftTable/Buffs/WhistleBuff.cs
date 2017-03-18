@@ -4,9 +4,10 @@ using CraftTable.Contracts;
 
 namespace CraftTable.Buffs
 {
-    public class WhistleBuff : IBuff
+    [BuffXivDb(880)]
+    public class WhistleBuff : IBuff,IStacks
     {
-        private Action afterSatisfaction;
+        private Action _afterSatisfaction;
 
         private int _stacks = 11;
 
@@ -14,10 +15,10 @@ namespace CraftTable.Buffs
 
         public void Step(IBuffActions buffActions)
         {
-            if (afterSatisfaction != null)
+            if (_afterSatisfaction != null)
             {
-                afterSatisfaction();
-                afterSatisfaction = null;
+                _afterSatisfaction();
+                _afterSatisfaction = null;
             }
             
             if (_stacks == 0)
@@ -37,14 +38,14 @@ namespace CraftTable.Buffs
         public void OnCalculate(ActionInfo info, ICalculatorBuilder calculatorBuilder)
         {
             int stacks = _stacks;
-            calculatorBuilder.ForProgress((efficincy, craftmanship) =>
+            calculatorBuilder.ForProgress((efficincy, craftmanship, s) =>
             {
                 efficincy.AddPercent(stacks % 3 == 0 ? 50 : 0);
             });
 
             if (info.AbilityType == typeof(Satisfaction))
             {
-                afterSatisfaction = () => _stacks--;
+                _afterSatisfaction = () => _stacks--;
             }
 
             if (info.Condition.IsGoodOrExcellent())

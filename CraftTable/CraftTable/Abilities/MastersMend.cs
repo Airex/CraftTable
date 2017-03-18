@@ -2,9 +2,10 @@
 
 namespace CraftTable.Abilities
 {
+    [AbilityXivDb(Crafter.All, 100107)]
     public class MastersMend : Ability 
     {
-        public override void Execute(ICraftActions craftActions)
+        public override void Execute(ICraftActions craftActions, bool isSuccess)
         {
             craftActions.UseCraftPoints(92);
             craftActions.RestoreDurability(30);

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CraftTable", "CraftTable\Cr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CraftTable.Tests", "CraftTable.Tests\CraftTable.Tests.csproj", "{0A212AB9-DD1F-4F1A-8C74-4C9264911149}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCraftStation", "WebCraftStation\WebCraftStation.csproj", "{DBEA5AAD-CE32-4124-855D-7EB572E8682F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{0A212AB9-DD1F-4F1A-8C74-4C9264911149}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A212AB9-DD1F-4F1A-8C74-4C9264911149}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A212AB9-DD1F-4F1A-8C74-4C9264911149}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBEA5AAD-CE32-4124-855D-7EB572E8682F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBEA5AAD-CE32-4124-855D-7EB572E8682F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBEA5AAD-CE32-4124-855D-7EB572E8682F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBEA5AAD-CE32-4124-855D-7EB572E8682F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

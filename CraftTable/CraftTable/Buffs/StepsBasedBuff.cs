@@ -2,7 +2,7 @@
 
 namespace CraftTable.Buffs
 {
-    public abstract class StepsBasedBuff : IBuff
+    public abstract class StepsBasedBuff : IBuff, ISteps
     {
         private int _steps;
 
@@ -28,5 +28,7 @@ namespace CraftTable.Buffs
         public abstract void OnCalculate(ActionInfo info, ICalculatorBuilder calculatorBuilder);
 
         protected abstract void OnStep(IBuffActions buffActions);
+
+        public int Steps => _steps;
     }
 }

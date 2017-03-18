@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using CraftTable.Contracts;
 
@@ -46,6 +47,11 @@ namespace CraftTable
         public IBuffAccessor GetBuffAccessor()
         {
             return this;
+        }
+
+        public IList<IBuff> GetBuffs()
+        {
+            return new List<IBuff>(_list);
         }
 
         public T GetBuff<T>() where T : IBuff

@@ -2,9 +2,10 @@
 
 namespace CraftTable.Abilities
 {
+    [AbilityXivDb(Crafter.All,100098 )]
     public class TricksOfTheTrade:Ability
     {
-        public override void Execute(ICraftActions craftActions)
+        public override void Execute(ICraftActions craftActions, bool isSuccess)
         {
             craftActions.RestoreCraftPoints(20);
         }

@@ -2,6 +2,7 @@
 
 namespace CraftTable.Buffs
 {
+    [BuffXivDb(260)]
     public class ReclaimBuff:IBuff
     {
         public bool IsActive { get; } = true;

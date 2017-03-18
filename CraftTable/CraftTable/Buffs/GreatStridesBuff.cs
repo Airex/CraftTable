@@ -2,6 +2,7 @@
 
 namespace CraftTable.Buffs
 {
+    [BuffXivDb(254)]
     public class GreatStridesBuff : StepsBasedBuff
     {
         public GreatStridesBuff() : base(3)
@@ -15,7 +16,7 @@ namespace CraftTable.Buffs
 
         public override void OnCalculate(ActionInfo info, ICalculatorBuilder calculatorBuilder)
         {
-            calculatorBuilder.ForQuality((efficiency, control) =>
+            calculatorBuilder.ForQuality((efficiency, control, s) =>
             {
                 efficiency.Multiply(2);
                 Kill();

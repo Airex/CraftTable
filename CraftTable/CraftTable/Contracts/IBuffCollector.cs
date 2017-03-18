@@ -1,4 +1,6 @@
-﻿namespace CraftTable.Contracts
+﻿using System.Collections.Generic;
+
+namespace CraftTable.Contracts
 {
     public interface IBuffCollector
     {
@@ -7,5 +9,6 @@
         void BuildCalculator(ActionInfo info, ICalculatorBuilder calculatorBuilder);
         void KillNotActive();
         IBuffAccessor GetBuffAccessor();
+        IList<IBuff> GetBuffs();
     }
 }

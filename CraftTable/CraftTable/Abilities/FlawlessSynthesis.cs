@@ -4,9 +4,10 @@ using CraftTable.Contracts;
 
 namespace CraftTable.Abilities
 {
+    [AbilityXivDb(Crafter.All, 100083)]
     public class FlawlessSynthesis : Ability
     {
-        public override void Execute(ICraftActions craftActions)
+        public override void Execute(ICraftActions craftActions, bool isSuccess)
         {
             craftActions.UseCraftPoints(15);
             craftActions.UseDurability(10);

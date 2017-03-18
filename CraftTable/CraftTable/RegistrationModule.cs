@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Autofac;
-using Autofac.Core;
+﻿using Autofac;
 using CraftTable.Contracts;
 
 namespace CraftTable
@@ -18,10 +15,10 @@ namespace CraftTable
             builder.RegisterType<EfficiencyCalculator>().As<IEfficiencyCalculator>();
             builder.RegisterType<BuffCollector>().As<IBuffCollector>();
             builder.RegisterType<ConditionService>().As<IConditionService>();
-            builder.Register(context => new RandomService()).As<IRandomService>();
-            builder.RegisterType<Calculator>().As<ICalculator>();
+            builder.Register(context => new RandomService()).As<IRandomService>().InstancePerRequest();
+            builder.RegisterType<Calculator>().As<ICalculator>().InstancePerDependency();
             builder.RegisterType<LookupService>().As<ILookupService>();
-            builder.RegisterType<CraftTable>().AsSelf();
+            builder.RegisterType<CraftTable>().AsSelf().InstancePerDependency();
             builder.RegisterType<CraftQualityCalculator>().As<ICraftQualityCalculator>();
         }
     }
