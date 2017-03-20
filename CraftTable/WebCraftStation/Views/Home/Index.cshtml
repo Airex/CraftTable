@@ -181,9 +181,15 @@
                             }
                             if (data.Abilities) {
                                 for (var i = 0; i < data.Abilities.length; i++) {
-                                    var b = $('button.action[name="' + data.Abilities[i].Name + '"] .ability-overlay');
-                                    if (data.Abilities[i].IsEnabled) b.hide();
-                                    else b.show();
+                                    var info = data.Abilities[i];
+                                    var b = $('button.action[name="' + info.Name + '"]');
+                                    var overlay = b.find('.ability-overlay');
+                                    if (info.IsEnabled) overlay.hide();
+                                    else overlay.show();
+                                    b.removeClass("highlight-action");
+                                    if (info.IsHighLigthed)
+                                        b.addClass("highlight-action");
+
                                 }
                             }
                         }

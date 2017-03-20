@@ -20,6 +20,7 @@ namespace WebCraftStation.Models
 
     public class StatsViewModel
     {
+        public int Step { get; set; }
         public int Durability { get; set; }
         public int Progress { get; set; }
         public int Quality { get; set; }

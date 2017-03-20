@@ -7,10 +7,6 @@ namespace CraftTable.Buffs
     public class ReclaimBuff:IBuff
     {
         public bool IsActive { get; } = true;
-        public void Step(IBuffActions buffActions)
-        {
-            
-        }
 
         public void Step(IBuffActionsRegistry buffActionsRegistry)
         {
@@ -24,7 +20,11 @@ namespace CraftTable.Buffs
 
         public void OnCalculate(ActionInfo info, ICalculatorBuilder calculatorBuilder)
         {
-            
+            calculatorBuilder.ForReclaimChance(action =>
+            {
+                action.Multiply(0);
+                action.Add(90);
+            });
         }
 
         

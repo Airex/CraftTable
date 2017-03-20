@@ -6,6 +6,7 @@
         public string XivDbId { get; set; }
         public bool IsEnabled { get; set; }
         public int CraftPointsCost { get; set; }
+        public bool IsHighLigthed { get; set; }
     }
 
     public class BuffViewModel

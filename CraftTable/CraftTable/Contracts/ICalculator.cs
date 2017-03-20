@@ -14,5 +14,6 @@
         int CalculateChance(int abilityChance);
         double CalculateConditionChance(Condition condition, int value);
         void Fail();
+        double CalculateReclaimChance(int reclaimChance);
     }
 }

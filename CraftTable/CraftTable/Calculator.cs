@@ -15,8 +15,9 @@ namespace CraftTable
         private ChanceActor _chance = a => { };
         private ConditionChanceActor _conditionChance = (a, b) => { };
         private RecipeLevelActor _levelActor = (a, b, c, d) => { };
+        private ReclaimChanceActor _reclaimChanceActor = (a) => { };
 
-        private bool _failed = false;
+        private bool _failed;
 
         public Calculator(IEfficiencyCalculator efficiencyCalculator, ILookupService lookupService)
         {
@@ -86,6 +87,7 @@ namespace CraftTable
             _chance = a => { };
             _conditionChance = (a, b) => { };
             _levelActor = (a, b, c, d) => { };
+            _reclaimChanceActor = (a) => { };
         }
 
         public void Fail()
@@ -93,6 +95,13 @@ namespace CraftTable
             _failed = true;
             GetBuilder().ForQuality((efficincy, control, c) => { efficincy.Multiply(0); });
             GetBuilder().ForProgress((efficincy, crafmanship, c) => { efficincy.Multiply(0); });
+        }
+
+        public double CalculateReclaimChance(int reclaimChance)
+        {
+            CalculatorActor actor = new CalculatorActor(reclaimChance);
+            _reclaimChanceActor(actor);
+            return actor.Value;
         }
 
         public int CalculateChance(int abilityChance)
@@ -136,6 +145,11 @@ namespace CraftTable
         public void ForRecipeLevel(RecipeLevelActor action)
         {
             _levelActor += action;
+        }
+
+        public void ForReclaimChance(ReclaimChanceActor action)
+        {
+            _reclaimChanceActor += action;
         }
     }
 }

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Reflection;
-using System.Web.Http;
 using System.Web.Mvc;
 using CraftTable;
+using CraftTable.Abilities;
+using CraftTable.Abilities.Specialist;
 using CraftTable.Buffs;
 using CraftTable.Contracts;
 using CraftTable.Exceptions;
@@ -28,32 +27,32 @@ namespace WebCraftStation.Controllers
         }
     }
 
-    internal class AbilityCheckCraftService:ICraftActions
+    internal class AbilityCheckCraftService : ICraftActions
     {
         public int CraftPoints { get; set; }
         public void RestoreCraftPoints(int craftPoints)
         {
-            
+
         }
 
         public void RestoreDurability(int durability)
         {
-            
+
         }
 
         public void ApplyBuff(IBuff buff)
         {
-            
+
         }
 
         public void Synth(SynthDelegate synth)
         {
-            
+
         }
 
         public void Touch(int efficiency)
         {
-            
+
         }
 
         public void UseCraftPoints(int craftPoints)
@@ -63,7 +62,7 @@ namespace WebCraftStation.Controllers
 
         public void UseDurability(int durability)
         {
-            
+
         }
 
         public T CalculateDependency<T>(CalculateDependency<T> input) where T : struct
@@ -74,7 +73,7 @@ namespace WebCraftStation.Controllers
         public int CheckAbilityCost(Ability ability)
         {
             CraftPoints = 0;
-            ability.Execute(this,true);
+            ability.Execute(this, true);
             return CraftPoints;
         }
     }
@@ -84,8 +83,8 @@ namespace WebCraftStation.Controllers
 
         private class SessionHolder
         {
-            public CraftTable.CraftTable CraftTable { get; set; } 
-            public  SiteProgressWatcher ProgressWatcher { get; set; } 
+            public CraftTable.CraftTable CraftTable { get; set; }
+            public SiteProgressWatcher ProgressWatcher { get; set; }
         }
 
         private readonly IEnumerable<Ability> _abilities;
@@ -93,7 +92,7 @@ namespace WebCraftStation.Controllers
 
         public HomeController(IEnumerable<Ability> abilities, CraftTable.CraftTable.Factory factory)
         {
-         
+
 
             _abilities = abilities;
             _factory = factory;
@@ -106,21 +105,21 @@ namespace WebCraftStation.Controllers
 
             var craftMan = new CraftMan(995, 995, 437, 60);
             var recipe = new Recipe(1968, 70, 13187, 190);
-            Crafter crafter = Crafter.BlackSmith;
+            var crafter = Crafter.GoldSmith;
 
-            
+
 
             if (Session["CraftTable"] != null)
             {
                 Session.Remove("CraftTable");
             }
 
-            SiteProgressWatcher progressWatcher = new SiteProgressWatcher();
+            var progressWatcher = new SiteProgressWatcher();
             var craftTable = _factory(recipe, craftMan, progressWatcher);
 
-             AbilityCheckCraftService abilityCheckCraftService = new AbilityCheckCraftService();
+            var abilityCheckCraftService = new AbilityCheckCraftService();
 
-            var homeViewModel = new HomeViewModel()
+            var homeViewModel = new HomeViewModel
             {
                 Abilities = _abilities.Select(ability => new AbilityViewModel()
                 {
@@ -130,7 +129,7 @@ namespace WebCraftStation.Controllers
                     CraftPointsCost = abilityCheckCraftService.CheckAbilityCost(ability)
                 }).ToList(),
             };
-            SessionHolder holder = new SessionHolder() {CraftTable = craftTable, ProgressWatcher = progressWatcher};
+            var holder = new SessionHolder { CraftTable = craftTable, ProgressWatcher = progressWatcher };
             Session.Add("CraftTable", holder);
 
             return View(homeViewModel);
@@ -142,10 +141,8 @@ namespace WebCraftStation.Controllers
             var craftMan = new CraftMan(995, 995, 437, 60);
             var recipe = new Recipe(1968, 70, 13187, 190);
 
-            string message = null;
-
             var homeViewModel = new HomeViewModel();
-          
+
             var holder = (SessionHolder)Session["CraftTable"];
             holder.ProgressWatcher.Clear();
 
@@ -158,62 +155,105 @@ namespace WebCraftStation.Controllers
                     table.Act(firstOrDefault);
                 }
             }
-            catch (CraftSuccessException ex)
+            catch (CraftSuccessException)
             {
-                message = $"Craft succeded. {(ex.IsHighQuality ? "HQ" : "NQ")} with chance {ex.Chance}";
+
             }
             catch (CraftFailedException)
             {
 
-                message = "Craft Failed.";
             }
-            catch (AbilityFailedException ex)
+            catch (AbilityFailedException)
             {
-                message = $"Ability Failed with chance {ex.Chance}.";
+
             }
             catch (AbilityNotAvailableException)
             {
-                message = $"Ability is not available.";
+
             }
             catch (CraftAlreadyFinishedException)
             {
-                message = $"Craft finished.";
+
             }
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
             }
 
+            var craftTableInfo = table.GetStatus();
+
             var model = new StatsViewModel
             {
-                Condition = table.Condition.ToString(),
-                Durability = table.Durability,
-                Progress = table.Progress,
-                Quality = table.Quality,
+                Step = craftTableInfo.Step,
+                Condition = craftTableInfo.Condition.ToString(),
+                Durability = craftTableInfo.Durability,
+                Progress = craftTableInfo.Progress,
+                Quality = craftTableInfo.Quality,
                 MaxDurability = recipe.Durability,
                 MaxProgress = recipe.Difficulty,
                 MaxQuality = recipe.MaxQuality,
-                CraftPoints = table.CraftPoints,
+                CraftPoints = craftTableInfo.CraftPoints,
                 MaxCraftPoints = craftMan.MaxCraftPoints,
-                HighQualityChance = table.HighQualityChance
+                HighQualityChance = craftTableInfo.HighQualityChance
             };
 
             homeViewModel.Stats = model;
-            homeViewModel.Abilities =
-                _abilities.Select(ability => new AbilityViewModel() {Name = ability.Name(), IsEnabled = table.CanAct(ability)}).ToList();
-            homeViewModel.Buffs = table.Buffs.Select(buff => new BuffViewModel()
+            homeViewModel.Abilities = _abilities.Select(ability => new AbilityViewModel { Name = ability.Name(), IsEnabled = table.CanAct(ability), IsHighLigthed = CheckHighLight(ability, craftTableInfo) }).ToList();
+            homeViewModel.Buffs = craftTableInfo.Buffs.Select(buff => new BuffViewModel
             {
-                Name = buff.GetType().Name,
-                Stacks = (buff as IStacks)?.Stacks ?? 0,
-                Steps = (buff as ISteps)?.Steps ?? 0,
-                XivDbId = buff.Id()
+                Name = buff.Type.Name,
+                Stacks = buff.Stacks,
+                Steps = buff.Steps,
+                XivDbId = buff.XivDb
             }).ToList();
 
             homeViewModel.Message = null;
-            homeViewModel.Logs = holder.ProgressWatcher.Logs.Select(s => new LogViewModel() {Text = s}).ToList();
+            homeViewModel.Logs = holder.ProgressWatcher.Logs.Select(s => new LogViewModel { Text = s }).ToList();
 
 
             return Json(homeViewModel);
+        }
+
+        private bool CheckHighLight(Ability ability, CraftTableInfo craftTableInfo)
+        {
+            var type = ability.GetType();
+            if (type == typeof(TricksOfTheTrade) || type == typeof(PreciseTouch))
+            {
+                return craftTableInfo.Condition.IsGoodOrExcellent();
+            }
+
+            if (type == typeof(ByregotsBlessing) || type == typeof(ByregotsMiracle))
+            {
+                return craftTableInfo.Buffs.Any(info => info.Type == typeof(InnerQuietBuff) && info.Stacks >= 2);
+            }
+
+            if (type == typeof(ByregotsBrow))
+            {
+                return craftTableInfo.Buffs.Any(info => info.Type == typeof(InnerQuietBuff) && info.Stacks >= 2) && craftTableInfo.Condition.IsGoodOrExcellent();
+            }
+
+            if (type == typeof(Satisfaction))
+            {
+                return craftTableInfo.Buffs.Any(info => info.Type == typeof(WhistleBuff) && info.Stacks % 3 == 0);
+            }
+
+            if (type == typeof(NymeiasWheel))
+            {
+                return craftTableInfo.Buffs.Any(info => info.Type == typeof(WhistleBuff) && info.Stacks > 0);
+            }
+
+            if (type == typeof(TrainedHand))
+            {
+                var innerQuiet = craftTableInfo.Buffs.FirstOrDefault(info => info.Type == typeof(InnerQuietBuff));
+                var whistles = craftTableInfo.Buffs.FirstOrDefault(info => info.Type == typeof(WhistleBuff));
+                return innerQuiet?.Stacks > 0 && whistles?.Stacks > 0 && innerQuiet.Stacks == whistles.Stacks;
+            }
+
+            if (type == typeof(MuscleMemory) || type == typeof(MakersMark))
+            {
+                return craftTableInfo.Step == 1;
+            }
+            return false;
         }
     }
 }

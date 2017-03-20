@@ -116,9 +116,11 @@
     <Compile Include="Contracts\ILookupService.cs" />
     <Compile Include="Contracts\IProgressWatcher.cs" />
     <Compile Include="CraftActors\OnSuccessActor.cs" />
+    <Compile Include="CraftActors\ReclaimChanceActor.cs" />
     <Compile Include="Crafter.cs" />
     <Compile Include="CraftQualityCalculator.cs" />
     <Compile Include="Attributes\AbilityXivDbAttribute.cs" />
+    <Compile Include="CraftTableStatus.cs" />
     <Compile Include="DefaultProgressWatcher.cs" />
     <Compile Include="Exceptions\AbilityFailedException.cs" />
     <Compile Include="Exceptions\CraftAlreadyFinishedException.cs" />

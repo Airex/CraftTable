@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
+using CraftTable.Buffs;
 using CraftTable.Contracts;
 using CraftTable.Exceptions;
 
@@ -22,11 +23,11 @@ namespace CraftTable
         private readonly IBuffCollector _buffCollector;
         private readonly ICalculator _calculator;
         private readonly ILookupService _lookupService;
-        readonly ICraftQualityCalculator _craftQualityCalculator;
-        private int _reclaimChance = 0;
-        Condition _condition;
+        private readonly ICraftQualityCalculator _craftQualityCalculator;
+        private readonly int _reclaimChance = 0;
+        private Condition _condition;
 
-        public CraftTable(IBuffCollector buffCollector, IConditionService conditionService, IRandomService randomService, ICalculator calculator, ILookupService lookupService, ICraftQualityCalculator craftQualityCalculator, 
+        public CraftTable(IBuffCollector buffCollector, IConditionService conditionService, IRandomService randomService, ICalculator calculator, ILookupService lookupService, ICraftQualityCalculator craftQualityCalculator,
             Recipe recipe, CraftMan craftMan, IProgressWatcher progressWatcher = null)
         {
             if (recipe == null) throw new ArgumentNullException(nameof(recipe));
@@ -54,16 +55,26 @@ namespace CraftTable
             _condition = _conditionService.GetCondition(_calculator);
         }
 
-        public int Step => _step;
-        public int Durability => _durability;
-        public int Progress => _progress;
-        public int Quality => _quality;
-        public int CraftPoints => _craftPointsLeft;
-        public Condition Condition => _condition;
-        public IList<IBuff> Buffs => _buffCollector.GetBuffs();
-
-        public int HighQualityChance => _craftQualityCalculator.CalculateHighQualityChance(_quality, _recipe.MaxQuality);
-
+        public CraftTableInfo GetStatus()
+        {
+            return new CraftTableInfo()
+            {
+                Condition = _condition,
+                CraftPoints = _craftPointsLeft,
+                Durability = _durability,
+                HighQualityChance = _craftQualityCalculator.CalculateHighQualityChance(_quality, _recipe.MaxQuality),
+                Progress = _progress,
+                Quality = _quality,
+                Step = _step,
+                Buffs = _buffCollector.GetBuffs().Select(buff => new BuffInfo()
+                {
+                    Type = buff.GetType(),
+                    Stacks = (buff as IStacks)?.Stacks??0,
+                    Steps = (buff as ISteps)?.Steps??0,
+                    XivDb = buff.Id()
+                }).ToArray()
+            };
+        }
 
         public void Act(Ability ability)
         {
@@ -110,11 +121,15 @@ namespace CraftTable
 
         private void Validate(bool abilityfailed, int chance)
         {
-           
+
             if (_durability == 0 && _progress < _recipe.Difficulty)
             {
                 _progressWatcher.Log("Craft failed!");
-                throw new CraftFailedException();
+                var reclaimChance = _calculator.CalculateReclaimChance(_reclaimChance);
+                var wasReclaimed = _randomService.Select(new[] { reclaimChance, double.PositiveInfinity }) == 0;
+                if (wasReclaimed)
+                    _progressWatcher.Log($"Resources were reclaimed with chance {reclaimChance}%");
+                throw new CraftFailedException(wasReclaimed);
             }
             if (_progress >= _recipe.Difficulty)
             {
@@ -165,7 +180,7 @@ namespace CraftTable
 
         public T CalculateDependency<T>(CalculateDependency<T> input) where T : struct
         {
-            return input(_buffCollector.GetBuffAccessor(), _lookupService,_recipe);
+            return input(_buffCollector.GetBuffAccessor(), _lookupService, _recipe);
         }
 
         void IBuffActions.RestoreCraftPoints(int craftPoints)
