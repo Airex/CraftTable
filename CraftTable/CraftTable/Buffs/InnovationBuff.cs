@@ -1,4 +1,5 @@
-﻿using CraftTable.Contracts;
+﻿using CraftTable.Attributes;
+using CraftTable.Contracts;
 
 namespace CraftTable.Buffs
 {
@@ -15,11 +16,6 @@ namespace CraftTable.Buffs
             {
                 control.AddPercent(50);
             });
-        }
-
-        protected override void OnStep(IBuffActions buffActions)
-        {
-            
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CraftTable.Contracts;
+﻿using CraftTable.Attributes;
+using CraftTable.Contracts;
 
 namespace CraftTable.Abilities
 {

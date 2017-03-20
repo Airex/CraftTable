@@ -13,11 +13,10 @@ namespace CraftTable.Buffs
 
         public bool IsActive => _steps > 0;
 
-        public void Step(IBuffActions buffActions)
+        public void Step(IBuffActionsRegistry buffActionsRegistry)
         {
             _steps--;
-            OnStep(buffActions);
-            
+            OnStep(buffActionsRegistry);
         }
 
         public void Kill()
@@ -27,7 +26,10 @@ namespace CraftTable.Buffs
 
         public abstract void OnCalculate(ActionInfo info, ICalculatorBuilder calculatorBuilder);
 
-        protected abstract void OnStep(IBuffActions buffActions);
+        protected virtual void OnStep(IBuffActionsRegistry buffActions)
+        {
+            
+        }
 
         public int Steps => _steps;
     }

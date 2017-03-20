@@ -1,3 +1,4 @@
+using CraftTable.Attributes;
 using CraftTable.Buffs;
 using CraftTable.Contracts;
 

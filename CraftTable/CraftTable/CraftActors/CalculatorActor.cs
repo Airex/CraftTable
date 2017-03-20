@@ -1,4 +1,5 @@
-﻿using CraftTable.Contracts;
+﻿using System;
+using CraftTable.Contracts;
 
 namespace CraftTable.CraftActors
 {

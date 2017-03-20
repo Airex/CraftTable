@@ -23,6 +23,7 @@ namespace CraftTable
         private readonly ICalculator _calculator;
         private readonly ILookupService _lookupService;
         readonly ICraftQualityCalculator _craftQualityCalculator;
+        private int _reclaimChance = 0;
         Condition _condition;
 
         public CraftTable(IBuffCollector buffCollector, IConditionService conditionService, IRandomService randomService, ICalculator calculator, ILookupService lookupService, ICraftQualityCalculator craftQualityCalculator, 
@@ -93,6 +94,7 @@ namespace CraftTable
             _progressWatcher.Log($"You use {ability} : {(isSuccess ? "Success" : "Failed")} with chance {chance}%");
             _progressWatcher.Log($" -> Ability is {_condition}");
             ability.Execute(this, !abilityfailed);
+            _buffCollector.PostAction(this);
             _condition = _conditionService.GetCondition(_calculator);
             _buffCollector.KillNotActive();
 
@@ -175,6 +177,8 @@ namespace CraftTable
 
         void IBuffActions.RestoreDurability(int durability)
         {
+            if (_durability <= 0) return;
+
             var calculated = Math.Min(_recipe.Durability - _durability, durability);
             _progressWatcher.Log($" -> Restored {calculated} durability");
             _durability += calculated;

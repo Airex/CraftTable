@@ -1,6 +1,7 @@
 ﻿using System;
 using CraftTable.Abilities;
 using CraftTable.Abilities.Specialist;
+using CraftTable.Attributes;
 using CraftTable.Contracts;
 
 namespace CraftTable.Buffs
@@ -21,9 +22,9 @@ namespace CraftTable.Buffs
         public bool IsActive { get; private set; } = true;
 
 
-        public void Step(IBuffActions buffActions)
+        public void Step(IBuffActionsRegistry buffActionsRegistry)
         {
-
+            
         }
 
         public void Kill()
@@ -65,5 +66,7 @@ namespace CraftTable.Buffs
 
             });
         }
+
+        
     }
 }

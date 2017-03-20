@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using Autofac;
+using CraftTable.Attributes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;

@@ -1,6 +1,6 @@
 using System;
 
-namespace CraftTable
+namespace CraftTable.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class BuffXivDbAttribute : Attribute

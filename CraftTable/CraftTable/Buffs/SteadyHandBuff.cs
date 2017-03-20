@@ -1,3 +1,5 @@
+using CraftTable.Attributes;
+
 namespace CraftTable.Buffs
 {
     [BuffXivDb(253)]

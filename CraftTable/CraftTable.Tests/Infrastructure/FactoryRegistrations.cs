@@ -2,7 +2,7 @@
 using Autofac;
 using CraftTable.Contracts;
 
-namespace CraftTable.Tests
+namespace CraftTable.Tests.Infrastructure
 {
     internal static class FactoryRegistrations
     {

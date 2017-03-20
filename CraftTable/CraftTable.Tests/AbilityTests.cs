@@ -3,6 +3,7 @@ using CraftTable.Abilities;
 using CraftTable.Abilities.Specialist;
 using CraftTable.Contracts;
 using CraftTable.Exceptions;
+using CraftTable.Tests.Infrastructure;
 using NUnit.Framework;
 
 namespace CraftTable.Tests

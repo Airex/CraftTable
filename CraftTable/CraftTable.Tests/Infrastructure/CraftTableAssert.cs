@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace CraftTable.Tests
+namespace CraftTable.Tests.Infrastructure
 {
     public static class CraftTableAssert
     {

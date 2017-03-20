@@ -28,6 +28,57 @@ namespace WebCraftStation.Controllers
         }
     }
 
+    internal class AbilityCheckCraftService:ICraftActions
+    {
+        public int CraftPoints { get; set; }
+        public void RestoreCraftPoints(int craftPoints)
+        {
+            
+        }
+
+        public void RestoreDurability(int durability)
+        {
+            
+        }
+
+        public void ApplyBuff(IBuff buff)
+        {
+            
+        }
+
+        public void Synth(SynthDelegate synth)
+        {
+            
+        }
+
+        public void Touch(int efficiency)
+        {
+            
+        }
+
+        public void UseCraftPoints(int craftPoints)
+        {
+            CraftPoints = craftPoints;
+        }
+
+        public void UseDurability(int durability)
+        {
+            
+        }
+
+        public T CalculateDependency<T>(CalculateDependency<T> input) where T : struct
+        {
+            return default(T);
+        }
+
+        public int CheckAbilityCost(Ability ability)
+        {
+            CraftPoints = 0;
+            ability.Execute(this,true);
+            return CraftPoints;
+        }
+    }
+
     public class HomeController : Controller
     {
 
@@ -67,9 +118,17 @@ namespace WebCraftStation.Controllers
             SiteProgressWatcher progressWatcher = new SiteProgressWatcher();
             var craftTable = _factory(recipe, craftMan, progressWatcher);
 
+             AbilityCheckCraftService abilityCheckCraftService = new AbilityCheckCraftService();
+
             var homeViewModel = new HomeViewModel()
             {
-                Abilities = _abilities.Select(ability => new AbilityViewModel() { Name = ability.Name(), XivDbId = ability.IdForCrafter(crafter), IsEnabled = craftTable.CanAct(ability) }).ToList(),
+                Abilities = _abilities.Select(ability => new AbilityViewModel()
+                {
+                    Name = ability.Name(),
+                    XivDbId = ability.IdForCrafter(crafter),
+                    IsEnabled = craftTable.CanAct(ability),
+                    CraftPointsCost = abilityCheckCraftService.CheckAbilityCost(ability)
+                }).ToList(),
             };
             SessionHolder holder = new SessionHolder() {CraftTable = craftTable, ProgressWatcher = progressWatcher};
             Session.Add("CraftTable", holder);
@@ -95,8 +154,7 @@ namespace WebCraftStation.Controllers
             {
                 if (selectedAction.AbilityName != null)
                 {
-                    var firstOrDefault =
-                        _abilities.FirstOrDefault(ability => ability.Name() == selectedAction.AbilityName);
+                    var firstOrDefault = _abilities.FirstOrDefault(ability => ability.Name() == selectedAction.AbilityName);
                     table.Act(firstOrDefault);
                 }
             }

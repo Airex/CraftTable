@@ -1,4 +1,5 @@
 ﻿using CraftTable.Abilities;
+using CraftTable.Attributes;
 using CraftTable.Contracts;
 
 namespace CraftTable.Buffs
@@ -20,9 +21,6 @@ namespace CraftTable.Buffs
 
         }
 
-        protected override void OnStep(IBuffActions buffActions)
-        {
-            
-        }
+      
     }
 }

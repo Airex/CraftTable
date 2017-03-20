@@ -1,4 +1,5 @@
-﻿using CraftTable.Buffs;
+﻿using CraftTable.Attributes;
+using CraftTable.Buffs;
 using CraftTable.Contracts;
 
 namespace CraftTable.Abilities
@@ -16,5 +17,6 @@ namespace CraftTable.Abilities
         {
             return serviceState.CraftPointsLeft >= 88;
         }
+
     }
 }

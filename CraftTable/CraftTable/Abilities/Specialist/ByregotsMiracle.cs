@@ -1,4 +1,5 @@
-﻿using CraftTable.Buffs;
+﻿using CraftTable.Attributes;
+using CraftTable.Buffs;
 using CraftTable.Contracts;
 
 namespace CraftTable.Abilities.Specialist

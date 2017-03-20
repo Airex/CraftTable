@@ -45,10 +45,5 @@ namespace CraftTable.Buffs
 
             });
         }
-
-        protected override void OnStep(IBuffActions buffActions)
-        {
-
-        }
     }
 }

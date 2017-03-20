@@ -1,6 +1,7 @@
 ﻿using System;
 using Autofac;
 using CraftTable.Contracts;
+using CraftTable.Tests.Infrastructure;
 
 namespace CraftTable.Tests
 {

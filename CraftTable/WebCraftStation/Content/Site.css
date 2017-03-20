@@ -44,3 +44,59 @@ body {
     padding: 10px;
     opacity: .8;
 }
+
+
+.highlight-action{
+    outline: 2px dashed white;
+    box-shadow: 0 0 0 2px orange;
+    animation: 2s animateBorder infinite;
+    
+
+ }
+
+@keyframes animateBorder {
+  to {
+    outline-color: orange;
+    box-shadow: 0 0 0 2px white;
+  }
+}
+
+.buff {
+    float: left;
+    height: 70px;
+    width: 25px;
+    margin-right: 5px;
+}
+
+.buff .buff-stacks {
+    height: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+.buff .buff-icon {
+    width: 25px;
+    border: 0;
+    padding: 0;
+    background-color: white;
+}
+
+.buff .buff-steps {
+    height: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+
+
+
+
+.cost {
+    margin-top: -18px;
+    color: white;
+    position: absolute;
+    text-shadow: 0 0 2px black;
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 2px;
+}

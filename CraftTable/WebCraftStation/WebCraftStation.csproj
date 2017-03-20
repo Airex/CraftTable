@@ -274,7 +274,18 @@
     <Content Include="Content\Images\status_261.png" />
     <Content Include="Content\Images\status_262.png" />
     <Content Include="Content\Images\status_878.png" />
+    <Content Include="Content\Images\status_879.png" />
     <Content Include="Content\Images\status_880.png" />
+    <Content Include="Content\tether-theme-arrows-dark.css" />
+    <Content Include="Content\tether-theme-arrows-dark.min.css" />
+    <Content Include="Content\tether-theme-arrows.css" />
+    <Content Include="Content\tether-theme-arrows.min.css" />
+    <Content Include="Content\tether-theme-basic.css" />
+    <Content Include="Content\tether-theme-basic.min.css" />
+    <Content Include="Content\tether.css" />
+    <Content Include="Scripts\tether.js" />
+    <Content Include="Content\tether.min.css" />
+    <Content Include="Scripts\tether.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\bootstrap.min.css.map" />
@@ -283,6 +294,8 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

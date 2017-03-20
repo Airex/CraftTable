@@ -5,6 +5,7 @@
         public string Name { get; set; }
         public string XivDbId { get; set; }
         public bool IsEnabled { get; set; }
+        public int CraftPointsCost { get; set; }
     }
 
     public class BuffViewModel

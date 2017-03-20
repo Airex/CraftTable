@@ -1,4 +1,6 @@
-﻿namespace CraftTable.Buffs
+﻿using CraftTable.Attributes;
+
+namespace CraftTable.Buffs
 {
     [BuffXivDb(257)]
     public class WasteNot2Buff : WasteNotBuffBase

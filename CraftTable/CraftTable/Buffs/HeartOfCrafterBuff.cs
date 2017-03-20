@@ -1,7 +1,9 @@
-﻿using CraftTable.Contracts;
+﻿using CraftTable.Attributes;
+using CraftTable.Contracts;
 
 namespace CraftTable.Buffs
 {
+    [BuffXivDb(879)]
     public class HeartOfCrafterBuff:StepsBasedBuff
     {
         public HeartOfCrafterBuff() : base(7)
@@ -15,11 +17,6 @@ namespace CraftTable.Buffs
                 if (condition == Condition.Good)
                     chance.Add(0); // todo: get correct value for increase
             });
-        }
-
-        protected override void OnStep(IBuffActions buffActions)
-        {
-            
         }
     }
 }

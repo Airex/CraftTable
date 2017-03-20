@@ -1,5 +1,6 @@
 ﻿using System;
 using CraftTable.Abilities.Specialist;
+using CraftTable.Attributes;
 using CraftTable.Contracts;
 
 namespace CraftTable.Buffs
@@ -15,20 +16,27 @@ namespace CraftTable.Buffs
 
         public void Step(IBuffActions buffActions)
         {
-            if (_afterSatisfaction != null)
-            {
-                _afterSatisfaction();
-                _afterSatisfaction = null;
-            }
-            
-            if (_stacks == 0)
-            {
-                var craftActions = buffActions as ICraftActions;
-                //todo implement   Finishing touch
-            }
+           
         }
 
         public int Stacks => _stacks;
+
+        public void Step(IBuffActionsRegistry buffActionsRegistry)
+        {
+            buffActionsRegistry.RegisterPostAbility(actions =>
+            {
+                if (_afterSatisfaction != null)
+                {
+                    _afterSatisfaction();
+                    _afterSatisfaction = null;
+                }
+
+                if (_stacks == 0)
+                {
+                    //todo implement   Finishing touch
+                }
+            });
+        }
 
         public void Kill()
         {
@@ -53,6 +61,8 @@ namespace CraftTable.Buffs
                 _stacks--;
             }
         }
+
+        
     }
 
 

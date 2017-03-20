@@ -1,4 +1,5 @@
-﻿using CraftTable.Contracts;
+﻿using CraftTable.Attributes;
+using CraftTable.Contracts;
 
 namespace CraftTable.Buffs
 {
@@ -7,6 +8,11 @@ namespace CraftTable.Buffs
     {
         public bool IsActive { get; } = true;
         public void Step(IBuffActions buffActions)
+        {
+            
+        }
+
+        public void Step(IBuffActionsRegistry buffActionsRegistry)
         {
             
         }
@@ -20,5 +26,7 @@ namespace CraftTable.Buffs
         {
             
         }
+
+        
     }
 }

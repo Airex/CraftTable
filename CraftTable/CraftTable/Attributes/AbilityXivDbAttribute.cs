@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CraftTable
+namespace CraftTable.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class AbilityXivDbAttribute : Attribute

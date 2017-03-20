@@ -1,6 +1,6 @@
 ﻿using Autofac;
 
-namespace CraftTable.Tests
+namespace CraftTable.Tests.Infrastructure
 {
     internal class FactoryRegistry : IFactoryRegistry
     {

@@ -10,5 +10,6 @@ namespace CraftTable.Contracts
         void KillNotActive();
         IBuffAccessor GetBuffAccessor();
         IList<IBuff> GetBuffs();
+        void PostAction(IBuffActions craftTable);
     }
 }

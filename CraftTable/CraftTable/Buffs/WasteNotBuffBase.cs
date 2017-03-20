@@ -15,10 +15,5 @@ namespace CraftTable.Buffs
                 durability.AddPercent(-50);
             });
         }
-
-        protected override void OnStep(IBuffActions buffActions)
-        {
-            
-        }
     }
 }

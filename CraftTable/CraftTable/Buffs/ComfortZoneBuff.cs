@@ -1,3 +1,4 @@
+using CraftTable.Attributes;
 using CraftTable.Contracts;
 
 namespace CraftTable.Buffs
@@ -9,9 +10,13 @@ namespace CraftTable.Buffs
         {
         }
 
-        protected override void OnStep(IBuffActions buffActions)
+        protected override void OnStep(IBuffActionsRegistry buffActions)
         {
-            buffActions.RestoreCraftPoints(8);
+            buffActions.RegisterPreAbility(actions =>
+            {
+                actions.RestoreCraftPoints(8);
+            });
+            
         }
 
         public override void OnCalculate(ActionInfo info, ICalculatorBuilder calculatorBuilder)

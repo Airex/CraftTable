@@ -1,4 +1,5 @@
-﻿using CraftTable.Contracts;
+﻿using CraftTable.Attributes;
+using CraftTable.Contracts;
 
 namespace CraftTable.Buffs
 {
@@ -9,17 +10,12 @@ namespace CraftTable.Buffs
         {
         }
 
-        protected override void OnStep(IBuffActions buffActions)
-        {
-
-        }
-
         public override void OnCalculate(ActionInfo info, ICalculatorBuilder calculatorBuilder)
         {
             calculatorBuilder.ForQuality((efficiency, control, s) =>
             {
                 efficiency.Multiply(2);
-                Kill();
+                if (s) Kill();
             });
         }
     }
