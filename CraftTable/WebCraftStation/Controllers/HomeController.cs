@@ -53,14 +53,11 @@ namespace WebCraftStation.Controllers
         {
             ViewBag.Title = "Home Page";
 
-            var craftMan = new CraftMan(788, 851, 346, 60);
-            var recipe = new Recipe(478, 60, 3140, 150);
+            var craftMan = new CraftMan(995, 995, 437, 60);
+            var recipe = new Recipe(1968, 70, 13187, 190);
             Crafter crafter = Crafter.BlackSmith;
 
-            var homeViewModel = new HomeViewModel()
-            {
-                Abilities = _abilities.Select(ability => new AbilityViewModel() {Name = ability.Name(), XivDbId = ability.IdForCrafter(crafter)}).ToList(),
-            };
+            
 
             if (Session["CraftTable"] != null)
             {
@@ -69,6 +66,11 @@ namespace WebCraftStation.Controllers
 
             SiteProgressWatcher progressWatcher = new SiteProgressWatcher();
             var craftTable = _factory(recipe, craftMan, progressWatcher);
+
+            var homeViewModel = new HomeViewModel()
+            {
+                Abilities = _abilities.Select(ability => new AbilityViewModel() { Name = ability.Name(), XivDbId = ability.IdForCrafter(crafter), IsEnabled = craftTable.CanAct(ability) }).ToList(),
+            };
             SessionHolder holder = new SessionHolder() {CraftTable = craftTable, ProgressWatcher = progressWatcher};
             Session.Add("CraftTable", holder);
 
@@ -78,8 +80,8 @@ namespace WebCraftStation.Controllers
         [System.Web.Mvc.HttpPost]
         public ActionResult Act(AbilityModel selectedAction)
         {
-            var craftMan = new CraftMan(788, 851, 346, 60);
-            var recipe = new Recipe(478, 60, 3140, 150);
+            var craftMan = new CraftMan(995, 995, 437, 60);
+            var recipe = new Recipe(1968, 70, 13187, 190);
 
             string message = null;
 
@@ -139,6 +141,8 @@ namespace WebCraftStation.Controllers
             };
 
             homeViewModel.Stats = model;
+            homeViewModel.Abilities =
+                _abilities.Select(ability => new AbilityViewModel() {Name = ability.Name(), IsEnabled = table.CanAct(ability)}).ToList();
             homeViewModel.Buffs = table.Buffs.Select(buff => new BuffViewModel()
             {
                 Name = buff.GetType().Name,

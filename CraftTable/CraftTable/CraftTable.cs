@@ -90,13 +90,20 @@ namespace CraftTable
                 abilityfailed = true;
                 _calculator.Fail();
             }
-            _progressWatcher.Log($"You use {ability} : {(isSuccess ? "Success" : "Failed")} with chance {chance}");
-            _progressWatcher.Log($" -> Condition is {_condition}");
+            _progressWatcher.Log($"You use {ability} : {(isSuccess ? "Success" : "Failed")} with chance {chance}%");
+            _progressWatcher.Log($" -> Ability is {_condition}");
             ability.Execute(this, !abilityfailed);
             _condition = _conditionService.GetCondition(_calculator);
             _buffCollector.KillNotActive();
 
             Validate(abilityfailed, chance);
+        }
+
+        public bool CanAct(Ability ability)
+        {
+            if (_durability <= 0 || _progress >= _recipe.Difficulty) return false;
+            var craftServiceState = new CraftServiceState(_condition, _craftPointsLeft, _step, _buffCollector.GetBuffAccessor());
+            return ability.CanAct(craftServiceState);
         }
 
         private void Validate(bool abilityfailed, int chance)
@@ -111,7 +118,7 @@ namespace CraftTable
             {
                 var hqChance = _craftQualityCalculator.CalculateHighQualityChance(_quality, _recipe.MaxQuality);
                 var isHighQuality = _randomService.Select(new[] { hqChance, double.PositiveInfinity }) == 0;
-                _progressWatcher.Log($"Craft successful. {(isHighQuality ? "HQ" : "NQ")} with chance {hqChance}");
+                _progressWatcher.Log($"Craft successful. {(isHighQuality ? "HQ" : "NQ")} with chance {hqChance}%");
                 throw new CraftSuccessException(isHighQuality, hqChance);
             }
 

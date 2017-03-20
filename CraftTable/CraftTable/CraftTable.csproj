@@ -95,11 +95,6 @@
     <Compile Include="Abilities\WasteNot2.cs" />
     <Compile Include="Ability.cs" />
     <Compile Include="AbilityDescriptorAttribute.cs" />
-    <Compile Include="AbilityIcon.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AbilityIcon.resx</DependentUpon>
-    </Compile>
     <Compile Include="Buffs\HeartOfCrafterBuff.cs" />
     <Compile Include="Buffs\Ingenuity2Buff.cs" />
     <Compile Include="Buffs\IngenuityBuff.cs" />
@@ -177,12 +172,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="AbilityIcon.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>AbilityIcon.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Manipulation.png" />

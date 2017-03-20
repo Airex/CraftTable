@@ -1,5 +1,3 @@
-using System.Data.Odbc;
-using Autofac;
 using CraftTable.Contracts;
 
 namespace CraftTable

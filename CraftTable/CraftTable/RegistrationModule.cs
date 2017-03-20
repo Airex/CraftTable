@@ -3,6 +3,7 @@ using CraftTable.Contracts;
 
 namespace CraftTable
 {
+
     public class RegistrationModule : Module
     {
         protected override void Load(ContainerBuilder builder)

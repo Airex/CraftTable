@@ -6,7 +6,7 @@
     <div style="float: left; height: 75px; width: 30px;">
         <div style="height: 20px; padding-left: 5px; width: 30px;">{%if Stacks > 0%} ${Stacks} {%/if%}</div>
         <div data-tooltip-id="status/${XivDbId}" style="background-color: white; border: 0; height: 30px; padding: 0; width: 30px;" name="${Name}">
-            <img src ="Content/Images/status_${XivDbId}.png"/>
+            <img src="@Url.Content("~/Content/Images/")status_${XivDbId}.png" />
         </div>
         <div style="height: 30px; padding-left: 5px; width: 30px;">{%if Steps > 0%} ${Steps} {%/if%}</div>
     </div>
@@ -18,11 +18,29 @@
     </div>
 </script>
 
-<div class="container" style="margin-top: 15px;">
-    <button class="btn btn-default" id="resetButton" type="button" value="Reset">Reset</button>
+
+
+<div class="col-md-12" style="margin-top: 15px;">
+    <button class="btn btn-danger" id="resetButton" type="button" value="Reset">Reset</button>
+    <button class="btn btn-default" id="settingsButton" type="button" value="Settings"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</button>
 </div>
-<hr/>
-<div class="container">
+
+<hr style="margin-bottom: 0px;" />
+
+<div class="col-md-12" id="settings" style="margin-top: 15px; display: none;">
+    <div>
+        SomeSettings
+    </div>
+    <div>
+        <button class="btn btn-danger" id="settingsSaveButton" type="button" value="Reset">Save</button>
+        <button class="btn btn-danger" id="settingsDiscardButton" type="button" value="Reset">Discard</button>
+    </div>
+
+    <hr />
+</div>
+
+
+<div class="col-md-12">
     <div class="col-md-7">
         @Html.Partial("Stats")
     </div>
@@ -35,15 +53,16 @@
 
 </div>
 
-<div class="container" id="message-container" style="display: none;">
-    <span id="message" style="color: red;">
-    </span>
+
+<div class="col-md-12" id="message-container" style="display: none;">
+    <span id="message" style="color: red;"></span>
 </div>
+
 
 <div id="tempBuffContainer" style="display: none; visibility: hidden;">
 </div>
 
-
+<div class="container"></div>
 
 <div class="container">
     <div class="col-md-12">
@@ -51,18 +70,19 @@
         </div>
     </div>
 </div>
-<hr />
+<hr style="margin-top: 0px;" />
 <div class="container">
     <div class="col-md-12">
         @foreach (var a in Model.Abilities)
             {
             <div style="float: left; height: 50px; width: 50px;">
-                <div class="abilityContainer">
-                    <button class="action" data-xivdb-key="xivdb_action_@a.XivDbId" data-xivdb-isset="1" style="border: 0; height: 40px; padding: 0; width: 40px;" name="@a.Name">
-                        <img src="Content/Images/action_@(a.XivDbId).png"/>
-                    </button>
-                </div>
-                <div class="ability-overlay"></div>
+
+                <button class="action" data-xivdb-key="xivdb_action_@a.XivDbId" data-xivdb-isset="1" style="border: 0; height: 40px; padding: 0; width: 40px;" name="@a.Name">
+                    <img src="@Url.Content("~/Content/Images/")action_@(a.XivDbId).png" />
+                    <div class="ability-overlay"></div>
+                </button>
+
+
             </div>
         }
     </div>
@@ -123,7 +143,6 @@
             event_tooltipsLoaded: function () {
                 $('#buffs').html($('#tempBuffContainer').html());
                 window.locko = false;
-                $('.ability-overlay').hide();
             }
         };
         $(function () {
@@ -161,11 +180,18 @@
                                 $('#logTemplate').tmpl(data.Logs).appendTo($('#log'));
                                 $("#log")[0].scrollTop = $("#log")[0].scrollHeight;
                             }
+                            if (data.Abilities) {
+                                for (var i = 0; i < data.Abilities.length; i++) {
+                                    var b = $('button.action[name="' + data.Abilities[i].Name + '"] .ability-overlay');
+                                    if (data.Abilities[i].IsEnabled) b.hide();
+                                    else b.show();
+                                }
+                            }
                         }
 
                         if (data.Buffs.length === 0) {
                             window.locko = false;
-                            $('.ability-overlay').hide();
+                            
                         }
 
 
@@ -182,7 +208,15 @@
                         handler(null, null, null, null, null, true);
                     });
                 });
+            $("#settingsButton").on("click",
+                function() {
+                    $("#settings").toggle(800);
+                });
 
+            $("#settingsDiscardButton").on("click",
+               function() {
+                   $("#settings").hide(800);
+               });
             handler(null, null, null, null, null, true);
         });
 

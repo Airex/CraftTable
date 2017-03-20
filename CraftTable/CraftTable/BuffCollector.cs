@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using CraftTable.Contracts;
+using System.Collections.Generic;
 using System.Linq;
-using CraftTable.Contracts;
 
 namespace CraftTable
 {

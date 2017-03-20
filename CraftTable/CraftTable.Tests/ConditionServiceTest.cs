@@ -38,10 +38,36 @@ namespace CraftTable.Tests
                 group c by c
                 into g
                 select new {Condition = g.Key, Count = g.Count(), Percent = (double) g.Count() / conditions.Count};
-            Console.WriteLine($"Condition: \t Count \t\t %");
+            Console.WriteLine($"Ability: \t Count \t\t %");
             foreach (var c in a.OrderBy(arg => arg.Condition))
             {
                 Console.WriteLine($"{c.Condition}\t\t {c.Count} \t\t {c.Percent*100}");
+            }
+        }
+
+        [Test]
+        public void AbilityDistributionTest()
+        {
+            Random random = new Random();
+
+            int abilitiesCount = 13;
+
+            IList<int> list = new List<int>();
+
+            for (var i = 0; i < 1000000; i++)
+            {
+                var nextDouble = random.NextDouble();
+                list.Add( Math.Min((int)(nextDouble*abilitiesCount),abilitiesCount-1));
+            }
+
+            var a = from c in list
+                    group c by c
+                into g
+                    select new { Ability = g.Key, Count = g.Count(), Percent = (double)g.Count() / list.Count };
+            Console.WriteLine($"Ability: \t Count \t\t %");
+            foreach (var c in a.OrderBy(arg => arg.Ability))
+            {
+                Console.WriteLine($"{c.Ability}\t\t {c.Count} \t\t {c.Percent * 100}");
             }
         }
     }
