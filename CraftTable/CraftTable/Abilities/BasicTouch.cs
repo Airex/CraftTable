@@ -11,6 +11,7 @@ namespace CraftTable.Abilities
     [AbilityXivDb(Crafter.Armorer, 100031)]
     [AbilityXivDb(Crafter.BlackSmith, 100016)]
     [AbilityXivDb(Crafter.Carpenter, 100002)]
+    [AbilityDescriptor("Basic touch", Crafter.All, 18, false, Category.Quality, 0)]
     public class BasicTouch : Ability
     {
         public override void Execute(ICraftActions craftActions, bool isSuccess)

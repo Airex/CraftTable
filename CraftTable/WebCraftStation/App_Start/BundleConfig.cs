@@ -23,7 +23,9 @@ namespace WebCraftStation
                 .Include(
                 "~/Scripts/tether.js",
                 "~/Scripts/bootstrap.js",
-                "~/Scripts/respond.js"
+                "~/Scripts/respond.js",
+                "~/Scripts/tooltips.js"
+
                 ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

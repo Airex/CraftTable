@@ -5,7 +5,7 @@ namespace CraftTable.Buffs
     [BuffXivDb(255)]
     public class IngenuityBuff : IngenuityBuffBase
     {
-        public IngenuityBuff(int power) : base(power)
+        public IngenuityBuff() : base(1)
         {
         }
     }

@@ -4,6 +4,7 @@ using CraftTable.Contracts;
 namespace CraftTable.Abilities
 {
     [AbilityXivDb(Crafter.All, 100108)]
+    [AbilityDescriptor("Hasty touch", Crafter.Culinarian, 0, true, Category.Quality, 3)]
     public class HastyTouch:Ability
     {
         

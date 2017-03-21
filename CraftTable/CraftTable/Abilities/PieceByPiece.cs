@@ -4,6 +4,7 @@ using CraftTable.Contracts;
 namespace CraftTable.Abilities
 {
     [AbilityXivDb(Crafter.All, 100039)]
+    [AbilityDescriptor("Piece by piece", Crafter.Armorer, 15, true, Category.Synhtesis, 5)]
     public class PieceByPiece:Ability
     {
         public override void Execute(ICraftActions craftActions, bool isSuccess)

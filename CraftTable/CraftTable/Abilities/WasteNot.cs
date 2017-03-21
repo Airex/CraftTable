@@ -5,6 +5,7 @@ using CraftTable.Contracts;
 namespace CraftTable.Abilities
 {
     [AbilityXivDb(Crafter.All, 279)]
+    [AbilityDescriptor("Waste not", Crafter.Leatherworker, 56, true, Category.Durability, 2)]
     public class WasteNot : Ability 
     {
         public override void Execute(ICraftActions craftActions, bool isSuccess)

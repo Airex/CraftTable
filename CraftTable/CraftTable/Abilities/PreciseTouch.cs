@@ -11,6 +11,7 @@ namespace CraftTable.Abilities
     [AbilityXivDb(Crafter.Armorer, 100030)]
     [AbilityXivDb(Crafter.BlackSmith, 100129)]
     [AbilityXivDb(Crafter.Carpenter, 100128)]
+    [AbilityDescriptor("Precise touch", Crafter.All, 18, false, Category.Quality, 6)]
     public class PreciseTouch:Ability
     {
         public override int Chance { get; } = 70;

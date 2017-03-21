@@ -5,6 +5,7 @@ using CraftTable.Contracts;
 namespace CraftTable.Abilities.Specialist
 {
     [AbilityXivDb(Crafter.All, 100160)]
+    [AbilityDescriptor("Nymeria's wheel", Crafter.All, 18, false, Category.Specialist, 3)]
     public class NymeiasWheel : Ability
     {
         public override void Execute(ICraftActions craftActions, bool isSuccess)

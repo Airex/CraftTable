@@ -121,12 +121,18 @@ namespace WebCraftStation.Controllers
 
             var homeViewModel = new HomeViewModel
             {
-                Abilities = _abilities.Select(ability => new AbilityViewModel()
+                Abilities = _abilities.Select(ability =>
                 {
-                    Name = ability.Name(),
-                    XivDbId = ability.IdForCrafter(crafter),
-                    IsEnabled = craftTable.CanAct(ability),
-                    CraftPointsCost = abilityCheckCraftService.CheckAbilityCost(ability)
+                    var abilityDescriptorAttribute = ability.AbilityDescriptor();
+                    return new AbilityViewModel()
+                    {
+                        Name = ability.Name(),
+                        XivDbId = ability.IdForCrafter(crafter),
+                        IsEnabled = craftTable.CanAct(ability),
+                        CraftPointsCost = abilityCheckCraftService.CheckAbilityCost(ability),
+                        Category = abilityDescriptorAttribute.Category.ToString(),
+                        Order = abilityDescriptorAttribute.Order
+                    };
                 }).ToList(),
             };
             var holder = new SessionHolder { CraftTable = craftTable, ProgressWatcher = progressWatcher };
@@ -198,7 +204,10 @@ namespace WebCraftStation.Controllers
             };
 
             homeViewModel.Stats = model;
-            homeViewModel.Abilities = _abilities.Select(ability => new AbilityViewModel { Name = ability.Name(), IsEnabled = table.CanAct(ability), IsHighLigthed = CheckHighLight(ability, craftTableInfo) }).ToList();
+            homeViewModel.Abilities = _abilities.Select(ability => new AbilityViewModel
+            {
+                Name = ability.Name(), IsEnabled = table.CanAct(ability), IsHighLigthed = CheckHighLight(ability, craftTableInfo)
+            }).ToList();
             homeViewModel.Buffs = craftTableInfo.Buffs.Select(buff => new BuffViewModel
             {
                 Name = buff.Type.Name,

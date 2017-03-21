@@ -5,6 +5,7 @@ using CraftTable.Contracts;
 namespace CraftTable.Abilities
 {
     [AbilityXivDb(Crafter.All, 259)]
+    [AbilityDescriptor("Inner quiet", Crafter.All, 18, false, Category.Buffs, 0)]
     public class InnerQuiet : Ability
     {
         public override void Execute(ICraftActions craftActions, bool isSuccess)

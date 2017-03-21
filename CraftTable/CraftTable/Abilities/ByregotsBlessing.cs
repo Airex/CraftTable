@@ -5,6 +5,7 @@ using CraftTable.Contracts;
 namespace CraftTable.Abilities
 {
     [AbilityXivDb(Crafter.All, 100009)]
+    [AbilityDescriptor("Byregot's blessing", Crafter.Carpenter, 24, true, Category.Quality, 4)]
     public class ByregotsBlessing : Ability
     {
         public override void Execute(ICraftActions craftActions, bool isSuccess)

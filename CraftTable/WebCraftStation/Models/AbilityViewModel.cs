@@ -7,6 +7,8 @@
         public bool IsEnabled { get; set; }
         public int CraftPointsCost { get; set; }
         public bool IsHighLigthed { get; set; }
+        public string Category { get; set; }
+        public int Order { get; set; }
     }
 
     public class BuffViewModel

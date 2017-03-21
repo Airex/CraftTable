@@ -5,6 +5,7 @@ using CraftTable.Contracts;
 namespace CraftTable.Abilities
 {
     [AbilityXivDb(Crafter.All, 100083)]
+    [AbilityDescriptor("Flawless synthesis", Crafter.GoldSmith, 15, true, Category.Synhtesis, 2)]
     public class FlawlessSynthesis : Ability
     {
         public override void Execute(ICraftActions craftActions, bool isSuccess)

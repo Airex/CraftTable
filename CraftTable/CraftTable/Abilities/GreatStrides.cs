@@ -5,6 +5,7 @@ using CraftTable.Contracts;
 namespace CraftTable.Abilities
 {
     [AbilityXivDb(Crafter.All, 267)]
+    [AbilityDescriptor("Great strides", Crafter.All, 32, false, Category.Buffs, 5)]
     public class GreatStrides : Ability
     {
         public override void Execute(ICraftActions craftActions, bool isSuccess)

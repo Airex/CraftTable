@@ -4,6 +4,7 @@ using CraftTable.Contracts;
 namespace CraftTable.Abilities
 {
     [AbilityXivDb(Crafter.All, 100110)]
+    [AbilityDescriptor("Master's mend II", Crafter.All, 160, false, Category.Durability, 1)]
     public class MastersMend2 : Ability
     {
         public override void Execute(ICraftActions craftActions, bool isSuccess)

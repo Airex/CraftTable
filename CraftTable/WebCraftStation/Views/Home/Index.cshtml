@@ -1,4 +1,5 @@
-﻿@using WebCraftStation.Models
+﻿@using CraftTable.Attributes
+@using WebCraftStation.Models
 @model HomeViewModel
 
 
@@ -71,19 +72,31 @@
 
 <div class="row">
     <div class="col-md-12">
-        @foreach (var a in Model.Abilities)
-            {
-            <div class="ability-container">
+        @foreach (var cat in new[] { Category.Synhtesis, Category.Durability, Category.Quality, Category.CP, Category.Other, Category.Buffs, Category.Specialist })
+        {
+            <div class="category-container">
+                <div class="ability-category">
+                    <span class="category-head">@cat</span>
+                </div>
+                <div class="abilities-in-category">
+                    @foreach (var a in Model.Abilities.Where(model => model.Category == cat.ToString()).OrderBy(model => model.Order))
+                    {
+                        <div class="ability-container">
 
-                <button class="action" data-xivdb-key="xivdb_action_@a.XivDbId" data-xivdb-isset="1" style="border: 0; height: 40px; padding: 0; width: 40px;" name="@a.Name">
-                    <img src="@Url.Content("~/Content/Images/")action_@(a.XivDbId).png" />
-                    <div class="cost">@(a.CraftPointsCost > 0?a.CraftPointsCost.ToString():"")</div>
-                    <div class="ability-overlay"></div>
-                </button>
-
-
+                            <div class="action" data-xivdb-key="xivdb_action_@a.XivDbId" data-xivdb-isset="1" style="border: 0; height: 40px; padding: 0; width: 40px;" action-name="@a.Name">
+                                <img src="@Url.Content("~/Content/Images/")action_@(a.XivDbId).png" />
+                                <div class="cost">@(a.CraftPointsCost > 0 ? a.CraftPointsCost.ToString() : "")</div>
+                                <div class="ability-overlay"></div>
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
         }
+        <div class="hint">
+            <span>*hold Ctrl key for popup info</span>
+        </div>
+        
     </div>
 </div>
 
@@ -153,7 +166,7 @@
                 $('.ability-overlay').show();
                 if (e) e.preventDefault();
                 $.post('@Url.Action("Act", "Home")',
-                    { Abilityname: d === true ? null : $(this)[0].name },
+                    { Abilityname: d === true ? null : $(this).parent(".action").attr('action-name') },
                     function (data) {
                         if (data) {
                             if (data.Stats) {
@@ -182,10 +195,12 @@
                             if (data.Abilities) {
                                 for (var i = 0; i < data.Abilities.length; i++) {
                                     var info = data.Abilities[i];
-                                    var b = $('.action[name="' + info.Name + '"]');
+                                    var b = $('.action[action-name="' + info.Name + '"]');
+
                                     var overlay = b.find('.ability-overlay');
                                     if (info.IsEnabled) overlay.hide();
                                     else overlay.show();
+
                                     b.removeClass("highlight-action");
                                     if (info.IsHighLigthed)
                                         b.addClass("highlight-action");
@@ -196,7 +211,6 @@
 
                         if (data.Buffs.length === 0) {
                             window.locko = false;
-                            
                         }
 
 
@@ -204,7 +218,7 @@
                 return false;
             };
 
-            $(".action").on("click", handler);
+            $(".action img").on("click", handler);
             $("#resetButton").on("click",
                 function() {
                     $("#log").empty();
@@ -226,5 +240,5 @@
         });
 
     </script>
-    <script src="https://secure.xivdb.com/tooltips.js"></script>
+    
 }

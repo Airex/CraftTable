@@ -4,6 +4,7 @@ using CraftTable.Contracts;
 namespace CraftTable.Abilities
 {
     [AbilityXivDb(Crafter.All, 100063)]
+    [AbilityDescriptor("Careful synthesis", Crafter.Weaver, 0, true, Category.Synhtesis, 3)]
     public class CarefulSynthesis : Ability
     {
         public override void Execute(ICraftActions craftActions, bool isSuccess)

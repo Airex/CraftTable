@@ -5,6 +5,7 @@ using CraftTable.Contracts;
 namespace CraftTable.Abilities.Specialist
 {
     [AbilityXivDb(Crafter.All,100152 )]
+    [AbilityDescriptor("Byregot's miracle",Crafter.All, 16,false,Category.Specialist, 4)]
     public class ByregotsMiracle : Ability
     {
         public override int Chance { get; } = 70;

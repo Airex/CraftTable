@@ -4,6 +4,7 @@ using CraftTable.Contracts;
 namespace CraftTable.Abilities
 {
     [AbilityXivDb(Crafter.All, 100136)]
+    [AbilityDescriptor("Muscle memory", Crafter.Culinarian, 6, true, Category.Synhtesis, 7)]
     public class MuscleMemory : Ability
     {
         public override void Execute(ICraftActions craftActions, bool isSuccess)

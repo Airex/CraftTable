@@ -6,6 +6,7 @@ using CraftTable.Contracts;
 namespace CraftTable.Abilities
 {
     [AbilityXivDb(Crafter.All, 276 )]
+    [AbilityDescriptor("Rumination", Crafter.Carpenter, 0, true, Category.CP, 1)]
     public class Rumination:Ability
     {
         public override void Execute(ICraftActions craftActions, bool isSuccess)

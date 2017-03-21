@@ -5,6 +5,7 @@ using CraftTable.Contracts;
 namespace CraftTable.Abilities.Specialist
 {
     [AbilityXivDb(Crafter.All, 100168)]
+    [AbilityDescriptor("Trained hand", Crafter.All, 32, false, Category.Specialist, 5)]
     public class TrainedHand : Ability
     {
         public override int Chance { get; } = 90;

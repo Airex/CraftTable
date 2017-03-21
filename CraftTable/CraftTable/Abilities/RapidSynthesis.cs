@@ -4,6 +4,7 @@ using CraftTable.Contracts;
 namespace CraftTable.Abilities
 {
     [AbilityXivDb(Crafter.All, 100033)]
+    [AbilityDescriptor("Rapid synthesis", Crafter.Armorer, 0, true, Category.Synhtesis, 6)]
     public class RapidSynthesis:Ability
     {
         public override int Chance { get; } = 50;

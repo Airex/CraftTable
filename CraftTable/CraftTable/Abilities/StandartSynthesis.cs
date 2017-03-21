@@ -11,6 +11,7 @@ namespace CraftTable.Abilities
     [AbilityXivDb(Crafter.Armorer, 100037)]
     [AbilityXivDb(Crafter.BlackSmith, 100021)]
     [AbilityXivDb(Crafter.Carpenter, 100007)]
+    [AbilityDescriptor("Standard synthesis", Crafter.All, 0, false, Category.Synhtesis, 1)]
     public class StandartSynthesis : Ability
     {
         public override int Chance { get; } = 90;

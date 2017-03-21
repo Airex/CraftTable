@@ -29,6 +29,16 @@ namespace CraftTable
             return builder.ToString();
         }
 
+        public static AbilityDescriptorAttribute AbilityDescriptor(this Ability ability)
+        {
+            var descriptor = ability.GetType()
+                .GetCustomAttributes(typeof(AbilityDescriptorAttribute), false).Cast<AbilityDescriptorAttribute>()
+                .SingleOrDefault();
+            return descriptor;
+        }
+
+
+
         public static string IdForCrafter(this Ability ability, Crafter crafter)
         {
             var descriptor = ability.GetType()
