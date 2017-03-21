@@ -1,0 +1,9 @@
+﻿<script id="anilityTemplate" type="text/x-jquery-tmpl">
+    <div class="ability-container">
+        <button class="action" data-xivdb-key="xivdb_action_${XivDbId}" data-xivdb-isset="1" style="border: 0; height: 40px; padding: 0; width: 40px;" name="${Name}">
+            <img src="@Url.Content("~/Content/Images/")action_${XivDbId}.png" />
+            <div class="cost">${if CraftPointsCost > 0} ${CraftPointsCost} {/if}</div>
+            <div class="ability-overlay"></div>
+        </button>
+    </div>    
+</script>

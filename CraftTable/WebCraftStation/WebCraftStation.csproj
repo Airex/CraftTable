@@ -283,6 +283,14 @@
     <Content Include="Content\tether-theme-basic.css" />
     <Content Include="Content\tether-theme-basic.min.css" />
     <Content Include="Content\tether.css" />
+    <Content Include="Content\jquery-ui.css" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Content\jquery-ui.min.css" />
+    <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Content\jquery-ui.structure.css" />
+    <Content Include="Content\jquery-ui.structure.min.css" />
+    <Content Include="Content\jquery-ui.theme.css" />
+    <Content Include="Content\jquery-ui.theme.min.css" />
     <Content Include="Scripts\tether.js" />
     <Content Include="Content\tether.min.css" />
     <Content Include="Scripts\tether.min.js" />
@@ -332,6 +340,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Stats.cshtml" />
     <Content Include="Views\ApiTest\Index.cshtml" />
+    <Content Include="Views\Shared\Abilities.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

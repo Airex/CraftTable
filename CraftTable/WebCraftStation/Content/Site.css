@@ -43,21 +43,22 @@ body {
     left: 0px;
     padding: 10px;
     opacity: .8;
+    border-radius: 5px;
 }
 
 
 .highlight-action{
-    outline: 2px dashed white;
-    box-shadow: 0 0 0 2px orange;
-    animation: 2s animateBorder infinite;
+/*    outline: 2px dashed white;*/
+    box-shadow: 0 0 0 2px black;
+    animation: 1s animateBorder infinite;
     
 
  }
 
 @keyframes animateBorder {
   to {
-    outline-color: orange;
-    box-shadow: 0 0 0 2px white;
+/*    outline-color: orange;*/
+      box-shadow: 0 0 0 3px coral;
   }
 }
 
@@ -87,16 +88,45 @@ body {
     text-align: center;
 }
 
-
-
-
-
 .cost {
-    margin-top: -18px;
+    margin-top: -15px;
     color: white;
     position: absolute;
-    text-shadow: 0 0 2px black;
-    font-size: 14px;
+    text-shadow: #000 0px 0px 2px, #000 0px 0px 2px, #000 0px 0px 2px, #000 0px 0px 2px, #000 0px 0px 2px, #000 0px 0px 2px;
+    font-size: 12px;
     font-weight: 600;
     margin-left: 2px;
+}
+
+.log {
+    overflow-y: auto;
+    width: 100%;
+    height: 184px;
+    overflow-x: hidden;
+    font-size: smaller;
+    color: black;
+}
+
+.log-entry {
+    
+}
+
+.ability-container {
+    display: inline-block; 
+    height: 44px; 
+    width: 44px;
+    margin-right: 2px;
+    margin-bottom: 2px;
+}
+
+.action {
+    margin-top: 2px;
+    margin-left: 2px;
+    border-radius: 5px;
+    box-shadow: 0 0 7px black;
+}
+
+.action img {
+    border-radius: 5px;
+    
 }

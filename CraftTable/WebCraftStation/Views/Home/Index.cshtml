@@ -13,7 +13,7 @@
 </script>
 
 <script id="logTemplate" type="text/x-jquery-tmpl">
-    <div style="width: 480px;font-size: small;color: {%if Text.toLowerCase().indexOf('fail')>=0%} red {%else%} black{%/if%};">
+    <div class="log-entry" style="color: {%if Text.toLowerCase().indexOf('fail')>=0%} red {%else%} black{%/if%}">
         ${Text}
     </div>
 </script>
@@ -42,13 +42,13 @@
 
 
 <div class="row">
-    <div class="col-md-7">
+    <div class="col-md-6">
         @Html.Partial("Stats")
     </div>
 
-    <div class="col-md-5">
-        <div id="log" style="overflow-y: auto; width: 500px; height: 200px;">
-
+    <div class="col-md-6">
+        <div id="log" class="log">
+            
         </div>
     </div>
 </div>
@@ -73,7 +73,7 @@
     <div class="col-md-12">
         @foreach (var a in Model.Abilities)
             {
-            <div style="float: left; height: 50px; width: 50px;">
+            <div class="ability-container">
 
                 <button class="action" data-xivdb-key="xivdb_action_@a.XivDbId" data-xivdb-isset="1" style="border: 0; height: 40px; padding: 0; width: 40px;" name="@a.Name">
                     <img src="@Url.Content("~/Content/Images/")action_@(a.XivDbId).png" />
@@ -182,7 +182,7 @@
                             if (data.Abilities) {
                                 for (var i = 0; i < data.Abilities.length; i++) {
                                     var info = data.Abilities[i];
-                                    var b = $('button.action[name="' + info.Name + '"]');
+                                    var b = $('.action[name="' + info.Name + '"]');
                                     var overlay = b.find('.ability-overlay');
                                     if (info.IsEnabled) overlay.hide();
                                     else overlay.show();
@@ -208,7 +208,7 @@
             $("#resetButton").on("click",
                 function() {
                     $("#log").empty();
-                    $.get(@Url.Action("Index","Home"),'',function()
+                    $.get('@Url.Action("Index","Home")','',function()
                     {
                         handler(null, null, null, null, null, true);
                     });
