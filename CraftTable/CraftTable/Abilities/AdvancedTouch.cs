@@ -11,7 +11,7 @@ namespace CraftTable.Abilities
     [AbilityXivDb(Crafter.Armorer, 100038)]
     [AbilityXivDb(Crafter.BlackSmith, 100022)]
     [AbilityXivDb(Crafter.Carpenter, 100008)]
-    [AbilityDescriptor("Advanced touch", Crafter.All, 16, false, Category.Quality, 2)]
+    [AbilityDescriptor("Advanced touch", Crafter.All, 48, false, Category.Quality, 2)]
     public class AdvancedTouch : Ability
     {
         public override void Execute(ICraftActions craftActions, bool isSuccess)

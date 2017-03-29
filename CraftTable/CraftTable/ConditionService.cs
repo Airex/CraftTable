@@ -28,7 +28,7 @@ namespace CraftTable
             {
                 var chances = new[]
                 {
-                    double.PositiveInfinity,
+                    1000,
                     calculator.CalculateConditionChance(Condition.Good, 23),
                     calculator.CalculateConditionChance(Condition.Excellent, 1)
                 };

@@ -63,7 +63,7 @@ namespace WebCraftStation.Controllers
             if (value == null) throw new ArgumentNullException(nameof(value));
             if (value.Abilities == null) throw new ArgumentNullException(nameof(value.Abilities));
 
-            var craftMan = new CraftMan(788, 851, 346, 60);
+            var craftMan = new CraftMan(Crafter.Culinarian, 788, 851, 346, 60);
             var recipe = new Recipe(478, 60, 3140, 150);
 
             var processStates = Enumerable.Range(1,Math.Min(100,value.Iterations)).Select(i => Process(value.Abilities, recipe, craftMan)).ToList();

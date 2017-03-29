@@ -125,6 +125,7 @@
     <Compile Include="Exceptions\AbilityFailedException.cs" />
     <Compile Include="Exceptions\CraftAlreadyFinishedException.cs" />
     <Compile Include="Exceptions\CraftSuccessException.cs" />
+    <Compile Include="Exceptions\CraftTableException.cs" />
     <Compile Include="IStacks.cs" />
     <Compile Include="LookupService.cs" />
     <Compile Include="Synth.cs" />
@@ -176,9 +177,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Manipulation.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

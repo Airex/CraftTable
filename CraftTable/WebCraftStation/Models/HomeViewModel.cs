@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Reflection.Emit;
-using System.Web.WebPages;
 
 namespace WebCraftStation.Models
 {
@@ -11,6 +9,8 @@ namespace WebCraftStation.Models
         public IList<BuffViewModel> Buffs { get; set; }
         public string Message { get; set; }
         public IList<LogViewModel> Logs { get; set; }
+        public RecipeViewModel Recipe { get; set; }
+        public CraftmanViewModel Craftman { get; set; }
     }
 
     public class LogViewModel

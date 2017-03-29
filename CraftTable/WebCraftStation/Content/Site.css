@@ -108,7 +108,23 @@ body {
     color: black;
 }
 
+.red {
+    color: red;
+}
+
 .log-entry {
+    
+}
+
+.abilities-in-category {
+    
+}
+
+.ability-category {
+    
+}
+
+.ability-history {
     
 }
 
@@ -120,11 +136,30 @@ body {
     margin-bottom: 2px;
 }
 
+
+
+.history-item {
+    display: inline-block; 
+    height: 22px; 
+    width: 22px;
+    margin-right: 2px;
+    margin-bottom: 2px;
+}
+
+.history-item img{
+    height: 22px; 
+    width: 22px;
+}
+
 .action {
     margin-top: 2px;
-    margin-left: 2px;
+    margin-left: 4px;
     border-radius: 5px;
     box-shadow: 0 0 7px black;
+    border: 0; 
+    height: 40px; 
+    padding: 0; 
+    width: 40px;
 }
 
 .action:hover {
@@ -151,4 +186,5 @@ body {
 .category-container {
     display: inline-table;
     margin-right: 30px;
+    margin-bottom: 10px;
 }

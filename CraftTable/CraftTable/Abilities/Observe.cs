@@ -4,7 +4,7 @@ using CraftTable.Contracts;
 namespace CraftTable.Abilities
 {
     [AbilityXivDb(Crafter.All, 100113)]
-    [AbilityDescriptor("Observe", Crafter.All, 0, false, Category.Other, 0)]
+    [AbilityDescriptor("Observe", Crafter.All, 14, false, Category.Other, 0)]
     public class Observe : Ability
     {
         public override void Execute(ICraftActions craftActions, bool isSuccess)

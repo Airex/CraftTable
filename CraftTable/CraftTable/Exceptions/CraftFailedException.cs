@@ -2,7 +2,7 @@
 
 namespace CraftTable.Exceptions
 {
-    public class CraftFailedException : Exception
+    public class CraftFailedException : CraftTableException
     {
         public CraftFailedException(bool resourcesReclaimed)
         {

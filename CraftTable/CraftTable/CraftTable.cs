@@ -96,14 +96,14 @@ namespace CraftTable
             _calculator.Reset(_condition);
             _buffCollector.BuildCalculator(new ActionInfo(ability.GetType(), _condition), _calculator.GetBuilder());
             var chance = _calculator.CalculateChance(ability.Chance);
-            var isSuccess = _randomService.Select(new[] { chance, double.PositiveInfinity }) == 0;
+            var isSuccess = _randomService.Select(new[] { chance, 1000.0 }) == 0;
             if (!isSuccess)
             {
                 abilityfailed = true;
                 _calculator.Fail();
             }
             _progressWatcher.Log($"You use {ability} : {(isSuccess ? "Success" : "Failed")} with chance {chance}%");
-            _progressWatcher.Log($" -> Ability is {_condition}");
+            _progressWatcher.Log($" -> Condition is {_condition.ToString()}");
             ability.Execute(this, !abilityfailed);
             _buffCollector.PostAction(this);
             _condition = _conditionService.GetCondition(_calculator);
@@ -126,7 +126,7 @@ namespace CraftTable
             {
                 _progressWatcher.Log("Craft failed!");
                 var reclaimChance = _calculator.CalculateReclaimChance(_reclaimChance);
-                var wasReclaimed = _randomService.Select(new[] { reclaimChance, double.PositiveInfinity }) == 0;
+                var wasReclaimed = _randomService.Select(new[] { reclaimChance, 1000.0 }) == 0;
                 if (wasReclaimed)
                     _progressWatcher.Log($"Resources were reclaimed with chance {reclaimChance}%");
                 throw new CraftFailedException(wasReclaimed);
@@ -134,7 +134,7 @@ namespace CraftTable
             if (_progress >= _recipe.Difficulty)
             {
                 var hqChance = _craftQualityCalculator.CalculateHighQualityChance(_quality, _recipe.MaxQuality);
-                var isHighQuality = _randomService.Select(new[] { hqChance, double.PositiveInfinity }) == 0;
+                var isHighQuality = _randomService.Select(new[] { hqChance, 1000.0 }) == 0;
                 _progressWatcher.Log($"Craft successful. {(isHighQuality ? "HQ" : "NQ")} with chance {hqChance}%");
                 throw new CraftSuccessException(isHighQuality, hqChance);
             }

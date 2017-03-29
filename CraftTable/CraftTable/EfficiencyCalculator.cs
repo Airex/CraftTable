@@ -7,21 +7,21 @@ namespace CraftTable
     {
         private double _conditionMultiplier = 1.0;
 
-        public double CraftmanshipToProgress(double craftsmanship, double efficiency, int crafterLevel, int levelDiff)
+        public double CraftmanshipToProgress(double craftsmanship, double efficiency, int crafterLevel, double levelDiff)
         {
             var levelCorrectedProgress = CalculateProgress(craftsmanship, crafterLevel, levelDiff);
 
             return Math.Round(levelCorrectedProgress * efficiency / 100);
         }
 
-        public double ControlToProgress(double control, double efficiency, int recipeLevel, int levelDiff)
+        public double ControlToProgress(double control, double efficiency, int recipeLevel, double levelDiff)
         {
             var levelCorrectedQuality = CalculateQuality(control, recipeLevel, levelDiff);
             //exterrConsole.WriteLine("Control: "+levelCorrectedQuality);
             return Math.Round(levelCorrectedQuality * efficiency / 100 * _conditionMultiplier);
         }
 
-        private static double CalculateProgress(double craftsmanship, int crafterLevel, int levelDiff)
+        private static double CalculateProgress(double craftsmanship, int crafterLevel, double levelDiff)
         {
             double baseProgress;
             double levelCorrectionFactor = 0;
@@ -90,7 +90,7 @@ namespace CraftTable
             return levelCorrectedProgress;
         }
 
-        private static double CalculateQuality(double control, int recipeLevel, int levelDiff)
+        private static double CalculateQuality(double control, int recipeLevel, double levelDiff)
         {
             double baseQuality;
             double levelCorrectionFactor = 0;

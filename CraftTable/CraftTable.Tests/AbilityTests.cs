@@ -224,6 +224,27 @@ namespace CraftTable.Tests
         }
 
         [Test]
+        public void CarefulSunthesis2Test2()
+        {
+            var craftTable = TestData.CreateFactory()(new Recipe(404, 60, 2728, 142), TestData.DefaultCraftman);
+
+            craftTable.Act(new CarefulSynthesis2());
+
+            craftTable.AssertStats(60 - 10, 291, 0, 2, 10000);
+        }
+
+        [Test]
+        public void CarefulSunthesis2Ingenuity2Test2()
+        {
+            var craftTable = TestData.CreateFactory()(new Recipe(404, 60, 2728, 142), TestData.DefaultCraftman);
+
+            craftTable.Act(new Ingenuity2());
+            craftTable.Act(new CarefulSynthesis2());
+
+            craftTable.AssertStats(60 - 10, 335, 0, 3, 10000-32);
+        }
+
+        [Test]
         public void PreciseTouchTest()
         {
             var craftTable = TestData.CreateFactory(registry =>

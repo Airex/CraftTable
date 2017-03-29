@@ -8,7 +8,7 @@ namespace CraftTable
     {
         private readonly IList<IBuff> _list = new List<IBuff>();
 
-        BuffActionRegistry _buffActionRegistry = new BuffActionRegistry();
+        readonly BuffActionRegistry _buffActionRegistry = new BuffActionRegistry();
 
         public void Add(IBuff buff)
         {

@@ -7,7 +7,7 @@ namespace CraftTable.CraftActors
     {
         private double _value;
 
-        public CalculatorActor(int value)
+        public CalculatorActor(double value)
         {
             _value = value;
         }

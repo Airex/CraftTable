@@ -5,7 +5,6 @@ namespace CraftTable
     [Flags]
     public enum Crafter
     {
-
         Culinarian = 1,
         Alchemist = 2,
         GoldSmith =4,

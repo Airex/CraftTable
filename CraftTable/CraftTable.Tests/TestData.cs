@@ -23,6 +23,6 @@ namespace CraftTable.Tests
         }
 
         internal static Recipe DefaultRecipe { get; } = new Recipe(2000, 1000, 20000, 150);
-        internal static CraftMan DefaultCraftman { get; } = new CraftMan(788, 851, 10000, 60);
+        internal static CraftMan DefaultCraftman { get; } = new CraftMan(Crafter.Culinarian, 788, 851, 10000, 60);
     }
 }

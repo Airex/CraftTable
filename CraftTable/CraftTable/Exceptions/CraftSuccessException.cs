@@ -2,7 +2,7 @@
 
 namespace CraftTable.Exceptions
 {
-    public class CraftSuccessException : Exception
+    public class CraftSuccessException : CraftTableException
     {
         public CraftSuccessException(bool isHighQuality, int chance)
         {

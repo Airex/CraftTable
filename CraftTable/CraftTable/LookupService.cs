@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CraftTable.Contracts;
 
 namespace CraftTable
@@ -111,14 +112,17 @@ namespace CraftTable
 
         public double? MapInguenity1Level(int level)
         {
-            if (!_ing1RecipeLevelTable.ContainsKey(level)) return null;
-            return _ing1RecipeLevelTable[level];
+            var value = _ing1RecipeLevelTable.OrderByDescending(pair => pair.Key).FirstOrDefault(pair => level >= pair.Key).Value;
+            if (value <= 0) return null;
+            return value;
         }
 
         public double? MapInguenity2Level(int level)
         {
-            if (!_ing2RecipeLevelTable.ContainsKey(level)) return null;
-            return _ing2RecipeLevelTable[level];
+            var value = _ing2RecipeLevelTable.OrderByDescending(pair => pair.Key).FirstOrDefault(pair => level >= pair.Key).Value;
+            if (value <= 0) return null;
+            return value;
+            
         }
 
         public double MapNymeriasWheelStacks(int stacks)

@@ -2,8 +2,8 @@
 {
     public interface IEfficiencyCalculator
     {
-        double CraftmanshipToProgress(double craftmanship, double efficiency, int crafterLevel, int levelDifference);
-        double ControlToProgress(double control, double efficiency, int recipeLevel, int levelDifference);
+        double CraftmanshipToProgress(double craftmanship, double efficiency, int crafterLevel, double levelDifference);
+        double ControlToProgress(double control, double efficiency, int recipeLevel, double levelDifference);
 
         void UseConditionMultylier(double m);
     }

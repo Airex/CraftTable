@@ -85,6 +85,8 @@ namespace WebCraftStation.Controllers
         {
             public CraftTable.CraftTable CraftTable { get; set; }
             public SiteProgressWatcher ProgressWatcher { get; set; }
+            public CraftMan CraftMan { get; set; }
+            public Recipe Recipe { get; set; }
         }
 
         private readonly IEnumerable<Ability> _abilities;
@@ -103,7 +105,7 @@ namespace WebCraftStation.Controllers
         {
             ViewBag.Title = "Home Page";
 
-            var craftMan = new CraftMan(995, 995, 437, 60);
+            var craftMan = new CraftMan(Crafter.Culinarian, 995, 995, 437, 60);
             var recipe = new Recipe(1968, 70, 13187, 190);
             var crafter = Crafter.GoldSmith;
 
@@ -121,6 +123,19 @@ namespace WebCraftStation.Controllers
 
             var homeViewModel = new HomeViewModel
             {
+                Recipe = new RecipeViewModel()
+                {
+                  Durability  = recipe.Durability,
+                  Dificulty = recipe.Difficulty,
+                  MaxQuality = recipe. MaxQuality
+                },
+                Craftman = new CraftmanViewModel()
+                {
+                   CraftPoints  = craftMan.MaxCraftPoints,
+                   Control = craftMan.Control,
+                   Craftmanship = craftMan.Craftmanship,
+                   Crafter =  (int)crafter
+                },
                 Abilities = _abilities.Select(ability =>
                 {
                     var abilityDescriptorAttribute = ability.AbilityDescriptor();
@@ -144,7 +159,7 @@ namespace WebCraftStation.Controllers
         [System.Web.Mvc.HttpPost]
         public ActionResult Act(AbilityModel selectedAction)
         {
-            var craftMan = new CraftMan(995, 995, 437, 60);
+            var craftMan = new CraftMan(Crafter.Culinarian, 995, 995, 437, 60);
             var recipe = new Recipe(1968, 70, 13187, 190);
 
             var homeViewModel = new HomeViewModel();
@@ -161,23 +176,7 @@ namespace WebCraftStation.Controllers
                     table.Act(firstOrDefault);
                 }
             }
-            catch (CraftSuccessException)
-            {
-
-            }
-            catch (CraftFailedException)
-            {
-
-            }
-            catch (AbilityFailedException)
-            {
-
-            }
-            catch (AbilityNotAvailableException)
-            {
-
-            }
-            catch (CraftAlreadyFinishedException)
+            catch (CraftTableException)
             {
 
             }

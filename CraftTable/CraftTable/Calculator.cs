@@ -14,7 +14,7 @@ namespace CraftTable
         private CraftPointsActor _craftPoints = a => { };
         private ChanceActor _chance = a => { };
         private ConditionChanceActor _conditionChance = (a, b) => { };
-        private RecipeLevelActor _levelActor = (a, b, c, d) => { };
+        private RecipeLevelActor _levelActor = (a, c, d) => { };
         private ReclaimChanceActor _reclaimChanceActor = (a) => { };
 
         private bool _failed;
@@ -86,7 +86,7 @@ namespace CraftTable
             _craftPoints = a => { };
             _chance = a => { };
             _conditionChance = (a, b) => { };
-            _levelActor = (a, b, c, d) => { };
+            _levelActor = (a, c, d) => { };
             _reclaimChanceActor = (a) => { };
         }
 
@@ -120,11 +120,29 @@ namespace CraftTable
 
         
 
-        private int CalculateLevelDifference(int recipeLevel, int craftmaneLevel)
+        private double CalculateLevelDifference(int recipeLevel, int craftmaneLevel)
         {
+            var effCrafterLevel = _lookupService.MapLevel(craftmaneLevel) ?? craftmaneLevel;
+
             var actor = new CalculatorActor(0);
-            _levelActor(recipeLevel, craftmaneLevel, actor, _lookupService);
-            return (int)actor.Value;
+            _levelActor(recipeLevel, actor, _lookupService);
+            double lvl = recipeLevel;
+            if (actor.Value>0)
+                lvl = actor.Value;
+
+            double levelDifference = effCrafterLevel - lvl;
+            
+
+            if (levelDifference > 0)
+            {
+                levelDifference = Math.Min(levelDifference, 20);
+            }
+
+            if (levelDifference < 0)
+            {
+                levelDifference = Math.Max(levelDifference, -5);
+            }
+            return (int)levelDifference;
         }
 
         public ICalculatorBuilder GetBuilder()

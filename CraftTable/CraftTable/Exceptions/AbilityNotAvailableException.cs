@@ -2,7 +2,7 @@
 
 namespace CraftTable.Exceptions
 {
-    public class AbilityNotAvailableException : Exception
+    public class AbilityNotAvailableException : CraftTableException
     {
 
     }

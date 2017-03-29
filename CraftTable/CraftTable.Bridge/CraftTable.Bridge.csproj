@@ -1,0 +1,433 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{74B0946C-31E8-4CE7-A9E6-8BEEA1E279C8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CraftTable.Bridge</RootNamespace>
+    <AssemblyName>CraftTable.Bridge</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Bridge, Version=15.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bridge.Core.15.7.0\lib\net40\Bridge.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Bridge.Html5, Version=15.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bridge.Html5.15.7.0\lib\net40\Bridge.Html5.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CraftTable\Abilities\AdvancedTouch.cs">
+      <Link>Abilities\AdvancedTouch.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\BasicSynthesis.cs">
+      <Link>Abilities\BasicSynthesis.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\BasicTouch.cs">
+      <Link>Abilities\BasicTouch.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\ByregotsBlessing.cs">
+      <Link>Abilities\ByregotsBlessing.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\ByregotsBrow.cs">
+      <Link>Abilities\ByregotsBrow.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\CarefulSynthesis.cs">
+      <Link>Abilities\CarefulSynthesis.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\CarefulSynthesis2.cs">
+      <Link>Abilities\CarefulSynthesis2.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\ComfortZone.cs">
+      <Link>Abilities\ComfortZone.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\FlawlessSynthesis.cs">
+      <Link>Abilities\FlawlessSynthesis.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\GreatStrides.cs">
+      <Link>Abilities\GreatStrides.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\HastyTouch.cs">
+      <Link>Abilities\HastyTouch.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\Ingenuity.cs">
+      <Link>Abilities\Ingenuity.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\Ingenuity2.cs">
+      <Link>Abilities\Ingenuity2.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\InnerQuiet.cs">
+      <Link>Abilities\InnerQuiet.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\Innovation.cs">
+      <Link>Abilities\Innovation.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\MakersMark.cs">
+      <Link>Abilities\MakersMark.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\Manipulation.cs">
+      <Link>Abilities\Manipulation.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\MastersMend.cs">
+      <Link>Abilities\MastersMend.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\MastersMend2.cs">
+      <Link>Abilities\MastersMend2.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\MuscleMemory.cs">
+      <Link>Abilities\MuscleMemory.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\Observe.cs">
+      <Link>Abilities\Observe.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\PieceByPiece.cs">
+      <Link>Abilities\PieceByPiece.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\PreciseTouch.cs">
+      <Link>Abilities\PreciseTouch.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\RapidSynthesis.cs">
+      <Link>Abilities\RapidSynthesis.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\Reclaim.cs">
+      <Link>Abilities\Reclaim.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\Rumination.cs">
+      <Link>Abilities\Rumination.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\Specialist\ByregotsMiracle.cs">
+      <Link>Abilities\Specialist\ByregotsMiracle.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\Specialist\HeartOfCrafter.cs">
+      <Link>Abilities\Specialist\HeartOfCrafter.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\Specialist\InnovativeTouch.cs">
+      <Link>Abilities\Specialist\InnovativeTouch.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\Specialist\NymeiasWheel.cs">
+      <Link>Abilities\Specialist\NymeiasWheel.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\Specialist\Satisfaction.cs">
+      <Link>Abilities\Specialist\Satisfaction.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\Specialist\TrainedHand.cs">
+      <Link>Abilities\Specialist\TrainedHand.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\Specialist\WhistleWhileYouWork.cs">
+      <Link>Abilities\Specialist\WhistleWhileYouWork.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\StandartSynthesis.cs">
+      <Link>Abilities\StandartSynthesis.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\StandartTouch.cs">
+      <Link>Abilities\StandartTouch.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\SteadyHand.cs">
+      <Link>Abilities\SteadyHand.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\SteadyHand2.cs">
+      <Link>Abilities\SteadyHand2.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\TricksOfTheTrade.cs">
+      <Link>Abilities\TricksOfTheTrade.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\WasteNot.cs">
+      <Link>Abilities\WasteNot.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Abilities\WasteNot2.cs">
+      <Link>Abilities\WasteNot2.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Ability.cs">
+      <Link>Ability.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\ActionInfo.cs">
+      <Link>ActionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Attributes\AbilityDescriptorAttribute.cs">
+      <Link>Attributes\AbilityDescriptorAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Attributes\AbilityXivDbAttribute.cs">
+      <Link>Attributes\AbilityXivDbAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Attributes\BuffXivDbAttribute.cs">
+      <Link>Attributes\BuffXivDbAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\BuffActionRegistry.cs">
+      <Link>BuffActionRegistry.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\BuffCollector.cs">
+      <Link>BuffCollector.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\ComfortZoneBuff.cs">
+      <Link>Buffs\ComfortZoneBuff.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\GreatStridesBuff.cs">
+      <Link>Buffs\GreatStridesBuff.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\HeartOfCrafterBuff.cs">
+      <Link>Buffs\HeartOfCrafterBuff.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\Ingenuity2Buff.cs">
+      <Link>Buffs\Ingenuity2Buff.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\IngenuityBuff.cs">
+      <Link>Buffs\IngenuityBuff.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\IngenuityBuffBase.cs">
+      <Link>Buffs\IngenuityBuffBase.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\InnerQuietBuff.cs">
+      <Link>Buffs\InnerQuietBuff.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\InnovationBuff.cs">
+      <Link>Buffs\InnovationBuff.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\ISteps.cs">
+      <Link>Buffs\ISteps.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\MakersMarkBuff.cs">
+      <Link>Buffs\MakersMarkBuff.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\ManipulationBuff.cs">
+      <Link>Buffs\ManipulationBuff.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\ReclaimBuff.cs">
+      <Link>Buffs\ReclaimBuff.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\SteadyHand2Buff.cs">
+      <Link>Buffs\SteadyHand2Buff.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\SteadyHandBuff.cs">
+      <Link>Buffs\SteadyHandBuff.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\SteadyHandBuffBase.cs">
+      <Link>Buffs\SteadyHandBuffBase.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\StepsBasedBuff.cs">
+      <Link>Buffs\StepsBasedBuff.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\WasteNot2Buff.cs">
+      <Link>Buffs\WasteNot2Buff.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\WasteNotBuff.cs">
+      <Link>Buffs\WasteNotBuff.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\WasteNotBuffBase.cs">
+      <Link>Buffs\WasteNotBuffBase.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Buffs\WhistleBuff.cs">
+      <Link>Buffs\WhistleBuff.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\CalculateDependency.cs">
+      <Link>CalculateDependency.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Calculator.cs">
+      <Link>Calculator.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Condition.cs">
+      <Link>Condition.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\ConditionService.cs">
+      <Link>ConditionService.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Contracts\IBuffAccessor.cs">
+      <Link>Contracts\IBuffAccessor.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Contracts\IBuffActions.cs">
+      <Link>Contracts\IBuffActions.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Contracts\IBuffActionsRegistry.cs">
+      <Link>Contracts\IBuffActionsRegistry.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Contracts\IBuffCollector.cs">
+      <Link>Contracts\IBuffCollector.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Contracts\ICalculator.cs">
+      <Link>Contracts\ICalculator.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Contracts\ICalculatorActor.cs">
+      <Link>Contracts\ICalculatorActor.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Contracts\ICalculatorBuilder.cs">
+      <Link>Contracts\ICalculatorBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Contracts\IConditionService.cs">
+      <Link>Contracts\IConditionService.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Contracts\ICraftActions.cs">
+      <Link>Contracts\ICraftActions.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Contracts\ICraftQualityCalculator.cs">
+      <Link>Contracts\ICraftQualityCalculator.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Contracts\ICraftServiceState.cs">
+      <Link>Contracts\ICraftServiceState.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Contracts\IEfficiencyCalculator.cs">
+      <Link>Contracts\IEfficiencyCalculator.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Contracts\ILookupService.cs">
+      <Link>Contracts\ILookupService.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Contracts\IProgressWatcher.cs">
+      <Link>Contracts\IProgressWatcher.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Contracts\IRandomService.cs">
+      <Link>Contracts\IRandomService.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\CraftActors\CalculatorActor.cs">
+      <Link>CraftActors\CalculatorActor.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\CraftActors\ChanceActor.cs">
+      <Link>CraftActors\ChanceActor.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\CraftActors\ConditionChanceActor.cs">
+      <Link>CraftActors\ConditionChanceActor.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\CraftActors\CraftPointsActor.cs">
+      <Link>CraftActors\CraftPointsActor.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\CraftActors\DurabilityActor.cs">
+      <Link>CraftActors\DurabilityActor.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\CraftActors\OnSuccessActor.cs">
+      <Link>CraftActors\OnSuccessActor.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\CraftActors\ProgressActor.cs">
+      <Link>CraftActors\ProgressActor.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\CraftActors\QualityActor.cs">
+      <Link>CraftActors\QualityActor.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\CraftActors\RecipeLevelActor.cs">
+      <Link>CraftActors\RecipeLevelActor.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\CraftActors\ReclaimChanceActor.cs">
+      <Link>CraftActors\ReclaimChanceActor.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Crafter.cs">
+      <Link>Crafter.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\CraftMan.cs">
+      <Link>CraftMan.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\CraftQualityCalculator.cs">
+      <Link>CraftQualityCalculator.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\CraftServiceState.cs">
+      <Link>CraftServiceState.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\CraftTable.cs">
+      <Link>CraftTable.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\CraftTableStatus.cs">
+      <Link>CraftTableStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\DefaultProgressWatcher.cs">
+      <Link>DefaultProgressWatcher.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\EfficiencyCalculator.cs">
+      <Link>EfficiencyCalculator.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Exceptions\AbilityFailedException.cs">
+      <Link>Exceptions\AbilityFailedException.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Exceptions\AbilityNotAvailableException.cs">
+      <Link>Exceptions\AbilityNotAvailableException.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Exceptions\CraftAlreadyFinishedException.cs">
+      <Link>Exceptions\CraftAlreadyFinishedException.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Exceptions\CraftFailedException.cs">
+      <Link>Exceptions\CraftFailedException.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Exceptions\CraftSuccessException.cs">
+      <Link>Exceptions\CraftSuccessException.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Exceptions\CraftTableException.cs">
+      <Link>Exceptions\CraftTableException.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Extensions.cs">
+      <Link>Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\IBuff.cs">
+      <Link>IBuff.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\IStacks.cs">
+      <Link>IStacks.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\LookupService.cs">
+      <Link>LookupService.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\RandomService.cs">
+      <Link>RandomService.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Recipe.cs">
+      <Link>Recipe.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\SameBuffEqualityComparer.cs">
+      <Link>SameBuffEqualityComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\Synth.cs">
+      <Link>Synth.cs</Link>
+    </Compile>
+    <Compile Include="..\CraftTable\SynthDelegate.cs">
+      <Link>SynthDelegate.cs</Link>
+    </Compile>
+    <Compile Include="CraftStation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Bridge\bridge.json" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Bridge\output\CraftTable.Bridge.js" />
+    <Content Include="Bridge\www\demo.html" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Bridge.Min.15.7.0\build\Bridge.Min.targets" Condition="Exists('..\packages\Bridge.Min.15.7.0\build\Bridge.Min.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Bridge.Min.15.7.0\build\Bridge.Min.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Bridge.Min.15.7.0\build\Bridge.Min.targets'))" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>copy $(ProjectDir)\Bridge\output\*.js $(ProjectDir)\..\WebCraftStation\Scripts</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

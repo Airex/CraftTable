@@ -2,105 +2,106 @@
 @using WebCraftStation.Models
 @model HomeViewModel
 
-
-<script id="buffsTemplate" type="text/x-jquery-tmpl">
-    <div class="buff">
-        <div class="buff-stacks">{%if Stacks > 0%} ${Stacks} {%/if%}</div>
-        <div data-tooltip-id="status/${XivDbId}" class="buff-icon" name="${Name}">
-            <img src="@Url.Content("~/Content/Images/")status_${XivDbId}.png" />
-        </div>
-        <div class="buff-steps">{%if Steps > 0%} ${Steps} {%/if%}</div>
-    </div>
-</script>
-
-<script id="logTemplate" type="text/x-jquery-tmpl">
-    <div class="log-entry" style="color: {%if Text.toLowerCase().indexOf('fail')>=0%} red {%else%} black{%/if%}">
-        ${Text}
-    </div>
-</script>
-
-
-<div class="row">
-    <div class="col-md-12" style="margin-top: 15px;">
-        <button class="btn btn-danger" id="resetButton" type="button" value="Reset">Reset</button>
-        <button class="btn btn-default" id="settingsButton" type="button" value="Settings"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</button>
-    </div>
-</div>
-<hr style="margin-bottom: 0px;" />
-<div class="row">
-    <div class="col-md-12" id="settings" style="margin-top: 15px; display: none;">
-        <div>
-            SomeSettings
-        </div>
-        <div>
-            <button class="btn btn-danger" id="settingsSaveButton" type="button" value="Reset">Save</button>
-            <button class="btn btn-danger" id="settingsDiscardButton" type="button" value="Reset">Discard</button>
-        </div>
-
-        <hr />
-    </div>
-</div>
-
-
-<div class="row">
-    <div class="col-md-6">
-        @Html.Partial("Stats")
-    </div>
-
-    <div class="col-md-6">
-        <div id="log" class="log">
-            
+<div ng-controller="HomeController as ctrl" ng-init="ctrl.init()" ng-cloak>
+    <div class="row">
+        <div class="col-md-12" style="margin-top: 15px;">
+            <button class="btn btn-danger" id="resetButton" type="button" value="Reset" ng-click="ctrl.reset()">Reset</button>
+            <button class="btn btn-default" id="settingsButton" type="button" value="Settings" ng-click="ctrl.settings()"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</button>
         </div>
     </div>
-</div>
+    <hr style="margin-bottom: 0;" />
+    <div class="row">
+        <div class="col-md-12" id="settings" style="margin-top: 15px; display: none;">
+            <div class="row">
 
-<div class="row">
-    <div class="col-md-12" id="message-container" style="display: none;">
-        <span id="message" style="color: red;"></span>
-    </div>
-</div>
-
-
-
-<div class="row">
-    <div class="col-md-12">
-        <div id="buffs" style="height: 75px;">
-        </div>
-    </div>
-</div>
-<hr style="margin-top: 0px;" />
-
-<div class="row">
-    <div class="col-md-12">
-        @foreach (var cat in new[] { Category.Synhtesis, Category.Durability, Category.Quality, Category.CP, Category.Other, Category.Buffs, Category.Specialist })
-        {
-            <div class="category-container">
-                <div class="ability-category">
-                    <span class="category-head">@cat</span>
+                <div class="col-md-6">
+                    @Html.Partial("Recipe", Model.Recipe)
                 </div>
-                <div class="abilities-in-category">
-                    @foreach (var a in Model.Abilities.Where(model => model.Category == cat.ToString()).OrderBy(model => model.Order))
-                    {
-                        <div class="ability-container">
-
-                            <div class="action" data-xivdb-key="xivdb_action_@a.XivDbId" data-xivdb-isset="1" style="border: 0; height: 40px; padding: 0; width: 40px;" action-name="@a.Name">
-                                <img src="@Url.Content("~/Content/Images/")action_@(a.XivDbId).png" />
-                                <div class="cost">@(a.CraftPointsCost > 0 ? a.CraftPointsCost.ToString() : "")</div>
-                                <div class="ability-overlay"></div>
-                            </div>
-                        </div>
-                    }
+                <div class="col-md-6">
+                    @Html.Partial("Craftman", Model.Craftman)
                 </div>
             </div>
-        }
+            <div class="row">
+                <div class="col-md-12" style="text-align: right">
+                    <button class="btn" id="settingsSaveButton" type="button" value="Save" ng-click="ctrl.save()">Save</button>
+                    <button class="btn btn-danger" id="settingsDiscardButton" type="button" value="Discard" ng-click="ctrl.discard()">Discard</button>
+                </div>
+            </div>
+
+            <hr />
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-6">
+            @Html.Partial("Stats")
+        </div>
+
+        <div class="col-md-6">
+            <div id="log" class="log" scroll-glue>
+                <div ng-class="log.toLowerCase().indexOf('fail')>-1?'red':''" ng-repeat="log in ctrl.watcher.Logs.items track by $index">{{log}}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" id="message-container" style="display: none;">
+            <span id="message" style="color: red;"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div id="buffs" style="height: 75px;">
+                <div class="buff" ng-repeat="buff in ctrl.status.Buffs">
+                    <div class="buff-stacks">{{ctrl.formatBuff(buff.Stacks)}}</div>
+                    <div data-tooltip-id="status/{{buff.XivDb}}" class="buff-icon" name="{{buff.Name}}">
+                        <img ng-src="@Url.Content("~/Content/Images/")status_{{buff.XivDb}}.png" />
+                    </div>
+                    <div class="buff-steps">{{ctrl.formatBuff(buff.Steps)}}</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <hr style="margin-top: 0px;" />
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="category-container" ng-repeat="category in ctrl.model.Categories">
+                <div class="ability-category">
+                    <span class="category-head">{{category}}</span>
+                </div>
+                <div class="abilities-in-category">
+                    <div class="ability-container"  ng-repeat="ability in ctrl.model.Abilities | filter: {Category:category} | orderBy: 'Order'">
+                        <div class="action" ng-class="{'highlight-action':ability.IsHighLight}" data-xivdb-key="xivdb_action_{{ability.XivDbId}}" data-xivdb-isset="1">
+                            <img ng-src="@Url.Content("~/Content/Images/")action_{{ability.XivDbId}}.png" ng-click="ctrl.act(ability)" />
+                            <div class="cost">{{ctrl.formatCraftPoints(ability.CraftPoints)}}</div>
+                            <div class="ability-overlay" ng-style="{'display':!ability.IsEnabled?'block':'none'}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="hint">
             <span>*hold Ctrl key for popup info</span>
         </div>
-        
+    </div>
+    <div class="row">
+        <div class="col-md-12 ability-history">
+            <div class="history-item" ng-repeat="item in ctrl.history">
+                <img ng-src="@Url.Content("~/Content/Images/")action_{{item.XivDbId}}.png"/>
+            </div>
+        </div>
     </div>
 </div>
 
 @section Scripts {
+    <script src="https://cdn.rawgit.com/Luegg/angularjs-scroll-glue/master/src/scrollglue.js"></script>
+    <script src="~/Scripts/app/controllers/home.js"></script>
+    <script src="~/Scripts/CraftTable.Bridge.js"></script>
+
     <script>
         var xivdb_tooltips =
         {
@@ -153,92 +154,9 @@
             // this is called once tooltips load, provides tooltip data,
             // eg: event_tooltipsLoaded: function(tooltips) { ... }
             event_tooltipsLoaded: function () {
-                $('#buffs').html($('#tempBuffContainer').html());
-                window.locko = false;
             }
-        };
-        $(function () {
-            var handler = function (e, data, a, b, s, d) {
-                if (window.locko === true) {
-                    return false;
-                }
-                window.locko = true;
-                $('.ability-overlay').show();
-                if (e) e.preventDefault();
-                $.post('@Url.Action("Act", "Home")',
-                    { Abilityname: d === true ? null : $(this).parent(".action").attr('action-name') },
-                    function (data) {
-                        if (data) {
-                            if (data.Stats) {
-                                data.Stats.ProgressPercent = 1.0 * data.Stats.Progress / data.Stats.MaxProgress * 100;
-                                data.Stats.QualityPercent = 1.0 * data.Stats.Quality / data.Stats.MaxQuality * 100;
-                                $("#statsTemplate").tmpl(data.Stats).appendTo($("#statsContainer").empty());
-                            }
-                            if (data.Buffs) {
-                                $('#buffsTemplate').tmpl(data.Buffs).appendTo($('#buffs').empty());
-                                XIVDBTooltips.get();
-                                if (data.Buffs.length === 0)
-                                    $('#buffs').empty();
-                            }
-                            if (data.Message) {
-                                $("#message").html(data.Message).parent().show();
-                            } else {
-                                $("#message").html(data.Message).parent().hide();
-                            }
-                            if (data.Logs && data.Logs.length > 0) {
-                                for (var i = 0; i < data.Logs.length; i++) {
-                                    console.log(data.Logs[i]);
-                                }
-                                $('#logTemplate').tmpl(data.Logs).appendTo($('#log'));
-                                $("#log")[0].scrollTop = $("#log")[0].scrollHeight;
-                            }
-                            if (data.Abilities) {
-                                for (var i = 0; i < data.Abilities.length; i++) {
-                                    var info = data.Abilities[i];
-                                    var b = $('.action[action-name="' + info.Name + '"]');
-
-                                    var overlay = b.find('.ability-overlay');
-                                    if (info.IsEnabled) overlay.hide();
-                                    else overlay.show();
-
-                                    b.removeClass("highlight-action");
-                                    if (info.IsHighLigthed)
-                                        b.addClass("highlight-action");
-
-                                }
-                            }
-                        }
-
-                        if (data.Buffs.length === 0) {
-                            window.locko = false;
-                        }
-
-
-                    });
-                return false;
-            };
-
-            $(".action img").on("click", handler);
-            $("#resetButton").on("click",
-                function() {
-                    $("#log").empty();
-                    $.get('@Url.Action("Index","Home")','',function()
-                    {
-                        handler(null, null, null, null, null, true);
-                    });
-                });
-            $("#settingsButton").on("click",
-                function() {
-                    $("#settings").toggle(800);
-                });
-
-            $("#settingsDiscardButton").on("click",
-               function() {
-                   $("#settings").hide(800);
-               });
-            handler(null, null, null, null, null, true);
-        });
-
+           
+        };    
     </script>
-    
+
 }

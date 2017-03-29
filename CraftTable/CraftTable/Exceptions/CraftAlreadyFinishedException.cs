@@ -2,7 +2,7 @@
 
 namespace CraftTable.Exceptions
 {
-    public class CraftAlreadyFinishedException:Exception
+    public class CraftAlreadyFinishedException: CraftTableException
     {
         
     }
