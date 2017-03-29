@@ -4,9 +4,12 @@
 
 <div ng-controller="HomeController as ctrl" ng-init="ctrl.init()" ng-cloak>
     <div class="row">
-        <div class="col-md-12" style="margin-top: 15px;">
+        <div class="col-md-6" style="margin-top: 15px;">
             <button class="btn btn-danger" id="resetButton" type="button" value="Reset" ng-click="ctrl.reset()">Reset</button>
-            <button class="btn btn-default" id="settingsButton" type="button" value="Settings" ng-click="ctrl.settings()"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</button>
+            <button class="btn btn-default" id="searchButton" type="button" value="Search recipe" ng-click="ctrl.searchRecipe()">Search recipe</button>
+        </div>
+        <div class="col-md-6" style="margin-top: 15px;">
+            <button class="btn btn-default" style="float: right;" id="settingsButton" type="button" value="Settings" ng-click="ctrl.settings()"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</button>
         </div>
     </div>
     <hr style="margin-bottom: 0;" />
@@ -27,11 +30,41 @@
                     <button class="btn btn-danger" id="settingsDiscardButton" type="button" value="Discard" ng-click="ctrl.discard()">Discard</button>
                 </div>
             </div>
-
             <hr />
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12" id="search" style="margin-top: 15px; display: none;">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-md-6">Search</label>
+                            <div class="col-md-6">
+                                <input id="recipeSearchInput" type="text" class="form-control" ng-model="ctrl.recipeSearch.name" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="search-item" data-xivdb-key="xivdb_recipe_{{item.item}}" ng-repeat="item in ctrl.recipes | filter:ctrl.recipeSearchMatch | limitTo: 20" ng-click="ctrl.selectRecipe(item)" on-finish-render="ctrl.finish()">
+                        {{item.name}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12" style="text-align: right">
+                    <button class="btn btn-danger" id="searchDiscardButton" type="button" value="Discard" ng-click="ctrl.discardSearch()">Discard</button>
+                </div>
+            </div>
+            <hr />
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-6">
@@ -40,14 +73,8 @@
 
         <div class="col-md-6">
             <div id="log" class="log" scroll-glue>
-                <div ng-class="log.toLowerCase().indexOf('fail')>-1?'red':''" ng-repeat="log in ctrl.watcher.Logs.items track by $index">{{log}}</div>
+                <div ng-class="{'red':log.toLowerCase().indexOf('fail')>-1}" ng-repeat="log in ctrl.watcher.Logs.items track by $index">{{log}}</div>
             </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12" id="message-container" style="display: none;">
-            <span id="message" style="color: red;"></span>
         </div>
     </div>
 
@@ -56,7 +83,7 @@
             <div id="buffs" style="height: 75px;">
                 <div class="buff" ng-repeat="buff in ctrl.status.Buffs">
                     <div class="buff-stacks">{{ctrl.formatBuff(buff.Stacks)}}</div>
-                    <div data-tooltip-id="status/{{buff.XivDb}}" class="buff-icon" name="{{buff.Name}}">
+                    <div data-tooltip-id="status/{{buff.XivDb}}"  class="buff-icon" name="{{buff.Name}}">
                         <img ng-src="@Url.Content("~/Content/Images/")status_{{buff.XivDb}}.png" />
                     </div>
                     <div class="buff-steps">{{ctrl.formatBuff(buff.Steps)}}</div>
@@ -74,7 +101,7 @@
                     <span class="category-head">{{category}}</span>
                 </div>
                 <div class="abilities-in-category">
-                    <div class="ability-container"  ng-repeat="ability in ctrl.model.Abilities | filter: {Category:category} | orderBy: 'Order'">
+                    <div class="ability-container" ng-repeat="ability in ctrl.model.Abilities | filter: {Category:category} | orderBy: 'Order'">
                         <div class="action" ng-class="{'highlight-action':ability.IsHighLight}" data-xivdb-key="xivdb_action_{{ability.XivDbId}}" data-xivdb-isset="1">
                             <img ng-src="@Url.Content("~/Content/Images/")action_{{ability.XivDbId}}.png" ng-click="ctrl.act(ability)" />
                             <div class="cost">{{ctrl.formatCraftPoints(ability.CraftPoints)}}</div>
@@ -91,7 +118,7 @@
     <div class="row">
         <div class="col-md-12 ability-history">
             <div class="history-item" ng-repeat="item in ctrl.history">
-                <img ng-src="@Url.Content("~/Content/Images/")action_{{item.XivDbId}}.png"/>
+                <img ng-src="@Url.Content("~/Content/Images/")action_{{item.XivDbId}}.png" />
             </div>
         </div>
     </div>
@@ -125,7 +152,7 @@
             seturlcolorDarken: true,
 
             // Should tooltips include an icon?
-            seturlicon: false,
+            seturlicon: true,
 
             // Should tooltips replace hidden links?
             includeHiddenLinks: true,
@@ -155,8 +182,8 @@
             // eg: event_tooltipsLoaded: function(tooltips) { ... }
             event_tooltipsLoaded: function () {
             }
-           
-        };    
+
+        };
     </script>
 
 }

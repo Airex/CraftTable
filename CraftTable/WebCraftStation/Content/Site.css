@@ -127,6 +127,23 @@ body {
 .ability-history {
     
 }
+.search-item {
+    height: 53px;
+    width: 210px;
+    display: inline-block;
+    align-content: center;
+    text-align: center;
+    background: beige;
+    vertical-align: middle;
+    border: solid;
+    border-width: 1px;
+    margin: 1px;
+    cursor: default;
+}
+
+.search-item:hover {
+    background-color: burlywood
+}
 
 .ability-container {
     display: inline-block; 

@@ -426,8 +426,11 @@ var XIVDBTooltipsDOMClass = (function () {
                             var css = 'xivdb-ii',
                                 iconsize = parseInt($('a[data-xivdb-key]').css('font-size'), 10) + 4;
 
-                            if (data.icon.indexOf('finalfantasyxiv.com') == -1 && data.icon.indexOf('secure.xivdb') == -1) {
-                                data.icon = 'https://secure.xivdb.com' + data.icon;
+                            if (data.icon) {
+                                if (data.icon.indexOf('finalfantasyxiv.com') == -1 &&
+                                    data.icon.indexOf('secure.xivdb') == -1) {
+                                    data.icon = 'https://secure.xivdb.com' + data.icon;
+                                }
                             }
 
                             $link.prepend('<img src="' + data.icon + '" style="height:' + iconsize + 'px;" class="' + css + '">');
