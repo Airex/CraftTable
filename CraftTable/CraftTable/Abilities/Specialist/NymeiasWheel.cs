@@ -13,6 +13,7 @@ namespace CraftTable.Abilities.Specialist
             craftActions.UseCraftPoints(18);
             var durability = craftActions.CalculateDependency((a, b, c) => (int)b.MapNymeriasWheelStacks(a.GetBuff<WhistleBuff>().Stacks));
             craftActions.RestoreDurability(durability);
+            
         }
 
         public override bool CanAct(ICraftServiceState serviceState)

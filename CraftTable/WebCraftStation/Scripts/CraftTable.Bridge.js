@@ -25049,6 +25049,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             craftActions.CraftTable$Contracts$ICraftActions$useCraftPoints(18);
             var durability = craftActions.CraftTable$Contracts$ICraftActions$calculateDependency(System.Int32, $asm.$.CraftTable.Abilities.Specialist.NymeiasWheel.f1);
             craftActions.CraftTable$Contracts$IBuffActions$restoreDurability(durability);
+
         },
         canAct: function (serviceState) {
             return serviceState.CraftTable$Contracts$ICraftServiceState$getCraftPointsLeft() >= 18 && serviceState.CraftTable$Contracts$ICraftServiceState$getBuffAccessor().CraftTable$Contracts$IBuffAccessor$getBuff(CraftTable.Buffs.WhistleBuff) != null;
@@ -25432,6 +25433,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
     Bridge.define("CraftTable.Buffs.WhistleBuff", {
         inherits: [CraftTable.IBuff,CraftTable.IStacks],
         _afterSatisfaction: null,
+        _afterNymerianWheel: null,
         _stacks: 11,
         config: {
             alias: [
@@ -25463,6 +25465,10 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
                 efficincy.CraftTable$Contracts$ICalculatorActor$addPercent(stacks % 3 === 0 ? 50 : 0);
             });
 
+            if (Bridge.referenceEquals(info.getAbilityType(), CraftTable.Abilities.Specialist.NymeiasWheel)) {
+                this._afterNymerianWheel = Bridge.fn.cacheBind(this, this.kill);
+            }
+
             if (Bridge.referenceEquals(info.getAbilityType(), CraftTable.Abilities.Specialist.Satisfaction)) {
                 this._afterSatisfaction = Bridge.fn.bind(this, $asm.$.CraftTable.Buffs.WhistleBuff.f2);
             }
@@ -25480,6 +25486,11 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             if (!Bridge.staticEquals(this._afterSatisfaction, null)) {
                 this._afterSatisfaction();
                 this._afterSatisfaction = null;
+            }
+
+            if (!Bridge.staticEquals(this._afterNymerianWheel, null)) {
+                this._afterNymerianWheel();
+                this._afterNymerianWheel = null;
             }
 
             if (this._stacks === 0) {
@@ -26780,7 +26791,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
     $m($n[1].ByregotsBlessing, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 100009),new CraftTable.Attributes.AbilityDescriptorAttribute("Byregot's blessing", 128, 24, true, 1, 4)]}; });
     $m($n[1].ByregotsBrow, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 100127),new CraftTable.Attributes.AbilityDescriptorAttribute("Byregot's brow", 255, 16, false, 1, 5)]}; });
     $m($n[1].CarefulSynthesis, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 100063),new CraftTable.Attributes.AbilityDescriptorAttribute("Careful synthesis", 8, 0, true, 0, 3)]}; });
-    $m($n[1].CarefulSynthesis2, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 100069),new CraftTable.Attributes.AbilityDescriptorAttribute("Careful synthesis II", 8, 16, true, 0, 4)]}; });
+    $m($n[1].CarefulSynthesis2, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 100069),new CraftTable.Attributes.AbilityDescriptorAttribute("Careful synthesis II", 8, 0, true, 0, 4)]}; });
     $m($n[1].ComfortZone, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 286),new CraftTable.Attributes.AbilityDescriptorAttribute("Comfort zone", 2, 66, true, 2, 0)]}; });
     $m($n[1].FlawlessSynthesis, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 100083),new CraftTable.Attributes.AbilityDescriptorAttribute("Flawless synthesis", 4, 15, true, 0, 2)]}; });
     $m($n[1].GreatStrides, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 267),new CraftTable.Attributes.AbilityDescriptorAttribute("Great strides", 255, 32, false, 4, 5)]}; });

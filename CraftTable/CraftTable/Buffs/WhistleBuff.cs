@@ -9,6 +9,7 @@ namespace CraftTable.Buffs
     public class WhistleBuff : IBuff,IStacks
     {
         private Action _afterSatisfaction;
+        private Action _afterNymerianWheel;
 
         private int _stacks = 11;
 
@@ -31,6 +32,12 @@ namespace CraftTable.Buffs
                     _afterSatisfaction = null;
                 }
 
+                if (_afterNymerianWheel != null)
+                {
+                    _afterNymerianWheel();
+                    _afterNymerianWheel = null;
+                }
+
                 if (_stacks == 0)
                 {
                     //todo implement   Finishing touch
@@ -50,6 +57,11 @@ namespace CraftTable.Buffs
             {
                 efficincy.AddPercent(stacks % 3 == 0 ? 50 : 0);
             });
+
+            if (info.AbilityType == typeof(NymeiasWheel))
+            {
+                _afterNymerianWheel = Kill;
+            }
 
             if (info.AbilityType == typeof(Satisfaction))
             {
