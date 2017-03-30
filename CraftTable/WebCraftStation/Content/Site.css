@@ -97,6 +97,7 @@ body {
     font-size: 12px;
     font-weight: 600;
     margin-left: 2px;
+    cursor: default;
 }
 
 .log {
@@ -210,4 +211,18 @@ body {
     display: inline-table;
     margin-right: 30px;
     margin-bottom: 10px;
+}
+
+.condition-Good {
+    color: orange;
+    font-weight: bold;
+}
+
+.condition-Excellent {
+    color: goldenrod;
+    font-weight: bold;
+}
+
+.condition-Poor {
+    color: red;
 }
