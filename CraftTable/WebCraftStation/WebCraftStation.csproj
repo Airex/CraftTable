@@ -258,6 +258,7 @@
     <Content Include="Content\Images\action_285.png" />
     <Content Include="Content\Images\action_286.png" />
     <Content Include="Content\Images\action_287.png" />
+    <Content Include="Content\Images\craft2.png" />
     <Content Include="Content\Images\status_251.png" />
     <Content Include="Content\Images\status_252.png" />
     <Content Include="Content\Images\status_253.png" />
@@ -281,6 +282,8 @@
     <Content Include="Content\tether-theme-basic.min.css" />
     <Content Include="Content\tether.css" />
     <Content Include="Content\jquery-ui.css" />
+    <Content Include="craft4.png" />
+    <Content Include="favicon.png" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-aria.js" />

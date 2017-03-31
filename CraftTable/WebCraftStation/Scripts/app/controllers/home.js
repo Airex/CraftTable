@@ -47,7 +47,7 @@ angular
                 XIVDBTooltips.get();
             }
 
-            vm.isUsedInCrossClass = function(item) {
+            vm.isUsedInCrossClass = function (item) {
                 var cc = crossClassForCrafter(vm.crafter);
                 return cc.indexOf(item.Name) >= 0;
             }
@@ -95,7 +95,7 @@ angular
                 angular.element('#search').hide();
             }
 
-            vm.categories = function(dummy) {
+            vm.categories = function (dummy) {
                 return vm.model.Categories;
             }
 
@@ -104,7 +104,7 @@ angular
                 angular.element("#stats").show();
             }
 
-            vm.discardSearch = function() {
+            vm.discardSearch = function () {
                 angular.element('#search').slideUp();
                 angular.element("#stats").show();
             }
@@ -129,11 +129,35 @@ angular
                 angular.element('#search').slideUp();
             }
 
-            vm.abilityCrossClassMatch = function(item) {
+            vm.abilityCrossClassMatch = function (item) {
                 return item.IsCrossClass === true && (!item.isForCrafter(vm.crafter));
             }
 
-            vm.crossClassUsedCount = function() {
+            vm.getRecipeImageId = function (item) {
+                vm.imagesCache = vm.imagesCache || {};
+                var at = angular.element("#recipe_" + item.id).attr('src');
+                if (vm.imagesCache["recipe_" + item.id] && !at) {
+                    window.setTimeout(function() {
+                        angular.element("#recipe_" + item.id).attr('src', vm.imagesCache["recipe_" + item.id]);
+                    },0);
+
+                } else {
+                    $.get("https://api.xivdb.com/recipe/" + item.id,
+                        '',
+                        function(id) {
+                            return function(data) {
+                                if (data) {
+                                    var icon = data["icon"];
+                                    angular.element("#recipe_" + id).attr('src', icon);
+                                    vm.imagesCache["recipe_" + id] = icon;
+                                }
+                            }
+                        }(item.id));
+                }
+                return "recipe_" + item.id;
+            }
+
+            vm.crossClassUsedCount = function () {
                 return crossClassForCrafter(vm.crafter).length;
             }
 
@@ -141,8 +165,21 @@ angular
                 if (!vm.recipeSearch) return false;
                 if (!vm.recipeSearch.name) return false;
                 if (vm.recipeSearch.name.length < 3) return false;
-                return item.name.toLowerCase().indexOf(vm.recipeSearch.name.toLowerCase()) >= 0;
+                return item.name.toLowerCase().indexOf(vm.recipeSearch.name.toLowerCase()) >= 0 && convertToCrafter(item.classjob) === vm.crafter;
             };
+
+            function convertToCrafter(job) {
+                switch (job+"") {
+                    case "9": return "64";
+                    case "10": return "32";
+                    case "12": return "16";
+                    case "13": return "8";
+                    case "11": return "4";
+                    case "15": return "1";
+                    case "8": return "128";
+                    case "14": return "2";
+                }
+            }
 
             vm.save = function () {
                 vm.recipe = jQuery.extend({}, vm.settingRecipe);
@@ -155,7 +192,7 @@ angular
                 angular.element("#stats").show();
             }
 
-            vm.crafterChanged = function() {
+            vm.crafterChanged = function () {
                 vm.model = {
                     Abilities: CraftTable.CraftStation.getAbilitiesInfo(Number(vm.crafter)).items,
                     Categories: ['Synhtesis', 'Durability', 'Quality', 'CP', 'Other', 'Buffs', 'Specialist']
@@ -169,7 +206,7 @@ angular
                 loadCrafter();
 
                 if (!vm.crafter)
-                    vm.crafter = CraftTable.Crafter.Culinarian+"";
+                    vm.crafter = CraftTable.Crafter.Culinarian + "";
                 if (!vm.recipe)
                     vm.recipe = new CraftTable.Recipe(1968, 70, 13187, 190);
                 if (!vm.craftMan)
@@ -178,11 +215,11 @@ angular
                 vm.counter = 0;
 
                 vm.model = {
-                    Abilities:  CraftTable.CraftStation.getAbilitiesInfo(Number(vm.crafter)).items,
+                    Abilities: CraftTable.CraftStation.getAbilitiesInfo(Number(vm.crafter)).items,
                     Categories: ['Synhtesis', 'Durability', 'Quality', 'CP', 'Other', 'Buffs', 'Specialist']
                 };
 
-                $.get('https://api.xivdb.com/recipe?columns=id,name,level,item,difficulty,durability,quality', null, function (data) {
+                $.get('https://api.xivdb.com/recipe?columns=id,name,level,item,difficulty,durability,quality,classjob', null, function (data) {
                     vm.recipes = data;
                 });
 
@@ -190,7 +227,7 @@ angular
                 XIVDBTooltips.get();
             };
 
-            vm.crafters = function() {
+            vm.crafters = function () {
                 return {
                     1: 'Culinarian',
                     2: 'Alchemist',
@@ -220,7 +257,7 @@ angular
                     var settings = window.localStorage.getItem("settings-crafter");
                     if (settings) {
                         settings = JSON.parse(settings);
-                        vm.crafter = settings.crafter || CraftTable.Crafter.Culinarian+"";
+                        vm.crafter = settings.crafter || CraftTable.Crafter.Culinarian + "";
                     }
                 }
             }

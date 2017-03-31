@@ -112,13 +112,15 @@ namespace CraftTable
             _condition = _conditionService.GetCondition(_calculator);
             _buffCollector.KillNotActive();
 
-            foreach (var a in _abilityQueue)
+            Validate(abilityfailed, chance);
+
+            var copyOfAbilities = _abilityQueue.ToArray();
+            _abilityQueue.Clear();
+
+            foreach (var a in copyOfAbilities)
             {
                 Act(a);
-                _abilityQueue.Clear();
             }
-            
-            Validate(abilityfailed, chance);
         }
 
         public bool CanAct(Ability ability)

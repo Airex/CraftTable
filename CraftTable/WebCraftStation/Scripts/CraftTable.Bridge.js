@@ -24477,7 +24477,63 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
                     return craftTableInfo.getStep() === 1;
                 }
                 return false;
+            },
+            checkDistribution: function () {
+                var $t;
+
+                var conditionService = new CraftTable.ConditionService(new CraftTable.RandomService());
+                var calculator = new CraftTable.Calculator(new CraftTable.EfficiencyCalculator(), new CraftTable.LookupService());
+
+                var conditions = new (System.Collections.Generic.List$1(CraftTable.Condition))();
+                for (var i = 0; i < 100000; i = (i + 1) | 0) {
+                    System.Array.add(conditions, conditionService.getCondition(calculator), CraftTable.Condition);
+                }
+
+                var a = System.Linq.Enumerable.from(conditions).groupBy($asm.$.CraftTable.CraftStation.f8, $asm.$.CraftTable.CraftStation.f8).select(function (g) {
+                    return new $asm.$AnonymousType$1(g.key(), g.count(), g.count() / System.Array.getCount(conditions, CraftTable.Condition));
+                });
+                Bridge.Console.log(System.String.format("Condition: \t Count \t\t %", null));
+                $t = Bridge.getEnumerator(a.orderBy($asm.$.CraftTable.CraftStation.f9));
+                while ($t.moveNext()) {
+                    var c = $t.getCurrent();
+                    Bridge.Console.log(System.String.format("{0}\t\t {1} \t\t {2}", c.condition, c.count, c.percent * 100));
+                }
             }
+        }
+    });
+
+    Bridge.define("$AnonymousType$1", $asm, {
+        $kind: "anonymous",
+        ctor: function (condition, count, percent) {
+            this.condition = condition;
+            this.count = count;
+            this.percent = percent;
+        },
+        getCondition : function () {
+            return this.condition;
+        },
+        getCount : function () {
+            return this.count;
+        },
+        getPercent : function () {
+            return this.percent;
+        },
+        equals: function (o) {
+            if (!Bridge.is(o, $asm.$AnonymousType$1)) {
+                return false;
+            }
+            return Bridge.equals(this.condition, o.condition) && Bridge.equals(this.count, o.count) && Bridge.equals(this.percent, o.percent);
+        },
+        getHashCode: function () {
+            var h = Bridge.addHash([7550196186, this.condition, this.count, this.percent]);
+            return h;
+        },
+        toJSON: function () {
+            return {
+                condition : this.condition,
+                count : this.count,
+                percent : this.percent
+            };
         }
     });
 
@@ -24505,6 +24561,12 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
         },
         f7: function (info) {
             return Bridge.referenceEquals(info.getType(), CraftTable.Buffs.WhistleBuff);
+        },
+        f8: function (c) {
+            return c;
+        },
+        f9: function (arg) {
+            return arg.condition;
         }
     });
 
@@ -24766,7 +24828,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             craftActions.CraftTable$Contracts$ICraftActions$synth(CraftTable.Synth.fromRawValue(40));
         },
         canAct: function (serviceState) {
-            return serviceState.CraftTable$Contracts$ICraftServiceState$getCraftPointsLeft() >= 0 || serviceState.CraftTable$Contracts$ICraftServiceState$getBuffAccessor().CraftTable$Contracts$IBuffAccessor$getBuff(CraftTable.Buffs.MakersMarkBuff) != null;
+            return serviceState.CraftTable$Contracts$ICraftServiceState$getCraftPointsLeft() >= 15 || serviceState.CraftTable$Contracts$ICraftServiceState$getBuffAccessor().CraftTable$Contracts$IBuffAccessor$getBuff(CraftTable.Buffs.MakersMarkBuff) != null;
         }
     });
 
@@ -25522,6 +25584,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             }
         },
         execute: function (craftActions, isSuccess) {
+            craftActions.CraftTable$Contracts$ICraftActions$useDurability(10);
             craftActions.CraftTable$Contracts$ICraftActions$synth(CraftTable.Synth.fromEfficiency(150));
             craftActions.CraftTable$Contracts$ICraftActions$touch(150);
         },
@@ -26254,7 +26317,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
         }
     });
 
-    Bridge.define("$AnonymousType$1", $asm, {
+    Bridge.define("$AnonymousType$2", $asm, {
         $kind: "anonymous",
         ctor: function (index, chance) {
             this.index = index;
@@ -26267,13 +26330,13 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             return this.chance;
         },
         equals: function (o) {
-            if (!Bridge.is(o, $asm.$AnonymousType$1)) {
+            if (!Bridge.is(o, $asm.$AnonymousType$2)) {
                 return false;
             }
             return Bridge.equals(this.index, o.index) && Bridge.equals(this.chance, o.chance);
         },
         getHashCode: function () {
-            var h = Bridge.addHash([7550196186, this.index, this.chance]);
+            var h = Bridge.addHash([7550196187, this.index, this.chance]);
             return h;
         },
         toJSON: function () {
@@ -26294,7 +26357,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             return d !== 1000.0;
         },
         f3: function (d, i) {
-            return new $asm.$AnonymousType$1(i, d);
+            return new $asm.$AnonymousType$2(i, d);
         },
         f4: function (arg) {
             return arg.chance;
@@ -26680,14 +26743,16 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             this._condition = this._conditionService.CraftTable$Contracts$IConditionService$getCondition(this._calculator);
             this._buffCollector.CraftTable$Contracts$IBuffCollector$killNotActive();
 
-            $t1 = Bridge.getEnumerator(this._abilityQueue);
+            this.validate(abilityfailed, chance);
+
+            var copyOfAbilities = this._abilityQueue.toArray();
+            this._abilityQueue.clear();
+
+            $t1 = Bridge.getEnumerator(copyOfAbilities);
             while ($t1.moveNext()) {
                 var a = $t1.getCurrent();
                 this.act(a);
-                this._abilityQueue.clear();
             }
-
-            this.validate(abilityfailed, chance);
         },
         canAct: function (ability) {
             if (this._durability <= 0 || this._progress >= this._recipe.getDifficulty()) {

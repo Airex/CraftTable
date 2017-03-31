@@ -67,7 +67,11 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="search-item" data-xivdb-key="xivdb_recipe_{{item.item}}" ng-repeat="item in ctrl.recipes | filter:ctrl.recipeSearchMatch | limitTo: 20" ng-click="ctrl.selectRecipe(item)" on-finish-render="ctrl.finish()">
-                        {{item.name}}
+                        <div class="recipe-image">
+                            <img style="width: 40px; height: 40px;" id="{{ctrl.getRecipeImageId(item)}}" @*ng-src="@Url.Content("~/Content/images/recipes/"){{item.id}}.jpg"*@ />
+                        </div>
+                        
+                        <div class="recipe-name">{{item.name}}</div>
                     </div>
                 </div>
             </div>

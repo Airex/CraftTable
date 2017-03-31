@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,8 +13,7 @@ using NUnit.Framework.Constraints;
 
 namespace CraftTable.Tests
 {
-//    [Explicit]
-//    [Ignore("Integration")]
+    [Explicit]
     public class IconsLoas
     {
         [Test]
@@ -66,6 +66,35 @@ namespace CraftTable.Tests
              
 
             }
+        }
+
+        [Test]
+        public void LoadRecipeIcons()
+        {
+            var output = "h:\\temp\\recipes\\";
+            if (!Directory.Exists(output)) Directory.CreateDirectory(output);
+
+            WebClient client = new WebClient();
+            var downloadString = client.DownloadString("https://api.xivdb.com/recipe?columns=id,item");
+
+            var array = (JArray)JsonConvert.DeserializeObject(downloadString);
+            array.AsParallel().ForAll(token =>
+            {
+                try
+                {
+                    WebClient cl = new WebClient();
+                    var s = cl.DownloadString("https://api.xivdb.com/recipe/" + token["id"].Value<string>());
+                    var item = (JObject) JsonConvert.DeserializeObject(s);
+                    var fileName = Path.Combine(output, token["id"].Value<string>()+".jpg");
+                    cl.DownloadFile(item["icon"].Value<string>(),fileName);
+
+                }
+                catch (Exception ex)
+                {
+                    
+                }
+
+            });
         }
     }
 }

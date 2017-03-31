@@ -94,6 +94,30 @@ namespace CraftTable
         }
 
 
+        public static void CheckDistribution()
+        {
+            
+            var conditionService = new ConditionService(new RandomService());
+            var calculator = new Calculator(new EfficiencyCalculator(), new LookupService());
+
+            IList<Condition> conditions = new List<Condition>();
+            for (var i = 0; i < 100000; i++)
+            {
+                conditions.Add(conditionService.GetCondition(calculator));
+            }
+
+            var a = from c in conditions
+                    group c by c
+                into g
+                    select new { Condition = g.Key, Count = g.Count(), Percent = (double)g.Count() / conditions.Count };
+            Console.WriteLine($"Condition: \t Count \t\t %");
+            foreach (var c in a.OrderBy(arg => arg.Condition))
+            {
+                Console.WriteLine($"{c.Condition}\t\t {c.Count} \t\t {c.Percent * 100}");
+            }
+        }
+
+
     }
 
     public class Watcher : IProgressWatcher

@@ -132,15 +132,49 @@ body {
     height: 53px;
     width: 210px;
     display: inline-block;
-    align-content: center;
-    text-align: center;
     background: beige;
-    vertical-align: middle;
     border: solid;
     border-width: 1px;
     margin: 1px;
     cursor: default;
+    overflow: hidden;
+    
 }
+
+.search-item img{
+    height: 42px;
+    width: 42px;
+    
+}
+
+.olka-brand {
+        padding: 0px;
+    width: 45px;
+    height: 45px;
+    margin-right: 3px;
+    margin-top: 2px;
+}
+
+.search-item .recipe-name{
+    font-size: smaller;
+    margin-top: -2px;
+    word-break: normal;
+    /* padding-left: 3px; */
+    /* overflow: hidden; */
+    margin-top: 3px;
+    font-weight: 600;
+}
+
+.search-item .recipe-image{
+    height: 42px;
+    width: 42px;
+    float: left;
+    margin-right: 3px;
+    margin-top: 3px;
+    margin-left: 3px;
+}
+
+
 
 .search-item:hover {
     background-color: burlywood

@@ -82,6 +82,7 @@ namespace CraftTable.Buffs
 
             public override void Execute(ICraftActions craftActions, bool isSuccess)
             {
+                craftActions.UseDurability(10);
                 craftActions.Synth(Synth.FromEfficiency(150));
                 craftActions.Touch(150);
             }
