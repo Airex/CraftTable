@@ -11,15 +11,15 @@ namespace CraftTable.Buffs
         private Action _afterSatisfaction;
         private Action _afterNymerianWheel;
 
-        private int _stacks = 11;
-
-        public bool IsActive => _stacks > 0;
-
-        public void Step(IBuffActions buffActions)
+        public WhistleBuff()
         {
-           
+            IsActive = true;
         }
 
+        private int _stacks = 11;
+
+        public bool IsActive { get; set; }
+     
         public int Stacks => _stacks;
 
         public void Step(IBuffActionsRegistry buffActionsRegistry)
@@ -38,16 +38,18 @@ namespace CraftTable.Buffs
                     _afterNymerianWheel = null;
                 }
 
-                if (_stacks == 0)
+                if (Stacks <= 0)
                 {
-                    //todo implement   Finishing touch
+                    Kill();
+                    actions.QueueAbility(new FinishingTouches());
                 }
+               
             });
         }
 
         public void Kill()
         {
-            _stacks = 0;
+            IsActive = false;
         }
 
         public void OnCalculate(ActionInfo info, ICalculatorBuilder calculatorBuilder)
@@ -74,8 +76,22 @@ namespace CraftTable.Buffs
             }
         }
 
-        
+        class FinishingTouches : Ability
+        {
+            public override int Chance { get; } = 50;
+
+            public override void Execute(ICraftActions craftActions, bool isSuccess)
+            {
+                craftActions.Synth(Synth.FromEfficiency(150));
+                craftActions.Touch(150);
+            }
+
+            public override bool CanAct(ICraftServiceState serviceState)
+            {
+                return true;
+            }
+        }
     }
 
-
+    
 }

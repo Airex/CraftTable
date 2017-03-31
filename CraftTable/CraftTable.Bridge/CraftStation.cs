@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using CraftTable.Abilities;
 using CraftTable.Abilities.Specialist;
+using CraftTable.Attributes;
 using CraftTable.Buffs;
 using CraftTable.Contracts;
 
@@ -25,7 +26,7 @@ namespace CraftTable
 
         private static List<Ability> GetAbilities()
         {
-            return  Assembly.GetExecutingAssembly().GetTypes().Where(type => type.BaseType == typeof(Ability)).Select(type => (Ability)Activator.CreateInstance(type)).ToList();
+            return  Assembly.GetExecutingAssembly().GetTypes().Where(type => type.BaseType == typeof(Ability) && type.GetCustomAttributes(typeof(AbilityDescriptorAttribute),false)?.Length>0).Select(type => (Ability)Activator.CreateInstance(type)).ToList();
         }
 
         public static Ability GetAbility(string name)
@@ -41,9 +42,13 @@ namespace CraftTable
                 XivDbId = a.IdForCrafter(crafter),
                 Category = a.AbilityDescriptor().Category.ToString(),
                 Order = a.AbilityDescriptor().Order,
-                CraftPoints = a.AbilityDescriptor().CpCost
+                CraftPoints = a.AbilityDescriptor().CpCost,
+                IsCrossClass = a.AbilityDescriptor().IsCrossClass,
+                Crafter = a.AbilityDescriptor().CrafterAfinity
             }).ToList();
         }
+
+        
 
 
         public static bool CheckHighLight(Ability ability, CraftTableInfo craftTableInfo)
@@ -108,5 +113,12 @@ namespace CraftTable
         public string Category { get; set; }
         public int Order { get; set; }
         public int CraftPoints { get; set; }
+        public bool IsCrossClass { get; set; }
+        public Crafter Crafter { get; set; }
+
+        public bool IsForCrafter(Crafter crafter)
+        {
+            return Crafter.HasFlag(crafter);
+        }
     }
 }

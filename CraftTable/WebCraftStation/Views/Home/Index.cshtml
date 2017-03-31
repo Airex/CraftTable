@@ -1,27 +1,42 @@
-﻿@using CraftTable.Attributes
-@using WebCraftStation.Models
-@model HomeViewModel
-
-<div ng-controller="HomeController as ctrl" ng-init="ctrl.init()" ng-cloak>
+﻿<div ng-controller="HomeController as ctrl" ng-init="ctrl.init()" ng-cloak>
     <div class="row">
-        <div class="col-md-6" style="margin-top: 15px;">
+        <div class="col-md-8" style="margin-top: 15px;">
             <button class="btn btn-danger" id="resetButton" type="button" value="Reset" ng-click="ctrl.reset()">Reset</button>
             <button class="btn btn-default" id="searchButton" type="button" value="Search recipe" ng-click="ctrl.searchRecipe()">Search recipe</button>
+            <select ng-model="ctrl.crafter" ng-change="ctrl.crafterChanged()" class="form-control" style="width: 150px; display: inline-block;">
+                <option ng-repeat="(x,y) in ctrl.crafters()" value="{{x}}">{{y}}</option>
+            </select>
         </div>
-        <div class="col-md-6" style="margin-top: 15px;">
+        <div class="col-md-4" style="margin-top: 15px;">
             <button class="btn btn-default" style="float: right;" id="settingsButton" type="button" value="Settings" ng-click="ctrl.settings()"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</button>
         </div>
     </div>
     <hr style="margin-bottom: 0;" />
     <div class="row">
         <div class="col-md-12" id="settings" style="margin-top: 15px; display: none;">
+            
+            <div class="row" style="margin-bottom: 10px;">
+                <div class="col-md-12">
+                    <div class="abilities-in-category" style="margin-bottom: 2px;">
+                        <div class="category-head">
+                            Cross-class abilites
+                        </div>
+                        <div class="ability-container" ng-repeat="ability in ctrl.model.Abilities | filter: ctrl.abilityCrossClassMatch | orderBy: ['Category', 'Order']">
+                            <div class="action" data-xivdb-key="xivdb_action_{{ability.XivDbId}}" data-xivdb-isset="1">
+                                <img ng-src="@Url.Content("~/Content/Images/")action_{{ability.XivDbId}}.png" ng-click="ctrl.onCrossClass(ability)"/>
+                                <div class="cost">{{ctrl.formatCraftPoints(ability.CraftPoints)}}</div>
+                                <div class="ability-overlay" ng-style="{'display':ctrl.isUsedInCrossClass(ability)?'block':'none'}" ng-click="ctrl.onCrossClass(ability)"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
-
                 <div class="col-md-6">
-                    @Html.Partial("Recipe", Model.Recipe)
+                    @Html.Partial("Recipe")
                 </div>
                 <div class="col-md-6">
-                    @Html.Partial("Craftman", Model.Craftman)
+                    @Html.Partial("Craftman")
                 </div>
             </div>
             <div class="row">
@@ -66,7 +81,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" id="stats">
         <div class="col-md-6">
             @Html.Partial("Stats")
         </div>
@@ -83,7 +98,7 @@
             <div id="buffs" style="height: 75px;">
                 <div class="buff" ng-repeat="buff in ctrl.status.Buffs">
                     <div class="buff-stacks">{{ctrl.formatBuff(buff.Stacks)}}</div>
-                    <div data-tooltip-id="status/{{buff.XivDb}}"  class="buff-icon" name="{{buff.Name}}">
+                    <div data-tooltip-id="status/{{buff.XivDb}}" class="buff-icon" name="{{buff.Name}}">
                         <img ng-src="@Url.Content("~/Content/Images/")status_{{buff.XivDb}}.png" />
                     </div>
                     <div class="buff-steps">{{ctrl.formatBuff(buff.Steps)}}</div>
@@ -96,12 +111,12 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="category-container" ng-repeat="category in ctrl.model.Categories">
+            <div class="category-container" ng-repeat="category in ctrl.categories(ctrl.counter)" ng-show="(ctrl.model.Abilities | filter: ctrl.abilityMatch(category)).length">
                 <div class="ability-category">
                     <span class="category-head">{{category}}</span>
                 </div>
                 <div class="abilities-in-category">
-                    <div class="ability-container" ng-repeat="ability in ctrl.model.Abilities | filter: {Category:category} | orderBy: 'Order'">
+                    <div class="ability-container" ng-repeat="ability in ctrl.model.Abilities | filter: ctrl.abilityMatch(category) | orderBy: 'Order' ">
                         <div class="action" ng-class="{'highlight-action':ability.IsHighLight}" data-xivdb-key="xivdb_action_{{ability.XivDbId}}" data-xivdb-isset="1">
                             <img ng-src="@Url.Content("~/Content/Images/")action_{{ability.XivDbId}}.png" ng-click="ctrl.act(ability)" />
                             <div class="cost">{{ctrl.formatCraftPoints(ability.CraftPoints)}}</div>

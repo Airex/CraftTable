@@ -66,7 +66,7 @@ namespace CraftTable
             var efficiencyActor = new CalculatorActor(efficiency);
             var controlActor = new CalculatorActor(value);
             _quality(efficiencyActor, controlActor,!_failed);
-            return (int)_efficiencyCalculator.ControlToProgress(controlActor.Value, efficiencyActor.Value, recipeLevel, CalculateLevelDifference(recipeLevel, craftmanLevel));
+            return (int)_efficiencyCalculator.ControlToQuality(controlActor.Value, efficiencyActor.Value, recipeLevel, CalculateLevelDifference(recipeLevel, craftmanLevel));
         }
 
         public int CalculateCraftPoints(int value)

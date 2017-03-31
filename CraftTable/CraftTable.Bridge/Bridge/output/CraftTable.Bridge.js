@@ -24191,8 +24191,13 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
                 XivDbId: null,
                 Category: null,
                 Order: 0,
-                CraftPoints: 0
+                CraftPoints: 0,
+                IsCrossClass: false,
+                Crafter: 0
             }
+        },
+        isForCrafter: function (crafter) {
+            return System.Enum.hasFlag(this.getCrafter(), crafter);
         }
     });
 
@@ -24434,7 +24439,9 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
                             setXivDbId: CraftTable.Extensions.idForCrafter(a, crafter),
                             setCategory: ($t=CraftTable.Extensions.abilityDescriptor(a).getCategory(), System.Enum.toString(CraftTable.Attributes.Category, $t)),
                             setOrder: CraftTable.Extensions.abilityDescriptor(a).getOrder(),
-                            setCraftPoints: CraftTable.Extensions.abilityDescriptor(a).getCpCost()
+                            setCraftPoints: CraftTable.Extensions.abilityDescriptor(a).getCpCost(),
+                            setIsCrossClass: CraftTable.Extensions.abilityDescriptor(a).getIsCrossClass(),
+                            setCrafter: CraftTable.Extensions.abilityDescriptor(a).getCrafterAfinity()
                         } );
                     }).toList(CraftTable.AbilityInfo);
             },
@@ -24478,7 +24485,8 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
 
     Bridge.apply($asm.$.CraftTable.CraftStation, {
         f1: function (type) {
-            return Bridge.referenceEquals(Bridge.Reflection.getBaseType(type), CraftTable.Ability);
+            var $t;
+            return Bridge.referenceEquals(Bridge.Reflection.getBaseType(type), CraftTable.Ability) && System.Nullable.gt((($t = Bridge.Reflection.getAttributes(type, CraftTable.Attributes.AbilityDescriptorAttribute, false)) != null ? $t.length : null), 0);
         },
         f2: function (type) {
             return Bridge.cast(Bridge.createInstance(type), CraftTable.Ability);
@@ -25436,28 +25444,30 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
         _afterNymerianWheel: null,
         _stacks: 11,
         config: {
+            properties: {
+                IsActive: false
+            },
             alias: [
             "getIsActive", "CraftTable$IBuff$getIsActive",
+            "setIsActive", "CraftTable$IBuff$setIsActive",
             "getStacks", "CraftTable$IStacks$getStacks",
             "step", "CraftTable$IBuff$step",
             "kill", "CraftTable$IBuff$kill",
             "onCalculate", "CraftTable$IBuff$onCalculate"
             ]
         },
-        getIsActive: function () {
-            return this._stacks > 0;
+        ctor: function () {
+            this.$initialize();
+            this.setIsActive(true);
         },
         getStacks: function () {
             return this._stacks;
-        },
-        step$1: function (buffActions) {
-
         },
         step: function (buffActionsRegistry) {
             buffActionsRegistry.CraftTable$Contracts$IBuffActionsRegistry$registerPostAbility(Bridge.fn.bind(this, $asm.$.CraftTable.Buffs.WhistleBuff.f1));
         },
         kill: function () {
-            this._stacks = 0;
+            this.setIsActive(false);
         },
         onCalculate: function (info, calculatorBuilder) {
             var stacks = this._stacks;
@@ -25493,12 +25503,30 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
                 this._afterNymerianWheel = null;
             }
 
-            if (this._stacks === 0) {
-                //todo implement   Finishing touch
+            if (this.getStacks() <= 0) {
+                this.kill();
+                actions.CraftTable$Contracts$IBuffActions$queueAbility(new CraftTable.Buffs.WhistleBuff.FinishingTouches());
             }
+
         },
         f2: function () {
             Bridge.identity(this._stacks, (this._stacks = (this._stacks - 1) | 0));
+        }
+    });
+
+    Bridge.define("CraftTable.Buffs.WhistleBuff.FinishingTouches", {
+        inherits: [CraftTable.Ability],
+        config: {
+            properties: {
+                Chance: 50
+            }
+        },
+        execute: function (craftActions, isSuccess) {
+            craftActions.CraftTable$Contracts$ICraftActions$synth(CraftTable.Synth.fromEfficiency(150));
+            craftActions.CraftTable$Contracts$ICraftActions$touch(150);
+        },
+        canAct: function (serviceState) {
+            return true;
         }
     });
 
@@ -25581,7 +25609,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             var efficiencyActor = new CraftTable.CraftActors.CalculatorActor(efficiency);
             var controlActor = new CraftTable.CraftActors.CalculatorActor(value);
             this._quality(efficiencyActor, controlActor, !this._failed);
-            return Bridge.Int.clip32(this._efficiencyCalculator.CraftTable$Contracts$IEfficiencyCalculator$controlToProgress(controlActor.getValue(), efficiencyActor.getValue(), recipeLevel, this.calculateLevelDifference(recipeLevel, craftmanLevel)));
+            return Bridge.Int.clip32(this._efficiencyCalculator.CraftTable$Contracts$IEfficiencyCalculator$controlToQuality(controlActor.getValue(), efficiencyActor.getValue(), recipeLevel, this.calculateLevelDifference(recipeLevel, craftmanLevel)));
         },
         calculateCraftPoints: function (value) {
             var actor = new CraftTable.CraftActors.CalculatorActor(value);
@@ -25949,7 +25977,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
         config: {
             alias: [
             "craftmanshipToProgress", "CraftTable$Contracts$IEfficiencyCalculator$craftmanshipToProgress",
-            "controlToProgress", "CraftTable$Contracts$IEfficiencyCalculator$controlToProgress",
+            "controlToQuality", "CraftTable$Contracts$IEfficiencyCalculator$controlToQuality",
             "useConditionMultylier", "CraftTable$Contracts$IEfficiencyCalculator$useConditionMultylier"
             ]
         },
@@ -25958,7 +25986,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
 
             return Bridge.Math.round(levelCorrectedProgress * efficiency / 100, 0, 6);
         },
-        controlToProgress: function (control, efficiency, recipeLevel, levelDiff) {
+        controlToQuality: function (control, efficiency, recipeLevel, levelDiff) {
             var levelCorrectedQuality = CraftTable.EfficiencyCalculator.calculateQuality(control, recipeLevel, levelDiff);
             //exterrConsole.WriteLine("Control: "+levelCorrectedQuality);
             return Bridge.Math.round(levelCorrectedQuality * efficiency / 100 * this._conditionMultiplier, 0, 6);
@@ -26556,10 +26584,15 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
         _craftQualityCalculator: null,
         _reclaimChance: 0,
         _condition: 0,
+        _abilityQueue: null,
         config: {
             alias: [
-            "calculateDependency", "CraftTable$Contracts$ICraftActions$calculateDependency"
-            ]
+            "calculateDependency", "CraftTable$Contracts$ICraftActions$calculateDependency",
+            "queueAbility", "CraftTable$Contracts$IBuffActions$queueAbility"
+            ],
+            init: function () {
+                this._abilityQueue = new (System.Collections.Generic.List$1(CraftTable.Ability))();
+            }
         },
         ctor: function (buffCollector, conditionService, randomService, calculator, lookupService, craftQualityCalculator, recipe, craftMan, progressWatcher) {
             if (progressWatcher === void 0) { progressWatcher = null; }
@@ -26618,7 +26651,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             } );
         },
         act: function (ability) {
-            var $t;
+            var $t, $t1;
             if (this._durability <= 0 || this._progress >= this._recipe.getDifficulty()) {
                 this._progressWatcher.CraftTable$Contracts$IProgressWatcher$log("Craft finished. No Actions Allowed.");
                 throw new CraftTable.Exceptions.CraftAlreadyFinishedException();
@@ -26646,6 +26679,13 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             this._buffCollector.CraftTable$Contracts$IBuffCollector$postAction(this);
             this._condition = this._conditionService.CraftTable$Contracts$IConditionService$getCondition(this._calculator);
             this._buffCollector.CraftTable$Contracts$IBuffCollector$killNotActive();
+
+            $t1 = Bridge.getEnumerator(this._abilityQueue);
+            while ($t1.moveNext()) {
+                var a = $t1.getCurrent();
+                this.act(a);
+                this._abilityQueue.clear();
+            }
 
             this.validate(abilityfailed, chance);
         },
@@ -26717,6 +26757,9 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             var calculated = Math.min(((this._recipe.getDurability() - this._durability) | 0), durability);
             this._progressWatcher.CraftTable$Contracts$IProgressWatcher$log(System.String.format(" -> Restored {0} durability", calculated));
             this._durability = (this._durability + calculated) | 0;
+        },
+        queueAbility: function (a) {
+            this._abilityQueue.add(a);
         }
     });
 
@@ -26800,14 +26843,14 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
     $m($n[1].Ingenuity2, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 283),new CraftTable.Attributes.AbilityDescriptorAttribute("Ingenuity II", 64, 32, true, 4, 4)]}; });
     $m($n[1].InnerQuiet, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 259),new CraftTable.Attributes.AbilityDescriptorAttribute("Inner quiet", 255, 18, false, 4, 0)]}; });
     $m($n[1].Innovation, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 284),new CraftTable.Attributes.AbilityDescriptorAttribute("Innovation", 255, 18, false, 4, 6)]}; });
-    $m($n[1].MakersMark, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 100178),new CraftTable.Attributes.AbilityDescriptorAttribute("Maker's mark", 4, 20, false, 4, 7)]}; });
+    $m($n[1].MakersMark, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 100178),new CraftTable.Attributes.AbilityDescriptorAttribute("Maker's mark", 4, 20, true, 4, 7)]}; });
     $m($n[1].Manipulation, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 278),new CraftTable.Attributes.AbilityDescriptorAttribute("Manipulation", 4, 88, true, 3, 4)]}; });
     $m($n[1].MastersMend, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 100107),new CraftTable.Attributes.AbilityDescriptorAttribute("Master's mend", 255, 92, false, 3, 0)]}; });
     $m($n[1].MastersMend2, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 100110),new CraftTable.Attributes.AbilityDescriptorAttribute("Master's mend II", 255, 160, false, 3, 1)]}; });
     $m($n[1].MuscleMemory, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 100136),new CraftTable.Attributes.AbilityDescriptorAttribute("Muscle memory", 1, 6, true, 0, 7)]}; });
     $m($n[1].Observe, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 100113),new CraftTable.Attributes.AbilityDescriptorAttribute("Observe", 255, 14, false, 6, 0)]}; });
     $m($n[1].PieceByPiece, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 100039),new CraftTable.Attributes.AbilityDescriptorAttribute("Piece by piece", 32, 15, true, 0, 5)]}; });
-    $m($n[1].PreciseTouch, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(1, 100135),new CraftTable.Attributes.AbilityXivDbAttribute(2, 100134),new CraftTable.Attributes.AbilityXivDbAttribute(4, 100131),new CraftTable.Attributes.AbilityXivDbAttribute(8, 100133),new CraftTable.Attributes.AbilityXivDbAttribute(16, 100032),new CraftTable.Attributes.AbilityXivDbAttribute(32, 100030),new CraftTable.Attributes.AbilityXivDbAttribute(64, 100129),new CraftTable.Attributes.AbilityXivDbAttribute(128, 100128),new CraftTable.Attributes.AbilityDescriptorAttribute("Precise touch", 255, 18, false, 1, 6)]}; });
+    $m($n[1].PreciseTouch, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(1, 100135),new CraftTable.Attributes.AbilityXivDbAttribute(2, 100134),new CraftTable.Attributes.AbilityXivDbAttribute(4, 100131),new CraftTable.Attributes.AbilityXivDbAttribute(8, 100133),new CraftTable.Attributes.AbilityXivDbAttribute(16, 100032),new CraftTable.Attributes.AbilityXivDbAttribute(32, 100130),new CraftTable.Attributes.AbilityXivDbAttribute(64, 100129),new CraftTable.Attributes.AbilityXivDbAttribute(128, 100128),new CraftTable.Attributes.AbilityDescriptorAttribute("Precise touch", 255, 18, false, 1, 6)]}; });
     $m($n[1].RapidSynthesis, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 100033),new CraftTable.Attributes.AbilityDescriptorAttribute("Rapid synthesis", 32, 0, true, 0, 6)]}; });
     $m($n[1].Reclaim, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 287),new CraftTable.Attributes.AbilityDescriptorAttribute("Advanced touch", 1, 55, true, 4, 10)]}; });
     $m($n[1].Rumination, function () { return {"at":[new CraftTable.Attributes.AbilityXivDbAttribute(255, 276),new CraftTable.Attributes.AbilityDescriptorAttribute("Rumination", 128, 0, true, 2, 1)]}; });

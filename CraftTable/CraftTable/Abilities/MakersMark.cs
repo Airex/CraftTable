@@ -6,7 +6,7 @@ using CraftTable.Contracts;
 namespace CraftTable.Abilities
 {
     [AbilityXivDb(Crafter.All, 100178)]
-    [AbilityDescriptor("Maker's mark", Crafter.GoldSmith, 20, false, Category.Buffs, 7)]
+    [AbilityDescriptor("Maker's mark", Crafter.GoldSmith, 20, true, Category.Buffs, 7)]
     public class MakersMark:Ability
     {
         public override void Execute(ICraftActions craftActions, bool isSuccess)

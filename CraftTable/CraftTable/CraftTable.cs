@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+
 using CraftTable.Buffs;
 using CraftTable.Contracts;
 using CraftTable.Exceptions;
@@ -26,6 +28,7 @@ namespace CraftTable
         private readonly ICraftQualityCalculator _craftQualityCalculator;
         private readonly int _reclaimChance = 0;
         private Condition _condition;
+        private readonly List<Ability> _abilityQueue = new List<Ability>();
 
         public CraftTable(IBuffCollector buffCollector, IConditionService conditionService, IRandomService randomService, ICalculator calculator, ILookupService lookupService, ICraftQualityCalculator craftQualityCalculator,
             Recipe recipe, CraftMan craftMan, IProgressWatcher progressWatcher = null)
@@ -109,6 +112,12 @@ namespace CraftTable
             _condition = _conditionService.GetCondition(_calculator);
             _buffCollector.KillNotActive();
 
+            foreach (var a in _abilityQueue)
+            {
+                Act(a);
+                _abilityQueue.Clear();
+            }
+            
             Validate(abilityfailed, chance);
         }
 
@@ -197,6 +206,12 @@ namespace CraftTable
             var calculated = Math.Min(_recipe.Durability - _durability, durability);
             _progressWatcher.Log($" -> Restored {calculated} durability");
             _durability += calculated;
+        }
+
+        
+        public void QueueAbility(Ability a)
+        {
+            _abilityQueue.Add(a);
         }
     }
 }

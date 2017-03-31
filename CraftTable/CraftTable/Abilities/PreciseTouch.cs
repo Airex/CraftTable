@@ -8,7 +8,7 @@ namespace CraftTable.Abilities
     [AbilityXivDb(Crafter.GoldSmith, 100131)]
     [AbilityXivDb(Crafter.Weaver, 100133)]
     [AbilityXivDb(Crafter.Leatherworker, 100032)]
-    [AbilityXivDb(Crafter.Armorer, 100030)]
+    [AbilityXivDb(Crafter.Armorer, 100130)]
     [AbilityXivDb(Crafter.BlackSmith, 100129)]
     [AbilityXivDb(Crafter.Carpenter, 100128)]
     [AbilityDescriptor("Precise touch", Crafter.All, 18, false, Category.Quality, 6)]

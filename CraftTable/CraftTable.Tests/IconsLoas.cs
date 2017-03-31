@@ -12,8 +12,8 @@ using NUnit.Framework.Constraints;
 
 namespace CraftTable.Tests
 {
-    [Explicit]
-    [Ignore("Integration")]
+//    [Explicit]
+//    [Ignore("Integration")]
     public class IconsLoas
     {
         [Test]

@@ -160,12 +160,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AbilityModel.cs" />
     <Compile Include="Models\AbilityViewModel.cs" />
     <Compile Include="Models\ApiTestViewModel.cs" />
     <Compile Include="Models\CrafterEnumModel.cs" />
     <Compile Include="Models\CraftmanViewModel.cs" />
-    <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\RecipeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -233,6 +231,7 @@
     <Content Include="Content\Images\action_100127.png" />
     <Content Include="Content\Images\action_100128.png" />
     <Content Include="Content\Images\action_100129.png" />
+    <Content Include="Content\Images\action_100130.png" />
     <Content Include="Content\Images\action_100131.png" />
     <Content Include="Content\Images\action_100133.png" />
     <Content Include="Content\Images\action_100134.png" />

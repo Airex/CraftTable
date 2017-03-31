@@ -14,7 +14,7 @@ namespace CraftTable
             return Math.Round(levelCorrectedProgress * efficiency / 100);
         }
 
-        public double ControlToProgress(double control, double efficiency, int recipeLevel, double levelDiff)
+        public double ControlToQuality(double control, double efficiency, int recipeLevel, double levelDiff)
         {
             var levelCorrectedQuality = CalculateQuality(control, recipeLevel, levelDiff);
             //exterrConsole.WriteLine("Control: "+levelCorrectedQuality);
