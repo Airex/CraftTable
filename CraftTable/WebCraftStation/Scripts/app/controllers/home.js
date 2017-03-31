@@ -133,6 +133,10 @@ angular
                 return item.IsCrossClass === true && (!item.isForCrafter(vm.crafter));
             }
 
+            vm.crossClassUsedCount = function() {
+                return crossClassForCrafter(vm.crafter).length;
+            }
+
             vm.recipeSearchMatch = function (item) {
                 if (!vm.recipeSearch) return false;
                 if (!vm.recipeSearch.name) return false;
@@ -190,11 +194,11 @@ angular
                 return {
                     1: 'Culinarian',
                     2: 'Alchemist',
-                    4: 'GoldSmith',
+                    4: 'Goldsmith',
                     8: 'Weaver',
                     16: 'Leatherworker',
                     32: 'Armorer',
-                    64: 'BlackSmith',
+                    64: 'Blacksmith',
                     128: 'Carpenter'
                 };
             }

@@ -19,7 +19,7 @@
                 <div class="col-md-12">
                     <div class="abilities-in-category" style="margin-bottom: 2px;">
                         <div class="category-head">
-                            Cross-class abilites
+                            Cross-class abilites ({{ctrl.crossClassUsedCount()}} of 10)
                         </div>
                         <div class="ability-container" ng-repeat="ability in ctrl.model.Abilities | filter: ctrl.abilityCrossClassMatch | orderBy: ['Category', 'Order']">
                             <div class="action" data-xivdb-key="xivdb_action_{{ability.XivDbId}}" data-xivdb-isset="1">
