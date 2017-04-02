@@ -9,7 +9,7 @@ namespace CraftTable
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(GetType().Assembly)
-                .Where(type => type.BaseType == typeof(Ability))
+                .Where(type => type.BaseType == typeof(Ability) && !type.IsNested)
                 .Named<Ability>(type => type.Name)
                 .As<Ability>();
 

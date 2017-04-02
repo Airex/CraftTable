@@ -317,9 +317,6 @@
     <Compile Include="..\CraftTable\CraftActors\DurabilityActor.cs">
       <Link>CraftActors\DurabilityActor.cs</Link>
     </Compile>
-    <Compile Include="..\CraftTable\CraftActors\OnSuccessActor.cs">
-      <Link>CraftActors\OnSuccessActor.cs</Link>
-    </Compile>
     <Compile Include="..\CraftTable\CraftActors\ProgressActor.cs">
       <Link>CraftActors\ProgressActor.cs</Link>
     </Compile>

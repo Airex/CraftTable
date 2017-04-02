@@ -8,11 +8,13 @@
             Durability = durability;
             MaxQuality = maxQuality;
             Level = level;
+
         }
 
         public int Durability { get; }
         public int MaxQuality { get; }
         public int Difficulty { get; }
         public int Level { get; }
+        public int StartQuality { get; set; }
     }
 }

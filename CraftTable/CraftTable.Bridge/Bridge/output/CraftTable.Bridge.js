@@ -24630,7 +24630,8 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
                 Durability: 0,
                 MaxQuality: 0,
                 Difficulty: 0,
-                Level: 0
+                Level: 0,
+                StartQuality: 0
             }
         },
         ctor: function (difficulty, durability, maxQuality, level) {
@@ -24641,6 +24642,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             this.setDurability(durability);
             this.setMaxQuality(maxQuality);
             this.setLevel(level);
+
         }
     });
 
@@ -26700,6 +26702,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             this._craftPointsLeft = craftMan.getMaxCraftPoints();
             this._durability = recipe.getDurability();
             this._condition = this._conditionService.CraftTable$Contracts$IConditionService$getCondition(this._calculator);
+            this._quality = recipe.getStartQuality();
         },
         getStatus: function () {
             return Bridge.merge(new CraftTable.CraftTableInfo(), {

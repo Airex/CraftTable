@@ -56,6 +56,7 @@ namespace CraftTable
             _craftPointsLeft = craftMan.MaxCraftPoints;
             _durability = recipe.Durability;
             _condition = _conditionService.GetCondition(_calculator);
+            _quality = recipe.StartQuality;
         }
 
         public CraftTableInfo GetStatus()
