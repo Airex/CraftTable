@@ -26789,7 +26789,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
         CraftTable$Contracts$ICraftActions$synth: function (synthDelegate) {
             var calculateProgress = synthDelegate(this._recipe, this._craftMan, this._progress, this._calculator);
             this._progressWatcher.CraftTable$Contracts$IProgressWatcher$log(System.String.format(" -> Progress increased by {0}", calculateProgress));
-            this._progress = (this._progress + calculateProgress) | 0;
+            this._progress = (this._progress + (Math.min(calculateProgress, ((this._recipe.getDifficulty() - this._progress) | 0)))) | 0;
         },
         CraftTable$Contracts$ICraftActions$touch: function (efficiency) {
             var calculateQuality = this._calculator.CraftTable$Contracts$ICalculator$calculateQuality(efficiency, this._craftMan.getControl(), this._recipe.getLevel(), this._craftMan.getLevel());

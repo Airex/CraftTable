@@ -165,7 +165,7 @@ namespace CraftTable
         {
             var calculateProgress = synthDelegate(_recipe, _craftMan, _progress, _calculator);
             _progressWatcher.Log($" -> Progress increased by {calculateProgress}");
-            _progress += calculateProgress;
+            _progress += Math.Min(calculateProgress, _recipe.Difficulty - _progress);
         }
 
         void ICraftActions.Touch(int efficiency)
