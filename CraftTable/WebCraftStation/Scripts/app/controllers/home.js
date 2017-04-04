@@ -35,14 +35,21 @@ angular
             }
 
             vm.act = function (ability) {
+                if (!ability.IsEnabled) return;
+                var condition = vm.status.Condition;
+                var failed = false;
                 console.log(ability.Name);
                 try {
-                    vm.craftTable.act(CraftTable.CraftStation.getAbility(ability.Name));
+                    var overrides = CraftTable.CraftStation.createOverride(condition, null);
+                    vm.craftTable.act(CraftTable.CraftStation.getAbility(ability.Name), overrides);
                 } catch (e) {
                     console.log(e);
+                    if (e.$$fullname === 'CraftTable.Exceptions.AbilityFailedException')
+                        failed = true;
                 }
-                vm.history.push({ Name: ability.Name, XivDbId: ability.XivDbId });
+
                 vm.status = vm.craftTable.getStatus();
+                vm.history.push({ Name: ability.Name, XivDbId: ability.XivDbId, Condition: condition, Failed: failed });
                 vm.setAbilityState();
                 XIVDBTooltips.get();
             }
@@ -56,7 +63,9 @@ angular
                 for (var i = 0; i < vm.model.Abilities.length; i++) {
                     var m = vm.model.Abilities[i];
                     var a = CraftTable.CraftStation.getAbility(m.Name);
-                    m.IsEnabled = vm.craftTable.canAct(a);
+                    var condition = vm.status.Condition;
+                    var overrides = CraftTable.CraftStation.createOverride(condition, null);
+                    m.IsEnabled = vm.craftTable.canAct(a, overrides);
                     m.IsHighLight = CraftTable.CraftStation.checkHighLight(a, vm.craftTable.getStatus());
                 }
             }
@@ -137,15 +146,15 @@ angular
                 vm.imagesCache = vm.imagesCache || {};
                 var at = angular.element("#recipe_" + item.id).attr('src');
                 if (vm.imagesCache["recipe_" + item.id] && !at) {
-                    window.setTimeout(function() {
+                    window.setTimeout(function () {
                         angular.element("#recipe_" + item.id).attr('src', vm.imagesCache["recipe_" + item.id]);
-                    },0);
+                    }, 0);
 
                 } else {
                     $.get("https://api.xivdb.com/recipe/" + item.id,
                         '',
-                        function(id) {
-                            return function(data) {
+                        function (id) {
+                            return function (data) {
                                 if (data) {
                                     var icon = data["icon"];
                                     angular.element("#recipe_" + id).attr('src', icon);
@@ -169,7 +178,7 @@ angular
             };
 
             function convertToCrafter(job) {
-                switch (job+"") {
+                switch (job + "") {
                     case "9": return "64";
                     case "10": return "32";
                     case "12": return "16";
@@ -225,7 +234,30 @@ angular
 
                 vm.reset();
                 XIVDBTooltips.get();
-            };
+            }
+
+            vm.undo = function () {
+                var savedCondition = vm.history[vm.history.length - 1].Condition;
+                vm.history.splice(vm.history.length - 1, 1);
+
+
+                vm.watcher = new CraftTable.Watcher();
+                vm.craftTable = CraftTable.CraftStation.createCraftTable(vm.recipe, vm.craftMan, vm.watcher);
+
+                for (var i = 0; i < vm.history.length; i++) {
+                    var ab = vm.history[i];
+                    console.log(ab.Name);
+                    try {
+                        vm.craftTable.act(CraftTable.CraftStation.getAbility(ab.Name), CraftTable.CraftStation.createOverride(ab.Condition, ab.Failed));
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
+                vm.status = vm.craftTable.getStatus();
+                vm.status.Condition = savedCondition;
+                vm.setAbilityState();
+                XIVDBTooltips.get();
+            }
 
             vm.crafters = function () {
                 return {

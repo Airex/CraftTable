@@ -111,6 +111,7 @@
     <Compile Include="Buffs\WhistleBuff.cs" />
     <Compile Include="Attributes\BuffXivDbAttribute.cs" />
     <Compile Include="CalculateDependency.cs" />
+    <Compile Include="ConditionalAbility.cs" />
     <Compile Include="Contracts\IBuffActionsRegistry.cs" />
     <Compile Include="Contracts\ICraftQualityCalculator.cs" />
     <Compile Include="Contracts\ILookupService.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Exceptions\CraftTableException.cs" />
     <Compile Include="IStacks.cs" />
     <Compile Include="LookupService.cs" />
+    <Compile Include="Overrides.cs" />
     <Compile Include="Synth.cs" />
     <Compile Include="SynthDelegate.cs" />
     <Compile Include="CraftActors\ConditionChanceActor.cs" />

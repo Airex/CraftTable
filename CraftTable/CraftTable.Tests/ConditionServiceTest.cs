@@ -29,9 +29,11 @@ namespace CraftTable.Tests
             });
 
             IList<Condition> conditions = new List<Condition>();
+            Condition? cnd = null;
             for (var i = 0; i < 100000; i++)
             {
-                conditions.Add(conditionService.GetCondition(calculator));
+                cnd = conditionService.GetCondition(cnd);
+                conditions.Add(cnd.Value);
             }
 
             var a = from c in conditions

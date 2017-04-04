@@ -14,12 +14,14 @@ namespace CraftTable
     {
         public static CraftTable CreateCraftTable(Recipe recipe, CraftMan craftMan, IProgressWatcher watcher = null)
         {
-            var buffCollector = new BuffCollector();
-            var randomService = new RandomService();
-            var condition = new ConditionService(randomService);
             var efficiencyCalculator = new EfficiencyCalculator();
             var lookupService = new LookupService();
             var calculator = new Calculator(efficiencyCalculator, lookupService);
+            var buffCollector = new BuffCollector();
+            var randomService = new RandomService();
+            var condition = new ConditionService(randomService, calculator);
+            
+            
             var craftQualityCalculator = new CraftQualityCalculator();
             return new CraftTable(buffCollector, condition, randomService, calculator, lookupService, craftQualityCalculator, recipe, craftMan, watcher);
         }
@@ -32,6 +34,11 @@ namespace CraftTable
         public static Ability GetAbility(string name)
         {
             return GetAbilities().SingleOrDefault(ability => ability.Name() == name);
+        }
+
+        public static Overrides CreateOverride(Condition condition, bool isFailed)
+        {
+            return new Overrides() {Condition = condition, Failed = isFailed};
         }
 
         public static List<AbilityInfo> GetAbilitiesInfo(Crafter crafter)
@@ -96,14 +103,16 @@ namespace CraftTable
 
         public static void CheckDistribution()
         {
-            
-            var conditionService = new ConditionService(new RandomService());
-            var calculator = new Calculator(new EfficiencyCalculator(), new LookupService());
 
+            var calculator = new Calculator(new EfficiencyCalculator(), new LookupService());
+            var conditionService = new ConditionService(new RandomService(), calculator);
+
+            Condition? condition = null;
             IList<Condition> conditions = new List<Condition>();
             for (var i = 0; i < 100000; i++)
             {
-                conditions.Add(conditionService.GetCondition(calculator));
+                condition = conditionService.GetCondition(condition);
+                conditions.Add(condition.Value);
             }
 
             var a = from c in conditions

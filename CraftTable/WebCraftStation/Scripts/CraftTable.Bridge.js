@@ -24414,12 +24414,14 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
         statics: {
             createCraftTable: function (recipe, craftMan, watcher) {
                 if (watcher === void 0) { watcher = null; }
-                var buffCollector = new CraftTable.BuffCollector();
-                var randomService = new CraftTable.RandomService();
-                var condition = new CraftTable.ConditionService(randomService);
                 var efficiencyCalculator = new CraftTable.EfficiencyCalculator();
                 var lookupService = new CraftTable.LookupService();
                 var calculator = new CraftTable.Calculator(efficiencyCalculator, lookupService);
+                var buffCollector = new CraftTable.BuffCollector();
+                var randomService = new CraftTable.RandomService();
+                var condition = new CraftTable.ConditionService(randomService, calculator);
+
+
                 var craftQualityCalculator = new CraftTable.CraftQualityCalculator();
                 return new CraftTable.CraftTable(buffCollector, condition, randomService, calculator, lookupService, craftQualityCalculator, recipe, craftMan, watcher);
             },
@@ -24430,6 +24432,12 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
                 return System.Linq.Enumerable.from(CraftTable.CraftStation.getAbilities()).singleOrDefault(function (ability) {
                         return Bridge.referenceEquals(CraftTable.Extensions.$name(ability), name);
                     }, null);
+            },
+            createOverride: function (condition, isFailed) {
+                return Bridge.merge(new CraftTable.Overrides(), {
+                    setCondition: condition,
+                    setFailed: isFailed
+                } );
             },
             getAbilitiesInfo: function (crafter) {
                 return System.Linq.Enumerable.from(CraftTable.CraftStation.getAbilities()).select(function (a) {
@@ -24481,12 +24489,14 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             checkDistribution: function () {
                 var $t;
 
-                var conditionService = new CraftTable.ConditionService(new CraftTable.RandomService());
                 var calculator = new CraftTable.Calculator(new CraftTable.EfficiencyCalculator(), new CraftTable.LookupService());
+                var conditionService = new CraftTable.ConditionService(new CraftTable.RandomService(), calculator);
 
+                var condition = null;
                 var conditions = new (System.Collections.Generic.List$1(CraftTable.Condition))();
                 for (var i = 0; i < 100000; i = (i + 1) | 0) {
-                    System.Array.add(conditions, conditionService.getCondition(calculator), CraftTable.Condition);
+                    condition = conditionService.getCondition(condition);
+                    System.Array.add(conditions, System.Nullable.getValue(condition), CraftTable.Condition);
                 }
 
                 var a = System.Linq.Enumerable.from(conditions).groupBy($asm.$.CraftTable.CraftStation.f8, $asm.$.CraftTable.CraftStation.f8).select(function (g) {
@@ -24620,6 +24630,15 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             id: function (ability) {
                 var descriptor = System.Linq.Enumerable.from(Bridge.Reflection.getAttributes(Bridge.getType(ability), CraftTable.Attributes.BuffXivDbAttribute, false)).select(function(x) { return Bridge.cast(x, CraftTable.Attributes.BuffXivDbAttribute); }).singleOrDefault(null, null);
                 return descriptor != null ? descriptor.getBuffId().toString() : null;
+            }
+        }
+    });
+
+    Bridge.define("CraftTable.Overrides", {
+        config: {
+            properties: {
+                Condition: null,
+                Failed: null
             }
         }
     });
@@ -25775,38 +25794,38 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
     Bridge.define("CraftTable.ConditionService", {
         inherits: [CraftTable.Contracts.IConditionService],
         _randomService: null,
-        _prevCondition: null,
+        _calculator: null,
         config: {
             alias: [
             "getCondition", "CraftTable$Contracts$IConditionService$getCondition"
             ]
         },
-        ctor: function (randomService) {
+        ctor: function (randomService, calculator) {
             this.$initialize();
             this._randomService = randomService;
+            this._calculator = calculator;
         },
-        getCondition: function (calculator) {
+        getCondition: function (condition) {
             var result = new CraftTable.Condition();
 
-            if (!System.Nullable.hasValue(this._prevCondition)) {
+            if (!System.Nullable.hasValue(condition)) {
                 result = CraftTable.Condition.Normal;
             } else {
-                if (System.Nullable.getValueOrDefault(this._prevCondition, 0) === CraftTable.Condition.Excellent) {
+                if (System.Nullable.getValueOrDefault(condition, 0) === CraftTable.Condition.Excellent) {
                     result = CraftTable.Condition.Poor;
                 } else {
-                    if (System.Nullable.getValueOrDefault(this._prevCondition, 0) === CraftTable.Condition.Good) {
+                    if (System.Nullable.getValueOrDefault(condition, 0) === CraftTable.Condition.Good) {
                         result = CraftTable.Condition.Normal;
                     } else {
-                        if (System.Nullable.getValueOrDefault(this._prevCondition, 0) === CraftTable.Condition.Poor) {
+                        if (System.Nullable.getValueOrDefault(condition, 0) === CraftTable.Condition.Poor) {
                             result = CraftTable.Condition.Normal;
                         } else {
-                            var chances = System.Array.init([1000, calculator.CraftTable$Contracts$ICalculator$calculateConditionChance(CraftTable.Condition.Good, 23), calculator.CraftTable$Contracts$ICalculator$calculateConditionChance(CraftTable.Condition.Excellent, 1)], System.Double);
+                            var chances = System.Array.init([1000, this._calculator.CraftTable$Contracts$ICalculator$calculateConditionChance(CraftTable.Condition.Good, 23), this._calculator.CraftTable$Contracts$ICalculator$calculateConditionChance(CraftTable.Condition.Excellent, 1)], System.Double);
                             result = this._randomService.CraftTable$Contracts$IRandomService$select(chances);
                         }
                     }
                 }
             }
-            this._prevCondition = result;
             return result;
         }
     });
@@ -26701,7 +26720,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             this._recipe = recipe;
             this._craftPointsLeft = craftMan.getMaxCraftPoints();
             this._durability = recipe.getDurability();
-            this._condition = this._conditionService.CraftTable$Contracts$IConditionService$getCondition(this._calculator);
+            this._condition = this._conditionService.CraftTable$Contracts$IConditionService$getCondition(null);
             this._quality = recipe.getStartQuality();
         },
         getStatus: function () {
@@ -26716,8 +26735,11 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
                 setBuffs: System.Linq.Enumerable.from(this._buffCollector.CraftTable$Contracts$IBuffCollector$getBuffs()).select($asm.$.CraftTable.CraftTable.f1).toArray()
             } );
         },
-        act: function (ability) {
-            var $t, $t1;
+        act: function (ability, overrides) {
+            var $t, $t1, $t2, $t3;
+            if (overrides === void 0) { overrides = null; }
+            this._condition = ($t = (overrides != null ? overrides.getCondition() : null), $t != null ? $t : this._condition);
+
             if (this._durability <= 0 || this._progress >= this._recipe.getDifficulty()) {
                 this._progressWatcher.CraftTable$Contracts$IProgressWatcher$log("Craft finished. No Actions Allowed.");
                 throw new CraftTable.Exceptions.CraftAlreadyFinishedException();
@@ -26734,16 +26756,16 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             this._calculator.CraftTable$Contracts$ICalculator$reset(this._condition);
             this._buffCollector.CraftTable$Contracts$IBuffCollector$buildCalculator(new CraftTable.ActionInfo(Bridge.getType(ability), this._condition), this._calculator.CraftTable$Contracts$ICalculator$getBuilder());
             var chance = this._calculator.CraftTable$Contracts$ICalculator$calculateChance(ability.getChance());
-            var isSuccess = this._randomService.CraftTable$Contracts$IRandomService$select(System.Array.init([chance, 1000.0], System.Double)) === 0;
+            var isSuccess = ($t1 = System.Nullable.not((overrides != null ? overrides.getFailed() : null)), $t1 != null ? $t1 : this._randomService.CraftTable$Contracts$IRandomService$select(System.Array.init([chance, 1000.0], System.Double)) === 0);
             if (!isSuccess) {
                 abilityfailed = true;
                 this._calculator.CraftTable$Contracts$ICalculator$fail();
             }
             this._progressWatcher.CraftTable$Contracts$IProgressWatcher$log(System.String.format("You use {0} : {1} with chance {2}%", ability, (isSuccess ? "Success" : "Failed"), chance));
-            this._progressWatcher.CraftTable$Contracts$IProgressWatcher$log(System.String.format(" -> Condition is {0}", ($t=this._condition, System.Enum.toString(CraftTable.Condition, $t))));
+            this._progressWatcher.CraftTable$Contracts$IProgressWatcher$log(System.String.format(" -> Condition is {0}", ($t2=this._condition, System.Enum.toString(CraftTable.Condition, $t2))));
             ability.execute(this, !abilityfailed);
             this._buffCollector.CraftTable$Contracts$IBuffCollector$postAction(this);
-            this._condition = this._conditionService.CraftTable$Contracts$IConditionService$getCondition(this._calculator);
+            this._condition = this._conditionService.CraftTable$Contracts$IConditionService$getCondition(this._condition);
             this._buffCollector.CraftTable$Contracts$IBuffCollector$killNotActive();
 
             this.validate(abilityfailed, chance);
@@ -26751,17 +26773,18 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             var copyOfAbilities = this._abilityQueue.toArray();
             this._abilityQueue.clear();
 
-            $t1 = Bridge.getEnumerator(copyOfAbilities);
-            while ($t1.moveNext()) {
-                var a = $t1.getCurrent();
+            $t3 = Bridge.getEnumerator(copyOfAbilities);
+            while ($t3.moveNext()) {
+                var a = $t3.getCurrent();
                 this.act(a);
             }
         },
-        canAct: function (ability) {
+        canAct: function (ability, overrides) {
+            var $t;
             if (this._durability <= 0 || this._progress >= this._recipe.getDifficulty()) {
                 return false;
             }
-            var craftServiceState = new CraftTable.CraftServiceState(this._condition, this._craftPointsLeft, this._step, this._buffCollector.CraftTable$Contracts$IBuffCollector$getBuffAccessor());
+            var craftServiceState = new CraftTable.CraftServiceState(($t = (overrides != null ? overrides.getCondition() : null), $t != null ? $t : this._condition), this._craftPointsLeft, this._step, this._buffCollector.CraftTable$Contracts$IBuffCollector$getBuffAccessor());
             return ability.canAct(craftServiceState);
         },
         validate: function (abilityfailed, chance) {

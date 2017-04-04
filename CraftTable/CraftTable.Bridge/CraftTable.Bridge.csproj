@@ -383,6 +383,9 @@
     <Compile Include="..\CraftTable\LookupService.cs">
       <Link>LookupService.cs</Link>
     </Compile>
+    <Compile Include="..\CraftTable\Overrides.cs">
+      <Link>Overrides.cs</Link>
+    </Compile>
     <Compile Include="..\CraftTable\RandomService.cs">
       <Link>RandomService.cs</Link>
     </Compile>

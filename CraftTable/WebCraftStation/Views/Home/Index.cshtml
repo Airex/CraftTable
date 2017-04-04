@@ -23,9 +23,9 @@
                         </div>
                         <div class="ability-container" ng-repeat="ability in ctrl.model.Abilities | filter: ctrl.abilityCrossClassMatch | orderBy: ['Category', 'Order']">
                             <div class="action" data-xivdb-key="xivdb_action_{{ability.XivDbId}}" data-xivdb-isset="1">
-                                <img ng-src="@Url.Content("~/Content/Images/")action_{{ability.XivDbId}}.png" ng-click="ctrl.onCrossClass(ability)"/>
+                                <img ng-src="@Url.Content("~/Content/Images/")action_{{ability.XivDbId}}.png"/>
                                 <div class="cost">{{ctrl.formatCraftPoints(ability.CraftPoints)}}</div>
-                                <div class="ability-overlay" ng-style="{'display':ctrl.isUsedInCrossClass(ability)?'block':'none'}" ng-click="ctrl.onCrossClass(ability)"></div>
+                                <div class="ability-overlay"  ng-class="{'disabled':ctrl.isUsedInCrossClass(ability)}" ng-click="ctrl.onCrossClass(ability)"></div>
                             </div>
                         </div>
                     </div>
@@ -122,9 +122,9 @@
                 <div class="abilities-in-category">
                     <div class="ability-container" ng-repeat="ability in ctrl.model.Abilities | filter: ctrl.abilityMatch(category) | orderBy: 'Order' ">
                         <div class="action" ng-class="{'highlight-action':ability.IsHighLight}" data-xivdb-key="xivdb_action_{{ability.XivDbId}}" data-xivdb-isset="1">
-                            <img ng-src="@Url.Content("~/Content/Images/")action_{{ability.XivDbId}}.png" ng-click="ctrl.act(ability)" />
+                            <img ng-src="@Url.Content("~/Content/Images/")action_{{ability.XivDbId}}.png"/>
                             <div class="cost">{{ctrl.formatCraftPoints(ability.CraftPoints)}}</div>
-                            <div class="ability-overlay" ng-style="{'display':!ability.IsEnabled?'block':'none'}"></div>
+                            <div class="ability-overlay" ng-class="{'disabled':!ability.IsEnabled}"  ng-click="ctrl.act(ability)"></div>
                         </div>
                     </div>
                 </div>
@@ -138,6 +138,10 @@
         <div class="col-md-12 ability-history">
             <div class="history-item" ng-repeat="item in ctrl.history">
                 <img ng-src="@Url.Content("~/Content/Images/")action_{{item.XivDbId}}.png" />
+            </div>
+            
+            <div class="history-item-undo" ng-show="ctrl.history.length > 0">
+                <button class="glyphicon glyphicon-circle-arrow-left" ng-click="ctrl.undo()"></button>
             </div>
         </div>
     </div>

@@ -55,7 +55,7 @@ namespace CraftTable
             _recipe = recipe;
             _craftPointsLeft = craftMan.MaxCraftPoints;
             _durability = recipe.Durability;
-            _condition = _conditionService.GetCondition(_calculator);
+            _condition = _conditionService.GetCondition(null);
             _quality = recipe.StartQuality;
         }
 
@@ -80,8 +80,10 @@ namespace CraftTable
             };
         }
 
-        public void Act(Ability ability)
+        public void Act(Ability ability, Overrides overrides = null)
         {
+            _condition = overrides?.Condition ?? _condition;
+
             if (_durability <= 0 || _progress >= _recipe.Difficulty)
             {
                 _progressWatcher.Log("Craft finished. No Actions Allowed.");
@@ -100,7 +102,7 @@ namespace CraftTable
             _calculator.Reset(_condition);
             _buffCollector.BuildCalculator(new ActionInfo(ability.GetType(), _condition), _calculator.GetBuilder());
             var chance = _calculator.CalculateChance(ability.Chance);
-            var isSuccess = _randomService.Select(new[] { chance, 1000.0 }) == 0;
+            var isSuccess = !overrides?.Failed ?? _randomService.Select(new[] { chance, 1000.0 }) == 0;
             if (!isSuccess)
             {
                 abilityfailed = true;
@@ -110,7 +112,7 @@ namespace CraftTable
             _progressWatcher.Log($" -> Condition is {_condition.ToString()}");
             ability.Execute(this, !abilityfailed);
             _buffCollector.PostAction(this);
-            _condition = _conditionService.GetCondition(_calculator);
+            _condition = _conditionService.GetCondition(_condition);
             _buffCollector.KillNotActive();
 
             Validate(abilityfailed, chance);
@@ -124,10 +126,10 @@ namespace CraftTable
             }
         }
 
-        public bool CanAct(Ability ability)
+        public bool CanAct(Ability ability, Overrides overrides)
         {
             if (_durability <= 0 || _progress >= _recipe.Difficulty) return false;
-            var craftServiceState = new CraftServiceState(_condition, _craftPointsLeft, _step, _buffCollector.GetBuffAccessor());
+            var craftServiceState = new CraftServiceState(overrides?.Condition ?? _condition, _craftPointsLeft, _step, _buffCollector.GetBuffAccessor());
             return ability.CanAct(craftServiceState);
         }
 

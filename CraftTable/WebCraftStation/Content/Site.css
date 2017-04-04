@@ -34,7 +34,7 @@ body {
 
 
 .ability-overlay {
-    display:none;
+    display:block;
     margin-top: -40px;
     width:40px;
     height:40px;
@@ -42,8 +42,12 @@ body {
     top: 0px;
     left: 0px;
     padding: 10px;
-    opacity: .8;
+    opacity: 0;
     border-radius: 5px;
+}
+
+.ability-overlay.disabled {
+    opacity: .8;
 }
 
 
@@ -190,12 +194,27 @@ body {
 
 
 
+
 .history-item {
     display: inline-block; 
     height: 22px; 
     width: 22px;
     margin-right: 2px;
     margin-bottom: 2px;
+}
+
+.history-item-undo {
+    display: inline-block; 
+    height: 22px; 
+    width: 22px;
+    margin-right: 2px;
+    margin-bottom: 2px;
+}
+
+.history-item-undo button {
+    width: 22px;
+    padding: 0;
+    height: 23px;
 }
 
 .history-item img{

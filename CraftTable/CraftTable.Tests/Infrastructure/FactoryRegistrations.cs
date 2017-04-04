@@ -9,8 +9,7 @@ namespace CraftTable.Tests.Infrastructure
         internal static IFactoryRegistry WithConditions(this IFactoryRegistry factoryRegistry,
             params Condition[] conditions)
         {
-            factoryRegistry.Builder.Register(
-                context => new ConditionService(new StaticRandomService(conditions.Select(c => (int) c).ToArray()))).As<IConditionService>();
+            factoryRegistry.Builder.Register(context => new ConditionService(new StaticRandomService(conditions.Select(c => (int) c).ToArray()),context.Resolve<ICalculator>())).As<IConditionService>();
             return factoryRegistry;
         }
     }
