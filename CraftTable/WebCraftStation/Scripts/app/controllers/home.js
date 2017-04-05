@@ -66,7 +66,7 @@ angular
                     var condition = vm.status.Condition;
                     var overrides = CraftTable.CraftStation.createOverride(condition, null);
                     m.IsEnabled = vm.craftTable.canAct(a, overrides);
-                    m.IsHighLight = CraftTable.CraftStation.checkHighLight(a, vm.craftTable.getStatus());
+                    m.IsHighLight = CraftTable.CraftStation.checkHighLight(a, vm.status);
                 }
             }
 
