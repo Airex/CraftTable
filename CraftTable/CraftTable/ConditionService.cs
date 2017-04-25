@@ -19,22 +19,24 @@ namespace CraftTable
 
             if (!condition.HasValue)
                 result = Condition.Normal;
-            else if (condition.GetValueOrDefault() == Condition.Excellent)
-                result = Condition.Poor;
-            else if (condition.GetValueOrDefault() == Condition.Good)
-                result = Condition.Normal;
-            else if (condition.GetValueOrDefault() == Condition.Poor)
-                result = Condition.Normal;
-            else
-            {
-                var chances = new[]
+            else switch (condition.GetValueOrDefault())
                 {
-                    1000,
-                    _calculator.CalculateConditionChance(Condition.Good, 23),
-                    _calculator.CalculateConditionChance(Condition.Excellent, 1)
-                };
-                result = (Condition) _randomService.Select(chances);
-            }
+                    case Condition.Excellent:
+                        result = Condition.Poor;
+                        break;
+                    case Condition.Good:
+                    case Condition.Poor:
+                        result = Condition.Normal;
+                        break;
+                    default:
+                        var chances = new[] {
+                            1000,
+                            _calculator.CalculateConditionChance(Condition.Good, 23),
+                            _calculator.CalculateConditionChance(Condition.Excellent, 1)
+                        };
+                        result = (Condition)_randomService.Select(chances);
+                        break;
+                }
             return result;
         }
     }

@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Text;
 using CraftTable.Attributes;
-using CraftTable.Contracts;
 
 namespace CraftTable
 {
@@ -11,12 +10,6 @@ namespace CraftTable
         {
             return condition == Condition.Good || condition == Condition.Excellent;
         }
-
-//        public static void Fail(this ICalculator calculator)
-//        {
-//            calculator.GetBuilder().ForQuality((efficincy, control, c) => { efficincy.Multiply(0); });
-//            calculator.GetBuilder().ForProgress((efficincy, crafmanship, c) => { efficincy.Multiply(0); });
-//        }
 
         public static string Name(this Ability ability)
         {

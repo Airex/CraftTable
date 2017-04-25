@@ -90,7 +90,7 @@ namespace CraftTable
                 throw new CraftAlreadyFinishedException();
             }
 
-            bool abilityfailed = false;
+            var abilityfailed = false;
             var craftServiceState = new CraftServiceState(_condition, _craftPointsLeft, _step, _buffCollector.GetBuffAccessor());
             if (!ability.CanAct(craftServiceState))
             {

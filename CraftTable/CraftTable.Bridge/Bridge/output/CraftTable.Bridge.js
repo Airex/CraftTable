@@ -25523,8 +25523,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
 
     Bridge.define("CraftTable.Buffs.WhistleBuff", {
         inherits: [CraftTable.IBuff,CraftTable.IStacks],
-        _afterSatisfaction: null,
-        _afterNymerianWheel: null,
+        _postAction: null,
         _stacks: 11,
         config: {
             properties: {
@@ -25537,7 +25536,10 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             "step", "CraftTable$IBuff$step",
             "kill", "CraftTable$IBuff$kill",
             "onCalculate", "CraftTable$IBuff$onCalculate"
-            ]
+            ],
+            init: function () {
+                this._postAction = $asm.$.CraftTable.Buffs.WhistleBuff.f1;
+            }
         },
         ctor: function () {
             this.$initialize();
@@ -25547,7 +25549,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             return this._stacks;
         },
         step: function (buffActionsRegistry) {
-            buffActionsRegistry.CraftTable$Contracts$IBuffActionsRegistry$registerPostAbility(Bridge.fn.bind(this, $asm.$.CraftTable.Buffs.WhistleBuff.f1));
+            buffActionsRegistry.CraftTable$Contracts$IBuffActionsRegistry$registerPostAbility(Bridge.fn.bind(this, $asm.$.CraftTable.Buffs.WhistleBuff.f2));
         },
         kill: function () {
             this.setIsActive(false);
@@ -25559,11 +25561,11 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             });
 
             if (Bridge.referenceEquals(info.getAbilityType(), CraftTable.Abilities.Specialist.NymeiasWheel)) {
-                this._afterNymerianWheel = Bridge.fn.cacheBind(this, this.kill);
+                this._postAction = Bridge.fn.combine(this._postAction, Bridge.fn.cacheBind(this, this.kill));
             }
 
             if (Bridge.referenceEquals(info.getAbilityType(), CraftTable.Abilities.Specialist.Satisfaction)) {
-                this._afterSatisfaction = Bridge.fn.bind(this, $asm.$.CraftTable.Buffs.WhistleBuff.f2);
+                this._postAction = Bridge.fn.combine(this._postAction, Bridge.fn.bind(this, $asm.$.CraftTable.Buffs.WhistleBuff.f3));
             }
 
             if (CraftTable.Extensions.isGoodOrExcellent(info.getCondition())) {
@@ -25575,16 +25577,11 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
     Bridge.ns("CraftTable.Buffs.WhistleBuff", $asm.$);
 
     Bridge.apply($asm.$.CraftTable.Buffs.WhistleBuff, {
-        f1: function (actions) {
-            if (!Bridge.staticEquals(this._afterSatisfaction, null)) {
-                this._afterSatisfaction();
-                this._afterSatisfaction = null;
-            }
-
-            if (!Bridge.staticEquals(this._afterNymerianWheel, null)) {
-                this._afterNymerianWheel();
-                this._afterNymerianWheel = null;
-            }
+        f1: function () {
+        },
+        f2: function (actions) {
+            this._postAction();
+            this._postAction = $asm.$.CraftTable.Buffs.WhistleBuff.f1;
 
             if (this.getStacks() <= 0) {
                 this.kill();
@@ -25592,7 +25589,7 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             }
 
         },
-        f2: function () {
+        f3: function () {
             Bridge.identity(this._stacks, (this._stacks = (this._stacks - 1) | 0));
         }
     });
@@ -25811,19 +25808,18 @@ Bridge.assembly("CraftTable.Bridge", function ($asm, globals) {
             if (!System.Nullable.hasValue(condition)) {
                 result = CraftTable.Condition.Normal;
             } else {
-                if (System.Nullable.getValueOrDefault(condition, 0) === CraftTable.Condition.Excellent) {
-                    result = CraftTable.Condition.Poor;
-                } else {
-                    if (System.Nullable.getValueOrDefault(condition, 0) === CraftTable.Condition.Good) {
+                switch (System.Nullable.getValueOrDefault(condition, 0)) {
+                    case CraftTable.Condition.Excellent: 
+                        result = CraftTable.Condition.Poor;
+                        break;
+                    case CraftTable.Condition.Good: 
+                    case CraftTable.Condition.Poor: 
                         result = CraftTable.Condition.Normal;
-                    } else {
-                        if (System.Nullable.getValueOrDefault(condition, 0) === CraftTable.Condition.Poor) {
-                            result = CraftTable.Condition.Normal;
-                        } else {
-                            var chances = System.Array.init([1000, this._calculator.CraftTable$Contracts$ICalculator$calculateConditionChance(CraftTable.Condition.Good, 23), this._calculator.CraftTable$Contracts$ICalculator$calculateConditionChance(CraftTable.Condition.Excellent, 1)], System.Double);
-                            result = this._randomService.CraftTable$Contracts$IRandomService$select(chances);
-                        }
-                    }
+                        break;
+                    default: 
+                        var chances = System.Array.init([1000, this._calculator.CraftTable$Contracts$ICalculator$calculateConditionChance(CraftTable.Condition.Good, 23), this._calculator.CraftTable$Contracts$ICalculator$calculateConditionChance(CraftTable.Condition.Excellent, 1)], System.Double);
+                        result = this._randomService.CraftTable$Contracts$IRandomService$select(chances);
+                        break;
                 }
             }
             return result;

@@ -116,7 +116,6 @@
     <Compile Include="Contracts\ICraftQualityCalculator.cs" />
     <Compile Include="Contracts\ILookupService.cs" />
     <Compile Include="Contracts\IProgressWatcher.cs" />
-    <Compile Include="CraftActors\OnSuccessActor.cs" />
     <Compile Include="CraftActors\ReclaimChanceActor.cs" />
     <Compile Include="Crafter.cs" />
     <Compile Include="CraftQualityCalculator.cs" />

@@ -2,10 +2,6 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-window.ctrlPressed = false;
-function cacheIt(event) {
-    window.ctrlPressed = event.ctrlKey;
-}
 
 //
 // XIVDB tooltips
@@ -30,8 +26,7 @@ var XIVDBTooltipsClass = (function () {
         this.startTimestamp = null;
 
         
-        document.onkeydown = cacheIt;
-        document.onkeyup = cacheIt;
+     
     }
 
     //
@@ -337,9 +332,18 @@ var XIVDBTooltipsDOMClass = (function () {
                 // append tooltip placeholder
                 $('body').append('<div class="xivdb" style="display:none;"></div>');
 
+                $('html').on('keyup keydown',
+                    null,
+                    function(event) {
+                        _this4.ctrlActive = event.ctrlKey;
+                        if (_this4.ctrlActive)
+                            _this4.show(event);
+                        else
+                            _this4.hide(event);
+                    });
+
                 // on mouse entering a tooltip
                 $('html').on('mouseenter', '[data-xivdb-key]', function (event) {
-                    if (!window.ctrlPressed) return;
                     _this4.isActive = true;
                     var $element = $(event.currentTarget),
                         key = $element.attr('data-xivdb-key'),
@@ -354,11 +358,12 @@ var XIVDBTooltipsDOMClass = (function () {
                     $('.xivdb').html(html);
 
                     // show the tooltip
+                    if (!_this4.ctrlActive) return;
                     _this4.show(event);
                 }).on('mouseleave', '*[data-xivdb-key]', function (event) {
                     _this4.isActive = false;
                     var $element = $(event.target);
-
+                    $('.xivdb').empty();
                     // hide tooltips
                     _this4.hide();
                 });
@@ -477,7 +482,7 @@ var XIVDBTooltipsDOMClass = (function () {
     }, {
         key: 'hide',
         value: function hide() {
-            $('.xivdb').hide().html('');
+            $('.xivdb').hide();
         }
 
         //

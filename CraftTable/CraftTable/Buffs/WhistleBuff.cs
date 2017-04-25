@@ -8,8 +8,7 @@ namespace CraftTable.Buffs
     [BuffXivDb(880)]
     public class WhistleBuff : IBuff,IStacks
     {
-        private Action _afterSatisfaction;
-        private Action _afterNymerianWheel;
+        private Action _postAction = () => {};
 
         public WhistleBuff()
         {
@@ -26,17 +25,8 @@ namespace CraftTable.Buffs
         {
             buffActionsRegistry.RegisterPostAbility(actions =>
             {
-                if (_afterSatisfaction != null)
-                {
-                    _afterSatisfaction();
-                    _afterSatisfaction = null;
-                }
-
-                if (_afterNymerianWheel != null)
-                {
-                    _afterNymerianWheel();
-                    _afterNymerianWheel = null;
-                }
+                _postAction();
+                _postAction = () => { };
 
                 if (Stacks <= 0)
                 {
@@ -62,12 +52,12 @@ namespace CraftTable.Buffs
 
             if (info.AbilityType == typeof(NymeiasWheel))
             {
-                _afterNymerianWheel = Kill;
+                _postAction += Kill;
             }
 
             if (info.AbilityType == typeof(Satisfaction))
             {
-                _afterSatisfaction = () => _stacks--;
+                _postAction += () => _stacks--;
             }
 
             if (info.Condition.IsGoodOrExcellent())

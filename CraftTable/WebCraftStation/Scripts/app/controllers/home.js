@@ -49,6 +49,7 @@ angular
                 }
 
                 vm.status = vm.craftTable.getStatus();
+                vm.status.Condition = vm.useCondition ? vm.status.Condition : CraftTable.Condition.Normal;
                 vm.history.push({ Name: ability.Name, XivDbId: ability.XivDbId, Condition: condition, Failed: failed });
                 vm.setAbilityState();
                 XIVDBTooltips.get();
@@ -87,12 +88,14 @@ angular
                 vm.watcher = new CraftTable.Watcher();
                 vm.craftTable = CraftTable.CraftStation.createCraftTable(vm.recipe, vm.craftMan, vm.watcher);
                 vm.status = vm.craftTable.getStatus();
+                vm.status.Condition = vm.useCondition ? vm.status.Condition : CraftTable.Condition.Normal;
                 vm.setAbilityState();
             }
 
             vm.searchRecipe = function () {
                 angular.element('#search').slideDown();
                 angular.element("#stats").hide();
+                angular.element("#buffs").hide();
                 angular.element("#settings").hide();
             }
 
@@ -101,6 +104,7 @@ angular
                 vm.settingCraftMan = jQuery.extend({}, vm.craftMan);
                 angular.element("#settings").slideDown(500);
                 angular.element("#stats").hide();
+                angular.element("#buffs").hide();
                 angular.element('#search').hide();
             }
 
@@ -111,11 +115,13 @@ angular
             vm.discard = function () {
                 angular.element("#settings").slideUp(500);
                 angular.element("#stats").show();
+                angular.element("#buffs").show();
             }
 
             vm.discardSearch = function () {
                 angular.element('#search').slideUp();
                 angular.element("#stats").show();
+                angular.element("#buffs").show();
             }
 
             vm.onCrossClass = function (item) {
@@ -143,11 +149,12 @@ angular
             }
 
             vm.getRecipeImageId = function (item) {
+                var rid = "recipe_" + item.id;
                 vm.imagesCache = vm.imagesCache || {};
-                var at = angular.element("#recipe_" + item.id).attr('src');
-                if (vm.imagesCache["recipe_" + item.id] && !at) {
+                var at = angular.element("#" + rid).attr('src');
+                if (vm.imagesCache[rid] && !at) {
                     window.setTimeout(function () {
-                        angular.element("#recipe_" + item.id).attr('src', vm.imagesCache["recipe_" + item.id]);
+                        angular.element("#" + rid).attr('src', vm.imagesCache[rid]);
                     }, 0);
 
                 } else {
@@ -157,13 +164,13 @@ angular
                             return function (data) {
                                 if (data) {
                                     var icon = data["icon"];
-                                    angular.element("#recipe_" + id).attr('src', icon);
-                                    vm.imagesCache["recipe_" + id] = icon;
+                                    angular.element("#" + id).attr('src', icon);
+                                    vm.imagesCache[id] = icon;
                                 }
                             }
-                        }(item.id));
+                        }(rid));
                 }
-                return "recipe_" + item.id;
+                return rid;
             }
 
             vm.crossClassUsedCount = function () {
@@ -199,6 +206,7 @@ angular
 
                 angular.element("#settings").slideUp(500);
                 angular.element("#stats").show();
+                angular.element("#buffs").show();
             }
 
             vm.crafterChanged = function () {
@@ -208,6 +216,7 @@ angular
                 };
                 vm.setAbilityState();
                 saveCrafter();
+                XIVDBTooltips.get();
             }
 
             vm.init = function () {
@@ -220,6 +229,8 @@ angular
                     vm.recipe = new CraftTable.Recipe(1968, 70, 13187, 190);
                 if (!vm.craftMan)
                     vm.craftMan = new CraftTable.CraftMan(vm.crafter, 995, 995, 437, 60);
+
+                vm.useCondition = true;
 
                 vm.counter = 0;
 
@@ -260,16 +271,28 @@ angular
             }
 
             vm.crafters = function () {
-                return {
-                    1: 'Culinarian',
-                    2: 'Alchemist',
-                    4: 'Goldsmith',
-                    8: 'Weaver',
-                    16: 'Leatherworker',
-                    32: 'Armorer',
-                    64: 'Blacksmith',
-                    128: 'Carpenter'
-                };
+                if (!vm.loadedCrafters) {
+                    var c = {
+                        1: 'Culinarian',
+                        2: 'Alchemist',
+                        4: 'Goldsmith',
+                        8: 'Weaver',
+                        16: 'Leatherworker',
+                        32: 'Armorer',
+                        64: 'Blacksmith',
+                        128: 'Carpenter'
+                    };
+                    vm.loadedCrafters = [];
+                    angular.forEach(c,
+                        function (x, y) {
+                            vm.loadedCrafters.push({
+                                'x': x,
+                                'y': y
+                            });
+                        });
+                }
+                
+                return vm.loadedCrafters;
             }
 
             function loadSettings() {

@@ -1,26 +1,18 @@
-﻿@using WebCraftStation.Models
-@model CraftmanViewModel
-<div class="form-horizontal">
-    <div class="form-group" style="display: none">
-        @Html.LabelFor(model => model.Crafter, new { @class = "control-label col-md-6" })
-        <div class="col-md-6">
-            @Html.DropDownListFor(model => model.Crafter, EnumHelper.GetSelectList(typeof(CrafterEnumModel)), null,  new { @class = "form-control" })
-        </div>
-    </div>
+﻿<div class="form-horizontal">
     <div class="form-group">
-        <label class="control-label col-md-6">Control</label>
+        <label class="control-label col-md-3">Control</label>
         <div class="col-md-6">
             <input id="control" type="number" class="form-control" ng-model="ctrl.settingCraftMan.Control" />
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-md-6">Craftmanship</label>
+        <label class="control-label col-md-3">Craftmanship</label>
         <div class="col-md-6">
             <input id="craftmanship" type="number" class="form-control" ng-model="ctrl.settingCraftMan.Craftmanship" />
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-md-6">CP</label>
+        <label class="control-label col-md-3">CP</label>
         <div class="col-md-6">
             <input id="cp" type="number" class="form-control" ng-model="ctrl.settingCraftMan.MaxCraftPoints" />
         </div>

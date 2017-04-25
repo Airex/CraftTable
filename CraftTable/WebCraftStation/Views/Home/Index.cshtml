@@ -4,7 +4,7 @@
             <button class="btn btn-danger" id="resetButton" type="button" value="Reset" ng-click="ctrl.reset()">Reset</button>
             <button class="btn btn-default" id="searchButton" type="button" value="Search recipe" ng-click="ctrl.searchRecipe()">Search recipe</button>
             <select ng-model="ctrl.crafter" ng-change="ctrl.crafterChanged()" class="form-control" style="width: 150px; display: inline-block;">
-                <option ng-repeat="(x,y) in ctrl.crafters()" value="{{x}}">{{y}}</option>
+                <option ng-repeat="c in ctrl.crafters() | orderBy: 'x'" value="{{c.y}}">{{c.x}}</option>
             </select>
         </div>
         <div class="col-md-4" style="margin-top: 15px;">
@@ -25,7 +25,7 @@
                             <div class="action" data-xivdb-key="xivdb_action_{{ability.XivDbId}}" data-xivdb-isset="1">
                                 <img ng-src="@Url.Content("~/Content/Images/")action_{{ability.XivDbId}}.png"/>
                                 <div class="cost">{{ctrl.formatCraftPoints(ability.CraftPoints)}}</div>
-                                <div class="ability-overlay"  ng-class="{'disabled':ctrl.isUsedInCrossClass(ability)}" ng-click="ctrl.onCrossClass(ability)"></div>
+                                <div class="ability-overlay"  ng-class="{'disabled':!ctrl.isUsedInCrossClass(ability)}" ng-click="ctrl.onCrossClass(ability)"></div>
                             </div>
                         </div>
                     </div>
@@ -92,14 +92,14 @@
 
         <div class="col-md-6">
             <div id="log" class="log" scroll-glue>
-                <div ng-class="{'red':log.toLowerCase().indexOf('fail')>-1}" ng-repeat="log in ctrl.watcher.Logs.items track by $index">{{log}}</div>
+                <div ng-class="{'red':log.toLowerCase().indexOf('fail')>-1}" ng-repeat="log in ctrl.watcher.Logs.items track by $index"><span ng-show="log.toLowerCase().indexOf('->')>-1" class="glyphicon glyphicon-arrow-right"></span>{{log.replace('->','')}}</div>
             </div>
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" id="buffs">
         <div class="col-md-12">
-            <div id="buffs" style="height: 75px;">
+            <div style="height: 75px;">
                 <div class="buff" ng-repeat="buff in ctrl.status.Buffs">
                     <div class="buff-stacks">{{ctrl.formatBuff(buff.Stacks)}}</div>
                     <div data-tooltip-id="status/{{buff.XivDb}}" class="buff-icon" name="{{buff.Name}}">
@@ -110,8 +110,9 @@
 
             </div>
         </div>
+        <hr style="margin-top: 0px;" />
     </div>
-    <hr style="margin-top: 0px;" />
+    
 
     <div class="row">
         <div class="col-md-12">
